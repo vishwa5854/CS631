@@ -14,5 +14,5 @@ Things that work with this
 Problems Faced
 1. I could not understand how to handle absolute paths and relative paths together, so I searched
 online if there is anything in C that can give me absolute path no matter what and found realpath.
-2. I couldn't handle other types of files like links.
+2. I had problems handling other types of files like links but made it to work with softlinks and hardlinks for files but not for directories.
 3. I have never used make before, so I read basics of make online.

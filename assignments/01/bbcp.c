@@ -20,10 +20,10 @@
 #endif
 
 void copy(char *source, char *target) {
-    struct stat sourceFileInfo;
-    struct stat targetFileInfo;
     char buffer[BUFFSIZE];
     int n, targetFd = -1, sourceFd;
+    struct stat sourceFileInfo;
+    struct stat targetFileInfo;
     char sourceAbsPath[MAXPATHLEN];
     char targetAbsPath[MAXPATHLEN];
     
