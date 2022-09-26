@@ -1,0 +1,18 @@
+This is a simple C program that trivially copies files.
+
+Things that work with this
+1. bbcp existing existing2 
+2. bbcp existing non-existing 
+3. bbcp non-existing anything 
+4. bbcp no-inputs 
+5. bbcp source no-target 
+6. bbcp source multiple-targets
+7. bbcp /source-is-a-dir /existing 
+8. bbcp existing /existing
+9. bbcp existing /non-existing
+
+Problems Faced
+1. I could not understand how to handle absolute paths and relative paths together, so I searched
+online if there is anything in C that can give me absolute path no matter what and found realpath.
+2. I couldn't handle other types of files like links.
+3. I have never used make before, so I read basics of make online.

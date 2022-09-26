@@ -1,5 +1,5 @@
 bbcp: bbcp.o
-	cc bbcp.o -o bbcp
+	cc -ansi -g -Wall -Werror -Wextra -Wformat=2 -Wjump-misses-init -Wlogical-op -Wpedantic -Wshadow bbcp.o -o bbcp
 
 bbcp.o:
-	cc -c bbcp.c -o bbcp.o
+	cc -ansi -g -Wall -Werror -Wextra -Wformat=2 -Wjump-misses-init -Wlogical-op -Wpedantic -Wshadow -c bbcp.c -o bbcp.o

@@ -21,12 +21,14 @@
 
 void copy(char *source, char *target) {
     struct stat sourceFileInfo;
+    struct stat targetFileInfo;
     char buffer[BUFFSIZE];
     int n, targetFd = -1, sourceFd;
     char sourcePathResolveBuffer[MAXPATHLEN];
     char targetPathResolveBuffer[MAXPATHLEN];
-    char *realSourcePath = realpath(source, sourcePathResolveBuffer);
-    char *realTargetPath = realpath(target, targetPathResolveBuffer);
+    
+    (void)realpath(source, sourcePathResolveBuffer);
+    (void)realpath(target, targetPathResolveBuffer);
 
     if (stat(source, &sourceFileInfo) < 0) {
         fprintf(stderr, "bbcp: cannot stat '%s': %s\n", source, strerror(errno));
@@ -42,7 +44,6 @@ void copy(char *source, char *target) {
         fprintf(stderr, "bbcp: cannot open '%s': %s\n", source, strerror(errno));
         exit(EXIT_FAILURE);
     }
-    struct stat targetFileInfo;
 
     if (stat(target, &targetFileInfo) < 0) {
         if (ENOENT != errno) {
@@ -59,11 +60,11 @@ void copy(char *source, char *target) {
     }
 
     if (S_ISDIR(targetFileInfo.st_mode)) {
-        target = strcat(realTargetPath, "/");
+        target = strcat(targetPathResolveBuffer, "/");
         target = strcat(target, basename(source));
 
-        if (strcmp(target, realSourcePath) == 0) {
-            fprintf(stderr, "bccp: '%s' and '%s' are the same file", realSourcePath, target);
+        if (strcmp(target, sourcePathResolveBuffer) == 0) {
+            fprintf(stderr, "bccp: '%s' and '%s' are the same file", sourcePathResolveBuffer, target);
             exit(EXIT_FAILURE);
         }
 
@@ -102,17 +103,18 @@ void copy(char *source, char *target) {
 }
 
 int main(int argc, char **argv) {
-    char *message = "Please specify a target";
+    int i;
+    char *message = "bbcp: target cannot be empty.\n";
 
     if (argc < MINIMUM_TARGETS + 1) {
         if (argc < MINIMUM_TARGETS) {
-            message = "Source cannot be empty";
+            message = "bbcp: source cannot be empty.\n";
         }
         fprintf(stderr, "%s", message);
         return EXIT_FAILURE;
     }
 
-    for (int i = MINIMUM_TARGETS; i < argc; i ++) {
+    for (i = MINIMUM_TARGETS; i < argc; i ++) {
         copy(argv[SOURCE], argv[i]);
     }
     return EXIT_SUCCESS;
