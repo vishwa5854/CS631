@@ -23,7 +23,7 @@ YES
 11. Did I make sure that my .h files only include function
 forward declarations, macros, etc., no function
 implementations or other code?
-
+YES
 12. Did I check that I have avoided code duplication?
 Writing the same or very similar code multiple times
 is a sign that my program could benefit from being

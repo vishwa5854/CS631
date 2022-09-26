@@ -24,11 +24,12 @@ void copy(char *source, char *target) {
     struct stat targetFileInfo;
     char buffer[BUFFSIZE];
     int n, targetFd = -1, sourceFd;
-    char sourcePathResolveBuffer[MAXPATHLEN];
-    char targetPathResolveBuffer[MAXPATHLEN];
+    char sourceAbsPath[MAXPATHLEN];
+    char targetAbsPath[MAXPATHLEN];
     
-    (void)realpath(source, sourcePathResolveBuffer);
-    (void)realpath(target, targetPathResolveBuffer);
+    /* No matter what the path is submitted, it converts into absolute path for peace. */
+    (void)realpath(source, sourceAbsPath);
+    (void)realpath(target, targetAbsPath);
 
     if (stat(source, &sourceFileInfo) < 0) {
         fprintf(stderr, "bbcp: cannot stat '%s': %s\n", source, strerror(errno));
@@ -60,11 +61,11 @@ void copy(char *source, char *target) {
     }
 
     if (S_ISDIR(targetFileInfo.st_mode)) {
-        target = strcat(targetPathResolveBuffer, "/");
+        target = strcat(targetAbsPath, "/");
         target = strcat(target, basename(source));
 
-        if (strcmp(target, sourcePathResolveBuffer) == 0) {
-            fprintf(stderr, "bccp: '%s' and '%s' are the same file", sourcePathResolveBuffer, target);
+        if (strcmp(target, sourceAbsPath) == 0) {
+            fprintf(stderr, "bccp: '%s' and '%s' are the same file\n", sourceAbsPath, target);
             exit(EXIT_FAILURE);
         }
 
