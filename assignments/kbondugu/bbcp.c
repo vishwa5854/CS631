@@ -28,8 +28,15 @@ void copy(char *source, char *target) {
     char targetAbsPath[MAXPATHLEN];
     
     /* No matter what the path is submitted, it converts into absolute path for peace. */
-    (void)realpath(source, sourceAbsPath);
-    (void)realpath(target, targetAbsPath);
+    if (realpath(source, sourceAbsPath) < 0) {
+        fprintf(stderr, "bbcp: cannot fetch realpath %s\n", strerror(errno));
+        exit(EXIT_FAILURE);
+    }
+
+    if (realpath(target, targetAbsPath)) {
+        fprintf(stderr, "bbcp: cannot fetch realpath %s\n", strerror(errno));
+        exit(EXIT_FAILURE);
+    }
 
     if (stat(source, &sourceFileInfo) < 0) {
         fprintf(stderr, "bbcp: cannot stat '%s': %s\n", source, strerror(errno));
@@ -112,6 +119,10 @@ int main(int argc, char **argv) {
             message = "bbcp: source cannot be empty.\n";
         }
         fprintf(stderr, "%s", message);
+        return EXIT_FAILURE;
+    }
+
+    if (argc > MINIMUM_TARGETS + 1) {
         return EXIT_FAILURE;
     }
 
