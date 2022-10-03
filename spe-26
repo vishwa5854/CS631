@@ -2,3 +2,20 @@ use dev_id + inode to identify if both are same or not
 handle the error for absolute path
 try out diff flags for creating a new file apart from source.flags
 struct stat, st_mode st_atime
+
+
+Order of file check permissions
+# Root user
+if (effective-uid == 0) { grantAccess(); }
+if (effective-uid == st_uid # user id of the owner) { if (appropriate_permissions) { grantAccess(); } else { denyAccess(); } }
+if (effective-gi == st_gid # group id of the owner) { if (appropriate_group_permissions) { grantAccess(); } else { denyAccess(); } }
+
+IMPORTANT NOTES:
+1. Here the order of the checks are important.
+2. Say supposed you are the owner of the file and you have removed all the file permissions but gave read access to
+   your group, even then you cannot access the file as you are denied in the second check of permissions itself.
+3. Other permissions can also help, if a read is set for other users then even though u don't have a read permission
+    and your group doesn't have a read permission, you can still access the file as others can access it.
+4. access() sys call will tell you if u can access a file or not
+5. For opening directories you need both r+x permissions on directory.
+6. You can delete a file in a directory which has r+x for you but the file doesn't even then u can delete it.
