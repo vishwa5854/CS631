@@ -19,3 +19,6 @@ IMPORTANT NOTES:
 4. access() sys call will tell you if u can access a file or not
 5. For opening directories you need both r+x permissions on directory.
 6. You can delete a file in a directory which has r+x for you but the file doesn't even then u can delete it.
+7. Only root and the owner of the file can change the permissions
+8. Only root can change the ownership of a file, but the owner can change the group ownership of the file (supplementary groups)
+9. 
