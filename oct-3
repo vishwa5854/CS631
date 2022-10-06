@@ -1,0 +1,10 @@
+1. If hard links are found on inode array what about the
+    soft links?
+2. How are we managing the metadata on the disk as we mani-
+    -pulate data only on memory? What happens in the case of
+    a sudden power cut?
+3. Does this mean it would impact the start time based on the
+    number of files we have in our file-system or disk?
+4. We are going to use FTS for the "ls" assignment.
+5. What is Y2K38 problem, see and refer?
+6. What is daylight savings time?
