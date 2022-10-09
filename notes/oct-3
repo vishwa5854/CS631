@@ -26,5 +26,9 @@ NOTES
     blocks are freed.
 8. Moving a file in the same file system is simple, just move the
     directory entry.
-9. Who has root dir entries then ?? What about . and .. for root ?
+9. Who has root dir entries then ?? What about . and .. for root ? 
+    root has both . and .. same inode number.
 10. We need write permission to rename a file in the parent directory
+11. One cannot create a hard link to dir as hardlink itself is placed
+    in directory links and could cause a loop inside filesystem
+    essentially breaking it, so it is not allowed.
