@@ -8,3 +8,23 @@
 4. We are going to use FTS for the "ls" assignment.
 5. What is Y2K38 problem, see and refer?
 6. What is daylight savings time?
+
+NOTES
+1. File names are not stored in inode blocks, rather they are stored
+    in directory blocks as a hardlink to actual data blocks.
+2. Multiple hardlinks could refer to same inode number.
+3. Directories are special files containing a list of hard links.
+4. Each directory contains atleast two entries.
+    . -> current directory reference
+    .. -> parent directory reference
+5. The actual name of a directory exists in it's parent directory 
+    blocks as a hard link.
+6. The inode contains most of the info found in struct stat.
+7. Every inode has a link count (st_nlink in struct stat), it shows 
+    how many things are pointing to it. If the number of links are 0, 
+    and no process has the file open then and only then those data 
+    blocks are freed.
+8. Moving a file in the same file system is simple, just move the
+    directory entry.
+9. Who has root dir entries then ?? What about . and .. for root ?
+10. We need write permission to rename a file in the parent directory
