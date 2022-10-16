@@ -1,9 +1,11 @@
+#include<sys/types.h>
+#include<sys/stat.h>
+
 #include<fts.h>
 #include<stdbool.h>
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#include<sys/stat.h>
 #include<unistd.h>
 
 /** executable [options] [file_name] */
@@ -13,6 +15,7 @@ struct FLAGS_STRUCT {
     bool A;
     bool a;
     bool c;
+    bool show_hidden_files;
 } flags;
 
 int compare(const FTSENT** one, const FTSENT** two) {
@@ -79,6 +82,12 @@ int set_args_to_struct(char *raw_arguments) {
     int FTS_FLAGS = FTS_LOGICAL;
     size_t n = strlen(raw_arguments);
     size_t i;
+    flags.show_hidden_files = false;
+
+    if (geteuid() == 0) {
+        FTS_FLAGS = FTS_FLAGS | FTS_SEEDOT;
+        flags.show_hidden_files = true;
+    }
 
     for (i = 0; i < n; i++) {
         if (raw_arguments[i] != '-') {
@@ -86,10 +95,12 @@ int set_args_to_struct(char *raw_arguments) {
                 case 'A':
                     flags.A = true;
                     FTS_FLAGS = FTS_FLAGS | FTS_SEEDOT;
+                    flags.show_hidden_files = true;
                     break;
                 case 'a':
                     flags.a = true;
                     FTS_FLAGS = FTS_FLAGS | FTS_SEEDOT;
+                    flags.show_hidden_files = true;
                     break;
                 case 'c':
                     flags.c = true;
@@ -129,7 +140,12 @@ int main(int argc, char ** argv) {
         while ((node != NULL) && (node->fts_level == 1)) {
             size_t length_of_file_name = strlen(node->fts_name);
 
-            if ((flags.A == true) && (!flags.a == true)) {
+            /**
+             * Write the conditions here bruh
+             * 
+            */
+
+            if (flags.A && !flags.a) {
                 if (
                     (strncmp(".", node->fts_name, length_of_file_name) == 0) ||
                     (strncmp("..", node->fts_name, length_of_file_name) == 0)
@@ -137,6 +153,11 @@ int main(int argc, char ** argv) {
                     node = node->fts_link;
                     continue;
                 }
+            }
+            
+            if (!flags.show_hidden_files && (node->fts_name[0] == '.')) {
+                node = node->fts_link;
+                continue;
             }
             printf("%s\n", node->fts_name);
             node = node->fts_link;
