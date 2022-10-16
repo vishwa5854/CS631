@@ -1,0 +1,8 @@
+1. Check for return values
+2. Don't use strcpy use the safer function.
+3. Use only FTS duhhhh
+4. Use strmode(3) to get the permissions string which is already there
+5. Avoid code duplication, if else branches especially
+6. Try to return early if we can (Rather than having multiple nested if
+    blocks, simplify it using returns.)
+7. Read about char * const * which we use for FTS
