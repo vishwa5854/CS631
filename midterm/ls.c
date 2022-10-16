@@ -15,6 +15,7 @@ struct FLAGS_STRUCT {
     bool A;
     bool a;
     bool c;
+    bool i;
     bool show_hidden_files;
 } flags;
 
@@ -105,6 +106,9 @@ int set_args_to_struct(char *raw_arguments) {
                 case 'c':
                     flags.c = true;
                     break;
+                case 'i':
+                    flags.i = true;
+                    break;
                 default:
                     break;
             }
@@ -112,6 +116,13 @@ int set_args_to_struct(char *raw_arguments) {
     }
 
     return FTS_FLAGS;
+}
+
+void print(struct FLAGS_STRUCT *flags, FTSENT* node) {
+    if (flags->i) {
+        printf("%ld ", node->fts_statp->st_ino);
+    }
+    printf("%s\n", node->fts_name);
 }
 
 int main(int argc, char ** argv) {
@@ -149,10 +160,10 @@ int main(int argc, char ** argv) {
                 node = node->fts_link;
                 continue;
             }
-            printf("%s\n", node->fts_name);
+            print(&flags, node);
             node = node->fts_link;
         }
     }
-
+    (void)fts_close(handle);
     return EXIT_SUCCESS;
 }
