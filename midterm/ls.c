@@ -139,23 +139,13 @@ int main(int argc, char ** argv) {
 
         while ((node != NULL) && (node->fts_level == 1)) {
             size_t length_of_file_name = strlen(node->fts_name);
+            bool conditions = !flags.a;
+            conditions = conditions && ((strncmp(".", node->fts_name, length_of_file_name) == 0) ||
+                                        (strncmp("..", node->fts_name, length_of_file_name) == 0));
+            conditions = conditions || (!flags.show_hidden_files &&
+                                        (node->fts_name[0] == '.'));
 
-            /**
-             * Write the conditions here bruh
-             * 
-            */
-
-            if (flags.A && !flags.a) {
-                if (
-                    (strncmp(".", node->fts_name, length_of_file_name) == 0) ||
-                    (strncmp("..", node->fts_name, length_of_file_name) == 0)
-                ) {
-                    node = node->fts_link;
-                    continue;
-                }
-            }
-            
-            if (!flags.show_hidden_files && (node->fts_name[0] == '.')) {
+            if (conditions) {
                 node = node->fts_link;
                 continue;
             }
