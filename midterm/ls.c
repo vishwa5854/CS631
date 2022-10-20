@@ -1,24 +1,19 @@
-#include<sys/types.h>
 #include<sys/stat.h>
 
 #include<fts.h>
-#include<grp.h>
-#include<pwd.h>
 #include<stdbool.h>
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#include<time.h>
 #include<unistd.h>
 #include"util.h"
 #include"print.h"
-#include"flags.h"
 
 /** executable [options] [file_name] */
 #define MIN_NUM_ARGS 2
 #define DEFAULT_LEVEL 1
 
-FLAGS flags;
+struct FLAGS_STRUCT flags;
 
 int compare(const FTSENT** one, const FTSENT** two) {
     if (flags.c) {
@@ -53,23 +48,11 @@ int move_args_and_non_existent_files_to_top(int N, char ** paths) {
 
 void create_paths(int N, char ** paths, int start, char** required_paths) {
     int i = start;
+    printf("%d\t%d\t", N, start);
 
     while (i < N) {
         required_paths[i - start] = paths[i];
         i++;
-    }
-}
-
-void report_errors(int N, char** argv) {
-    int i = 1;
-
-    /** These are the arguments passed to our ls. */
-    if (argv[i][0] == '-') {
-        i++;
-    }
-
-    for (; i < N; i++) {
-        fprintf(stderr, "ls: %s: No such file or directory\n", argv[i]);
     }
 }
 
@@ -135,6 +118,11 @@ int main(int argc, char ** argv) {
     if (argc >= MIN_NUM_ARGS) {
         FTS_FLAGS = set_args_to_struct(argv[1]);
         report_errors(number_of_errors, argv);
+
+        /** There is a case where all the files passed don't exist and it leads to a SEGFAULT. */
+        if (argc == number_of_errors) {
+            return EXIT_FAILURE;
+        }
         create_paths(argc, argv, number_of_errors, paths);
         paths[argc - number_of_errors] = NULL;
     }

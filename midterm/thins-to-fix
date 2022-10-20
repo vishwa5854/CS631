@@ -1,3 +1,3 @@
-1. If we pass only one file that don't exist, then it is segfaulting
+1. If we pass only one file that don't exist, then it is segfaulting -- done
 2. If we pass the files with names it is not ls'sing them
 3. 

@@ -1,13 +1,21 @@
+#include<bsd/string.h>
+#include<grp.h>
 #include"print.h"
+#include<pwd.h>
+#include<stdio.h>
+#include<sys/types.h>
+#include<sys/stat.h>
+#include<time.h>
+#include"util.h"
 
 #define STRMODE_LENGTH 11
 
-void print(FLAGS *flags2, FTSENT* node) {
-    if (flags2->i) {
+void print(struct FLAGS_STRUCT *flags, FTSENT* node) {
+    if (flags->i) {
         printf("%ld ", node->fts_statp->st_ino);
     }
 
-    if (flags2->l) {
+    if (flags->l) {
         /**
          * 1. file mode
          * 2. number of links
@@ -48,7 +56,7 @@ void print(FLAGS *flags2, FTSENT* node) {
         printf("%02d:%02d ", tm->tm_hour, tm->tm_min);
     }
 
-    if (flags2->d) {
+    if (flags->d) {
         if (node->fts_info == FTS_D) {
             printf("%s\n", node->fts_name);
         }
