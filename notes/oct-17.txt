@@ -1,0 +1,10 @@
+1. Use -lbsd " cc ls.c -lbsd" for compiling on linux for bsd libs
+2. Include "#include<bsd/string.h>" for the strmode
+3. How is C compiler written in what lang ? Does every upgrade made using cc ?
+4. Is every process comes down to a C program ?? like what about stuff written 
+    in assembly? (these are the sys calls provided by kernel not limited to C).
+5. C language is self hosted, it is written in C, initially with some other lang but 
+    now it has evolved to a place where C could be written using C
+6. How to access memory that doesn't belong to us and exploit by data manipulation
+    or executing some other code ???
+7. Handle test case where there is no owner exists but just some random id.

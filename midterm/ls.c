@@ -2,22 +2,23 @@
 #include<sys/stat.h>
 
 #include<fts.h>
+#include<grp.h>
+#include<pwd.h>
 #include<stdbool.h>
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<time.h>
 #include<unistd.h>
+#include"util.h"
+#include"print.h"
+#include"flags.h"
 
 /** executable [options] [file_name] */
 #define MIN_NUM_ARGS 2
+#define DEFAULT_LEVEL 1
 
-struct FLAGS_STRUCT {
-    bool A;
-    bool a;
-    bool c;
-    bool i;
-    bool show_hidden_files;
-} flags;
+FLAGS flags;
 
 int compare(const FTSENT** one, const FTSENT** two) {
     if (flags.c) {
@@ -25,13 +26,6 @@ int compare(const FTSENT** one, const FTSENT** two) {
     }
 
     return (strcmp((*one)->fts_name, (*two)->fts_name));
-}
-
-void swap(char** x, char** y) {
-    char* temp;
-    temp = *x;
-    *x = *y;
-    *y = temp;
 }
 
 int move_args_and_non_existent_files_to_top(int N, char ** paths) {
@@ -109,6 +103,15 @@ int set_args_to_struct(char *raw_arguments) {
                 case 'i':
                     flags.i = true;
                     break;
+                case 'l':
+                    flags.l = true;
+                    break;
+                case 'd':
+                    flags.d = true;
+                    break;
+                case 'R':
+                    flags.R = !flags.d && true;
+                    break;
                 default:
                     break;
             }
@@ -118,16 +121,10 @@ int set_args_to_struct(char *raw_arguments) {
     return FTS_FLAGS;
 }
 
-void print(struct FLAGS_STRUCT *flags, FTSENT* node) {
-    if (flags->i) {
-        printf("%ld ", node->fts_statp->st_ino);
-    }
-    printf("%s\n", node->fts_name);
-}
-
 int main(int argc, char ** argv) {
     FTS* handle = NULL;
     FTSENT* node = NULL;
+    FTSENT* parent = NULL;
     int FTS_FLAGS = FTS_LOGICAL;
     char* default_path[2] = {".", NULL};
 
@@ -141,14 +138,20 @@ int main(int argc, char ** argv) {
         create_paths(argc, argv, number_of_errors, paths);
         paths[argc - number_of_errors] = NULL;
     }
+    // printf("%s\n", paths[0]);
     char* const* file_paths = (argc >= MIN_NUM_ARGS) && (argv[argc - 1][0] != '-') ? 
                                                             paths : default_path;
     handle = fts_open(file_paths, FTS_FLAGS, &compare);
 
-    while (fts_read(handle) != NULL) {
+    while ((parent = fts_read(handle)) != NULL) {
         node = fts_children(handle, 0);
 
-        while ((node != NULL) && (node->fts_level == 1)) {
+        if (flags.d) {
+            print(&flags, parent);
+            continue;
+        }
+
+        while ((node != NULL) && (node->fts_level == DEFAULT_LEVEL)) {
             size_t length_of_file_name = strlen(node->fts_name);
             bool conditions = !flags.a;
             conditions = conditions && ((strncmp(".", node->fts_name, length_of_file_name) == 0) ||

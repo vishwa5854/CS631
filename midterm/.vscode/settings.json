@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "fts.h": "c",
+        "string.h": "c",
+        "unistd.h": "c",
+        "time.h": "c",
+        "stdlib.h": "c",
+        "stdio.h": "c",
+        "stdbool.h": "c",
+        "pwd.h": "c",
+        "grp.h": "c",
+        "util.h": "c",
+        "flags.h": "c"
+    }
+}
