@@ -48,7 +48,6 @@ int move_args_and_non_existent_files_to_top(int N, char ** paths) {
 
 void create_paths(int N, char ** paths, int start, char** required_paths) {
     int i = start;
-    printf("%d\t%d\t", N, start);
 
     while (i < N) {
         required_paths[i - start] = paths[i];
@@ -88,6 +87,9 @@ int set_args_to_struct(char *raw_arguments) {
                     break;
                 case 'l':
                     flags.l = true;
+                    break;
+                case 'n':
+                    flags.n = true;
                     break;
                 case 'd':
                     flags.d = true;

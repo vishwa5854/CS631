@@ -15,7 +15,7 @@ void print(struct FLAGS_STRUCT *flags, FTSENT* node) {
         printf("%ld ", node->fts_statp->st_ino);
     }
 
-    if (flags->l) {
+    if (flags->l || flags->n) {
         /**
          * 1. file mode
          * 2. number of links
@@ -35,13 +35,21 @@ void print(struct FLAGS_STRUCT *flags, FTSENT* node) {
         
         printf("%ld ",node->fts_statp->st_nlink);
 
-        struct passwd *user_info;
-        user_info = getpwuid(node->fts_statp->st_uid);
-        printf("%s ", user_info->pw_name);
+        if (flags->n) {
+            printf("%d ", node->fts_statp->st_uid);
+        } else {
+            struct passwd *user_info;
+            user_info = getpwuid(node->fts_statp->st_uid);
+            printf("%s ", user_info->pw_name);
+        }
 
-        struct group *group_info;
-        group_info = getgrgid(node->fts_statp->st_gid);
-        printf("%s ", group_info->gr_name);
+        if (flags->n) {
+            printf("%d ", node->fts_statp->st_gid);
+        } else {
+            struct group *group_info;
+            group_info = getgrgid(node->fts_statp->st_gid);
+            printf("%s ", group_info->gr_name);
+        }
 
         printf("%ld ", node->fts_statp->st_size);
         

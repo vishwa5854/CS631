@@ -7,6 +7,7 @@ struct FLAGS_STRUCT {
     bool c;
     bool i;
     bool l;
+    bool n;
     bool d;
     bool R;
     bool show_hidden_files;
