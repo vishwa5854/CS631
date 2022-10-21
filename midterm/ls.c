@@ -72,6 +72,10 @@ int set_args_to_struct(char *raw_arguments) {
         flags.show_hidden_files = true;
     }
 
+    if (raw_arguments[0] != '-') {
+        return FTS_FLAGS;
+    }
+
     for (i = 0; i < n; i++) {
         if (raw_arguments[i] != '-') {
             switch (raw_arguments[i]) {
