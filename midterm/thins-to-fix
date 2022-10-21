@@ -1,3 +1,19 @@
 1. If we pass only one file that don't exist, then it is segfaulting -- done
 2. If we pass the files with names it is not ls'sing them
 3. 
+
+−t Sort by time modified (most recently modified first) before sorting 
+the operands by lexicographical order.
+
+−c : Use time when file status was last changed, instead of time of 
+last modification of the file for sorting ( −t ) or printing ( −l ).
+
+−u Use time of last access, instead of last modification of the file for 
+sorting ( −t ) or printing ( −l ) .
+
+−r Reverse the order of the sort to get reverse lexicographical order
+or the smallest or oldest entries first.
+
+−S Sort by size, largest file first.
+
+−f Output is not sorted.

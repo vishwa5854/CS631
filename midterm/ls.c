@@ -16,27 +16,57 @@
 struct FLAGS_STRUCT flags;
 
 int compare(const FTSENT** one, const FTSENT** two) {
-    /** f is the KING */
+    /** f is the KING, it will override all the sort options irrespective of the order. */
     if (flags.f) {
         return 0;
     }
-    
-    if (flags.c) {
+
+    if (flags.t || flags.l) {
+        if (flags.c) {
+            /** Lexicographical sort in case of equal values of ctime */
+            if ((*one)->fts_statp->st_ctime == (*two)->fts_statp->st_ctime) {
+                return flags.r ? 
+                            strcmp((*two)->fts_name, (*one)->fts_name) :
+                            strcmp((*one)->fts_name, (*two)->fts_name);
+            }
+            return flags.r ? 
+                        ((*two)->fts_statp->st_ctime > (*one)->fts_statp->st_ctime) : 
+                        ((*one)->fts_statp->st_ctime > (*two)->fts_statp->st_ctime);
+        }
+
+        if (flags.u) {
+            if ((*one)->fts_statp->st_atime == (*two)->fts_statp->st_atime) {
+                return flags.r ? 
+                            strcmp((*two)->fts_name, (*one)->fts_name) :
+                            strcmp((*one)->fts_name, (*two)->fts_name);
+            }
+            return flags.r ? 
+                        ((*two)->fts_statp->st_atime > (*one)->fts_statp->st_atime) :
+                        ((*one)->fts_statp->st_atime > (*two)->fts_statp->st_atime);
+        }
+
+        if (flags.t) {
+            if ((*one)->fts_statp->st_mtime == (*two)->fts_statp->st_mtime) {
+                return flags.r ? 
+                            strcmp((*two)->fts_name, (*one)->fts_name) :
+                            strcmp((*one)->fts_name, (*two)->fts_name);
+            }
+            return flags.r ? 
+                        ((*two)->fts_statp->st_mtime > (*one)->fts_statp->st_mtime) : 
+                        ((*one)->fts_statp->st_mtime > (*two)->fts_statp->st_mtime);
+        }
+    }
+
+    if (flags.S) {
+        if ((*one)->fts_statp->st_size == (*two)->fts_statp->st_size) {
+            return flags.r ? 
+                        strcmp((*two)->fts_name, (*one)->fts_name) :
+                        strcmp((*one)->fts_name, (*two)->fts_name);
+        }
         return flags.r ? 
-                    ((*two)->fts_statp->st_ctime > (*one)->fts_statp->st_ctime) : 
-                    ((*one)->fts_statp->st_ctime > (*two)->fts_statp->st_ctime);
+                    ((*two)->fts_statp->st_size > (*one)->fts_statp->st_size) : 
+                    ((*one)->fts_statp->st_size > (*two)->fts_statp->st_size);
     }
-
-    if (flags.t) {
-        return flags.r ? ((*two)->fts_statp->st_mtime > (*one)->fts_statp->st_mtime)
-                       : ((*one)->fts_statp->st_mtime > (*two)->fts_statp->st_mtime);
-    }
-
-    if (flags.u) {
-        return flags.r ? ((*two)->fts_statp->st_atime > (*one)->fts_statp->st_atime)
-                       : ((*one)->fts_statp->st_atime > (*two)->fts_statp->st_atime);
-    }
-
     return flags.r ? strcmp((*two)->fts_name, (*one)->fts_name)
                    : strcmp((*one)->fts_name, (*two)->fts_name);
 }
@@ -98,18 +128,23 @@ int set_args_to_struct(char *raw_arguments) {
                     flags.show_hidden_files = true;
                     break;
                 case 'c':
+                    /** Overriding u */
                     flags.c = true;
-                    flags.t = false;
                     flags.u = false;
                     break;
                 case 't':
-                    flags.c = false;
+                    /** Overriding S */
                     flags.t = true;
-                    flags.u = false;
+                    flags.S = false;
+                    break;
+                case 'S':
+                    /** Overriding t */
+                    flags.S = true;
+                    flags.t = false;
                     break;
                 case 'u':
+                    /** Overriding c */
                     flags.c = false;
-                    flags.t = false;
                     flags.u = true;
                     break;
                 case 'f':
