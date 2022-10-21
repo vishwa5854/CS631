@@ -1,6 +1,7 @@
 #include<sys/stat.h>
 
 #include<fts.h>
+#include"sort.h"
 #include<stdbool.h>
 #include<stdio.h>
 #include<stdlib.h>
@@ -14,62 +15,7 @@
 #define DEFAULT_LEVEL 1
 
 struct FLAGS_STRUCT flags;
-
-int compare(const FTSENT** one, const FTSENT** two) {
-    /** f is the KING, it will override all the sort options irrespective of the order. */
-    if (flags.f) {
-        return 0;
-    }
-
-    if (flags.t || flags.l) {
-        if (flags.c) {
-            /** Lexicographical sort in case of equal values of ctime */
-            if ((*one)->fts_statp->st_ctime == (*two)->fts_statp->st_ctime) {
-                return flags.r ? 
-                            strcmp((*two)->fts_name, (*one)->fts_name) :
-                            strcmp((*one)->fts_name, (*two)->fts_name);
-            }
-            return flags.r ? 
-                        ((*two)->fts_statp->st_ctime > (*one)->fts_statp->st_ctime) : 
-                        ((*one)->fts_statp->st_ctime > (*two)->fts_statp->st_ctime);
-        }
-
-        if (flags.u) {
-            if ((*one)->fts_statp->st_atime == (*two)->fts_statp->st_atime) {
-                return flags.r ? 
-                            strcmp((*two)->fts_name, (*one)->fts_name) :
-                            strcmp((*one)->fts_name, (*two)->fts_name);
-            }
-            return flags.r ? 
-                        ((*two)->fts_statp->st_atime > (*one)->fts_statp->st_atime) :
-                        ((*one)->fts_statp->st_atime > (*two)->fts_statp->st_atime);
-        }
-
-        if (flags.t) {
-            if ((*one)->fts_statp->st_mtime == (*two)->fts_statp->st_mtime) {
-                return flags.r ? 
-                            strcmp((*two)->fts_name, (*one)->fts_name) :
-                            strcmp((*one)->fts_name, (*two)->fts_name);
-            }
-            return flags.r ? 
-                        ((*two)->fts_statp->st_mtime > (*one)->fts_statp->st_mtime) : 
-                        ((*one)->fts_statp->st_mtime > (*two)->fts_statp->st_mtime);
-        }
-    }
-
-    if (flags.S) {
-        if ((*one)->fts_statp->st_size == (*two)->fts_statp->st_size) {
-            return flags.r ? 
-                        strcmp((*two)->fts_name, (*one)->fts_name) :
-                        strcmp((*one)->fts_name, (*two)->fts_name);
-        }
-        return flags.r ? 
-                    ((*two)->fts_statp->st_size > (*one)->fts_statp->st_size) : 
-                    ((*one)->fts_statp->st_size > (*two)->fts_statp->st_size);
-    }
-    return flags.r ? strcmp((*two)->fts_name, (*one)->fts_name)
-                   : strcmp((*one)->fts_name, (*two)->fts_name);
-}
+struct SORT_FLAGS sort_flags;
 
 int move_args_and_non_existent_files_to_top(int N, char ** paths) {
     int i;
@@ -101,6 +47,18 @@ void create_paths(int N, char ** paths, int start, char** required_paths) {
         required_paths[i - start] = paths[i];
         i++;
     }
+}
+
+int set_sort_flags_and_call_sort(const FTSENT** one, const FTSENT** two) {
+    sort_flags.f = flags.f;
+    sort_flags.S = flags.S;
+    sort_flags.t = flags.t;
+    sort_flags.c = flags.c;
+    sort_flags.u = flags.u;
+    sort_flags.r = flags.r;
+    sort_flags.l = flags.l;
+
+    return sort(one, two, &sort_flags);
 }
 
 int set_args_to_struct(char *raw_arguments) {
@@ -203,7 +161,7 @@ int main(int argc, char ** argv) {
     // printf("%s\n", paths[0]);
     char* const* file_paths = (argc >= MIN_NUM_ARGS) && (argv[argc - 1][0] != '-') ? 
                                                             paths : default_path;
-    handle = fts_open(file_paths, FTS_FLAGS, &compare);
+    handle = fts_open(file_paths, FTS_FLAGS, &set_sort_flags_and_call_sort);
 
     while ((parent = fts_read(handle)) != NULL) {
         node = fts_children(handle, 0);
