@@ -5,11 +5,22 @@ struct FLAGS_STRUCT {
     bool A;
     bool a;
     bool c;
+    bool d;
+    bool F;
+    bool f;
+    bool h;
     bool i;
+    bool k;
     bool l;
     bool n;
-    bool d;
+    bool q;
     bool R;
+    bool r;
+    bool S;
+    bool s;
+    bool t;
+    bool u;
+    bool w;
     bool show_hidden_files;
 };
 

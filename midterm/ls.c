@@ -16,11 +16,29 @@
 struct FLAGS_STRUCT flags;
 
 int compare(const FTSENT** one, const FTSENT** two) {
+    /** f is the KING */
+    if (flags.f) {
+        return 0;
+    }
+    
     if (flags.c) {
-        return ((*one)->fts_statp->st_ctime > (*two)->fts_statp->st_ctime);
+        return flags.r ? 
+                    ((*two)->fts_statp->st_ctime > (*one)->fts_statp->st_ctime) : 
+                    ((*one)->fts_statp->st_ctime > (*two)->fts_statp->st_ctime);
     }
 
-    return (strcmp((*one)->fts_name, (*two)->fts_name));
+    if (flags.t) {
+        return flags.r ? ((*two)->fts_statp->st_mtime > (*one)->fts_statp->st_mtime)
+                       : ((*one)->fts_statp->st_mtime > (*two)->fts_statp->st_mtime);
+    }
+
+    if (flags.u) {
+        return flags.r ? ((*two)->fts_statp->st_atime > (*one)->fts_statp->st_atime)
+                       : ((*one)->fts_statp->st_atime > (*two)->fts_statp->st_atime);
+    }
+
+    return flags.r ? strcmp((*two)->fts_name, (*one)->fts_name)
+                   : strcmp((*one)->fts_name, (*two)->fts_name);
 }
 
 int move_args_and_non_existent_files_to_top(int N, char ** paths) {
@@ -81,6 +99,24 @@ int set_args_to_struct(char *raw_arguments) {
                     break;
                 case 'c':
                     flags.c = true;
+                    flags.t = false;
+                    flags.u = false;
+                    break;
+                case 't':
+                    flags.c = false;
+                    flags.t = true;
+                    flags.u = false;
+                    break;
+                case 'u':
+                    flags.c = false;
+                    flags.t = false;
+                    flags.u = true;
+                    break;
+                case 'f':
+                    flags.f = true;
+                    break;
+                case 'r':
+                    flags.r = true;
                     break;
                 case 'i':
                     flags.i = true;
@@ -122,7 +158,7 @@ int main(int argc, char ** argv) {
         report_errors(number_of_errors, argv);
 
         /** There is a case where all the files passed don't exist and it leads to a SEGFAULT. */
-        if (argc == number_of_errors) {
+        if ((argc == number_of_errors) && (argv[argc - 1][0] != '-')) {
             return EXIT_FAILURE;
         }
         create_paths(argc, argv, number_of_errors, paths);

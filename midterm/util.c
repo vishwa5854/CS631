@@ -38,3 +38,14 @@ void report_errors(int N, char** argv) {
         fprintf(stderr, "ls: %s: No such file or directory\n", argv[i]);
     }
 }
+
+char* convert_bytes_to_human_readable(double size/*in bytes*/, char *buf) {
+    int i = 0;
+    const char* units[] = {"B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"};
+    while (size > 1024) {
+        size /= 1024;
+        i++;
+    }
+    sprintf(buf, "%.*f %s", i, size, units[i]);
+    return buf;
+}

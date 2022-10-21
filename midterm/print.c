@@ -51,7 +51,11 @@ void print(struct FLAGS_STRUCT *flags, FTSENT* node) {
             printf("%s ", group_info->gr_name);
         }
 
-        printf("%ld ", node->fts_statp->st_size);
+        if (flags->h) {
+
+        } else {
+            printf("%ld ", node->fts_statp->st_size);
+        }
         
         struct tm *tm;
 

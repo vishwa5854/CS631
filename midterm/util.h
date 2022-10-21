@@ -7,3 +7,5 @@ int max(int a, int b);
 void swap(char** x, char** y);
 
 void report_errors(int N, char** argv);
+
+void convert_bytes_to_human_readable(double size, char* buff);
