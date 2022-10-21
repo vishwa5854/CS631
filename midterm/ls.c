@@ -175,7 +175,7 @@ int main(int argc, char ** argv) {
             continue;
         }
 
-        if (node->fts_level > DEFAULT_LEVEL) {
+        if ((node != NULL) && (node->fts_level > DEFAULT_LEVEL)) {
             continue;
         }
 
