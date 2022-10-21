@@ -117,6 +117,7 @@ int set_args_to_struct(char *raw_arguments) {
     for (i = 0; i < n; i++) {
         if (raw_arguments[i] != '-') {
             switch (raw_arguments[i]) {
+                /** Dot Options*/
                 case 'A':
                     flags.A = true;
                     FTS_FLAGS = FTS_FLAGS | FTS_SEEDOT;
@@ -127,25 +128,23 @@ int set_args_to_struct(char *raw_arguments) {
                     FTS_FLAGS = FTS_FLAGS | FTS_SEEDOT;
                     flags.show_hidden_files = true;
                     break;
+
+                /** Sorting Options */    
                 case 'c':
-                    /** Overriding u */
                     flags.c = true;
                     flags.u = false;
                     break;
+                case 'u':
+                    flags.c = false;
+                    flags.u = true;
+                    break;
                 case 't':
-                    /** Overriding S */
                     flags.t = true;
                     flags.S = false;
                     break;
                 case 'S':
-                    /** Overriding t */
                     flags.S = true;
                     flags.t = false;
-                    break;
-                case 'u':
-                    /** Overriding c */
-                    flags.c = false;
-                    flags.u = true;
                     break;
                 case 'f':
                     flags.a = true;
@@ -154,6 +153,7 @@ int set_args_to_struct(char *raw_arguments) {
                 case 'r':
                     flags.r = true;
                     break;
+                
                 case 'i':
                     flags.i = true;
                     break;
