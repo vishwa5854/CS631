@@ -175,6 +175,10 @@ int main(int argc, char ** argv) {
             continue;
         }
 
+        if (node->fts_level > DEFAULT_LEVEL) {
+            continue;
+        }
+
         while ((node != NULL) && (node->fts_level == DEFAULT_LEVEL)) {
             size_t length_of_file_name = strlen(node->fts_name);
             bool conditions = !flags.a;
