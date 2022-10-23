@@ -121,8 +121,10 @@ int set_args_to_struct(char *raw_arguments) {
                     break;
                 case 'l':
                     flags.l = true;
+                    flags.n = false;
                     break;
                 case 'n':
+                    flags.l = false;
                     flags.n = true;
                     break;
                 case 'd':
@@ -143,8 +145,7 @@ int set_args_to_struct(char *raw_arguments) {
 int main(int argc, char ** argv) {
     FTS* handle = NULL;
     FTSENT* node = NULL;
-    FTSENT* parent = NULL;
-    int FTS_FLAGS = FTS_LOGICAL;
+    int FTS_FLAGS = FTS_PHYSICAL;
     char* default_path[2] = {".", NULL};
 
     /** First of all let's check for the existence of files or dirs passed in argv */
@@ -167,31 +168,37 @@ int main(int argc, char ** argv) {
                                                             paths : default_path;
     handle = fts_open(file_paths, FTS_FLAGS, &set_sort_flags_and_call_sort);
 
-    while ((parent = fts_read(handle)) != NULL) {
-        node = fts_children(handle, 0);
-
+    while ((node = fts_read(handle)) != NULL) {
         if (flags.d) {
-            print(&flags, parent);
-            continue;
-        }
-
-        if ((node != NULL) && (node->fts_level > DEFAULT_LEVEL)) {
-            continue;
-        }
-
-        while ((node != NULL) && (node->fts_level == DEFAULT_LEVEL)) {
-            size_t length_of_file_name = strlen(node->fts_name);
-            bool conditions = !flags.a;
-            conditions = conditions && ((strncmp(".", node->fts_name, length_of_file_name) == 0) ||
-                                        (strncmp("..", node->fts_name, length_of_file_name) == 0));
-            conditions = conditions || (!flags.show_hidden_files &&
-                                        (node->fts_name[0] == '.'));
-
-            if (conditions) {
-                node = node->fts_link;
-                continue;
-            }
+            printf("Length of the name : %ld\n", strlen(node->fts_name));
             print(&flags, node);
+            break;
+        }
+        bool pre_conditions = (node != NULL) && (node->fts_level > DEFAULT_LEVEL);
+        pre_conditions = pre_conditions || (node->fts_info == FTS_DP);
+        pre_conditions = pre_conditions || (strlen(node->fts_name) && (strncmp("/", node->fts_name, 1) == 0));
+
+        if (pre_conditions) {
+            node = node->fts_link;
+            continue;
+        }
+        size_t length_of_file_name = strlen(node->fts_name);
+        bool conditions = !flags.a;
+        conditions = conditions && ((strncmp(".", node->fts_name, length_of_file_name) == 0) ||
+                                    (strncmp("..", node->fts_name, length_of_file_name) == 0));
+        conditions = conditions || (!flags.show_hidden_files &&
+                                    (node->fts_name[0] == '.'));
+
+        if (conditions) {
+            node = node->fts_link;
+            continue;
+        }
+        
+        print(&flags, node);
+
+        if (!flags.R && (node->fts_info == FTS_D)) {
+            (void)fts_set(handle, node, FTS_SKIP);
+        } else {
             node = node->fts_link;
         }
     }
