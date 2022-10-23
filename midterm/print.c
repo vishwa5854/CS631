@@ -1,6 +1,8 @@
+#include<bsd/stdlib.h>
 #include<bsd/string.h>
-#include <ctype.h>
+#include<ctype.h>
 #include<grp.h>
+#include<math.h>
 #include"print.h"
 #include<pwd.h>
 #include<stdio.h>
@@ -10,10 +12,29 @@
 #include"util.h"
 
 #define STRMODE_LENGTH 11
+#define DEFAULT_BLOCK_SIZE 512
+
+extern char **environ;
 
 void print(struct FLAGS_STRUCT *flags, FTSENT* node) {
     if (flags->i) {
         printf("%ld ", node->fts_statp->st_ino);
+    }
+
+    if (flags->s) {
+        int header_length;
+        long block_size;
+        (void)getbsize(&header_length, &block_size);
+        float block_size_factor = 0;
+        float effective_number_of_blocks;
+
+        if (block_size != DEFAULT_BLOCK_SIZE) {
+            block_size_factor = block_size / DEFAULT_BLOCK_SIZE;
+            effective_number_of_blocks = node->fts_statp->st_blocks / block_size_factor;
+            printf("%d ", (int)ceil(effective_number_of_blocks));
+        } else {
+            printf("%ld ", node->fts_statp->st_blocks);
+        }
     }
 
     if (flags->l || flags->n) {
