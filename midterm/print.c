@@ -90,6 +90,8 @@ void print(struct FLAGS_STRUCT *flags, FTSENT* node) {
             printf("%s=\n", node->fts_name);
         } else if (S_ISFIFO(node->fts_statp->st_mode)) {
             printf("%s|\n", node->fts_name);
+        } else {
+            printf("%s\n", node->fts_name);
         }
     } else {
         printf("%s\n", node->fts_name);
