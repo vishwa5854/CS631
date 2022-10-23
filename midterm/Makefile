@@ -5,11 +5,11 @@ CFLAGS=	-Wall -Werror -Wextra -g
 all: ${PROG}
 
 depend:
-	mkdep -- ${CFLAGS} -lbsd *.c
+	mkdep -- ${CFLAGS} *.c
 
 ${PROG}: ${OBJS}
 	@echo $@ depends on $?
-	${CC} ${OBJS} -o ${PROG} ${LDFLAGS}
+	${CC} -lm ${OBJS} -o ${PROG} ${LDFLAGS}
 
 clean:
 	rm -f ${PROG} ${OBJS}
