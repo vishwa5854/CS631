@@ -34,7 +34,7 @@ void print(struct FLAGS_STRUCT *flags, FTSENT* node) {
         strmode(node->fts_statp->st_mode, mode_string);
         printf("%s ", mode_string);
         
-        printf("%ld ",node->fts_statp->st_nlink);
+        printf("%d ",node->fts_statp->st_nlink);
 
         if (flags->n) {
             printf("%d ", node->fts_statp->st_uid);
@@ -81,15 +81,15 @@ void print(struct FLAGS_STRUCT *flags, FTSENT* node) {
     char* file_name = node->fts_name;
 
     if (flags->q) {
-        char* temp = "";
+        char temp[node->fts_namelen];
         char* replacement = "?";
         int j = 0;
 
         for (; j < node->fts_namelen; j++) {
             if (isprint(file_name[j]) != 0) {
-                (void)strncpy(temp, &file_name[j], 1);
+                (void)strncat(temp, &file_name[j], 1);
             } else {
-                (void)strncpy(temp, replacement, 1);
+                (void)strncat(temp, replacement, 1);
             }
         }
         file_name = temp;
