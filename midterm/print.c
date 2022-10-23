@@ -1,4 +1,5 @@
 #include<bsd/string.h>
+#include <ctype.h>
 #include<grp.h>
 #include"print.h"
 #include<pwd.h>
@@ -77,10 +78,26 @@ void print(struct FLAGS_STRUCT *flags, FTSENT* node) {
         printf("%d ", tm->tm_mday);
         printf("%02d:%02d ", tm->tm_hour, tm->tm_min);
     }
+    char* file_name = node->fts_name;
+
+    if (flags->q) {
+        char* temp = "";
+        char* replacement = "?";
+        int j = 0;
+
+        for (; j < node->fts_namelen; j++) {
+            if (isprint(file_name[j]) != 0) {
+                (void)strncpy(temp, &file_name[j], 1);
+            } else {
+                (void)strncpy(temp, replacement, 1);
+            }
+        }
+        file_name = temp;
+    }
 
     if (flags->d) {
         if (node->fts_info == FTS_D) {
-            printf("%s\n", node->fts_name);
+            printf("%s\n", file_name);
         }
 
         return;
@@ -89,21 +106,21 @@ void print(struct FLAGS_STRUCT *flags, FTSENT* node) {
     /** F arg prep */
     if (flags->F) {
         if (S_ISDIR(node->fts_statp->st_mode)) {
-            printf("%s/\n", node->fts_name);
+            printf("%s/\n", file_name);
         } else if (S_IEXEC & node->fts_statp->st_mode) {
-            printf("%s*\n", node->fts_name);
+            printf("%s*\n", file_name);
         } else if (S_ISLNK(node->fts_statp->st_mode)) {
-            printf("%s@\n", node->fts_name);
+            printf("%s@\n", file_name);
         } else if (S_IFCHR & node->fts_statp->st_mode) {
-            printf("%s%c\n", node->fts_name, '%');
+            printf("%s%c\n", file_name, '%');
         } else if (S_ISSOCK(node->fts_statp->st_mode)) {
-            printf("%s=\n", node->fts_name);
+            printf("%s=\n", file_name);
         } else if (S_ISFIFO(node->fts_statp->st_mode)) {
-            printf("%s|\n", node->fts_name);
+            printf("%s|\n", file_name);
         } else {
-            printf("%s\n", node->fts_name);
+            printf("%s\n", file_name);
         }
     } else {
-        printf("%s\n", node->fts_name);
+        printf("%s\n", file_name);
     }
 }
