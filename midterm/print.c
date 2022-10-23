@@ -75,5 +75,23 @@ void print(struct FLAGS_STRUCT *flags, FTSENT* node) {
 
         return;
     }
-    printf("%s\n", node->fts_name);
+
+    /** F arg prep */
+    if (flags->F) {
+        if (S_ISDIR(node->fts_statp->st_mode)) {
+            printf("%s/\n", node->fts_name);
+        } else if (S_IEXEC & node->fts_statp->st_mode) {
+            printf("%s*\n", node->fts_name);
+        } else if (S_ISLNK(node->fts_statp->st_mode)) {
+            printf("%s@\n", node->fts_name);
+        } else if (S_IFCHR & node->fts_statp->st_mode) {
+            printf("%s%c\n", node->fts_name, '%');
+        } else if (S_ISSOCK(node->fts_statp->st_mode)) {
+            printf("%s=\n", node->fts_name);
+        } else if (S_ISFIFO(node->fts_statp->st_mode)) {
+            printf("%s|\n", node->fts_name);
+        }
+    } else {
+        printf("%s\n", node->fts_name);
+    }
 }
