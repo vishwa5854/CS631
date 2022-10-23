@@ -40,7 +40,12 @@ void print(struct FLAGS_STRUCT *flags, FTSENT* node) {
         } else {
             struct passwd *user_info;
             user_info = getpwuid(node->fts_statp->st_uid);
-            printf("%s ", user_info->pw_name);
+
+            if (user_info != NULL) {
+                printf("%s ", user_info->pw_name);
+            } else {
+                printf("%d ", node->fts_statp->st_uid);
+            }
         }
 
         if (flags->n) {
@@ -48,7 +53,12 @@ void print(struct FLAGS_STRUCT *flags, FTSENT* node) {
         } else {
             struct group *group_info;
             group_info = getgrgid(node->fts_statp->st_gid);
-            printf("%s ", group_info->gr_name);
+
+            if (group_info != NULL) {
+                printf("%s ", group_info->gr_name);
+            } else {
+                printf("%d ", node->fts_statp->st_gid);
+            }
         }
 
         if (flags->h) {
