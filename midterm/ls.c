@@ -127,15 +127,19 @@ int set_args_to_struct(char *raw_arguments) {
 }
 
 void ls(FTS* handle, FTSENT* node, int FTS_FLAGS, char* const* file_paths) {
+    // int return_value = EXIT_SUCCESS;
     handle = fts_open(file_paths, FTS_FLAGS, &set_sort_flags_and_call_sort);
     PF* print_buffer_head = NULL;
     PF* print_buffer_current = (PF*)malloc(sizeof(PF));
     MP* max_map = (MP*)malloc(sizeof(MP));
     max_map = init_max_map(max_map);
+    int ideal_number_of_entries = 0;
+    int j = 0;
 
     while ((node = fts_read(handle)) != NULL) {
         if (flags.d) {
             print(&flags, node, print_buffer_current, max_map);
+            ideal_number_of_entries++;
             break;
         }
         bool pre_conditions = (node != NULL) && (node->fts_level > DEFAULT_LEVEL);
@@ -159,6 +163,7 @@ void ls(FTS* handle, FTSENT* node, int FTS_FLAGS, char* const* file_paths) {
         }
 
         print(&flags, node, print_buffer_current, max_map);
+        ideal_number_of_entries++;
 
         if (!flags.R && (node->fts_info == FTS_D)) {
             (void)fts_set(handle, node, FTS_SKIP);
@@ -172,10 +177,11 @@ void ls(FTS* handle, FTSENT* node, int FTS_FLAGS, char* const* file_paths) {
         print_buffer_current = print_buffer_current->next;
     }
     print_buffer_current = NULL;
-
-    while ((print_buffer_head != NULL) && (print_buffer_head->next != NULL)) {
+    
+    while ((print_buffer_head != NULL) && (print_buffer_head->next != NULL) && (j < ideal_number_of_entries)) {
         flush(print_buffer_head, max_map, &flags);
         print_buffer_head = print_buffer_head->next;
+        j++;
     }
     (void)free(print_buffer_head);
     (void)fts_close(handle);
@@ -206,6 +212,11 @@ int main(int argc, char ** argv) {
     /** Iteratively call ls for each and every option once the errors are reported :) */
     int iteration = 0;
     int number_of_valid_files = argc - number_of_errors + 1;
+    
+    if (number_of_valid_files <= 1) {
+        char* const* file_paths = default_path;
+        ls(handle, node, FTS_FLAGS, file_paths);
+    }
 
     for (; iteration < number_of_valid_files - 1; iteration++) {
         char* effective_paths[2] = {paths[iteration], NULL}; 

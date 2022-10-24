@@ -80,7 +80,7 @@ void recurse(FTSENT* one, FTS* handle) {
 }
 
 int main(int argc, char* const argv[]) {
-    FTSENT* parent = NULL;
+    FTSENT* node = NULL;
     // FTSENT* child = NULL;
     struct FLAGS_STRUCT flags;
     flags.R = false;
@@ -90,39 +90,39 @@ int main(int argc, char* const argv[]) {
 
     char* const* required = paths;
 
-    FTS* handle = fts_open(required, FTS_LOGICAL, 0);
+    FTS* handle = fts_open(required, FTS_LOGICAL | FTS_SEEDOT, 0);
     int return_value = EXIT_SUCCESS;
 
     (void)printf("%d\n", argc);
-    parent = fts_read(handle);
+    node = fts_read(handle);
 
     // If the given file is not a directory.
-    if (parent->fts_info != FTS_D) {
-        (void)printf("%s\n", parent->fts_name);
+    if (node->fts_info != FTS_D) {
+        (void)printf("%s\n", node->fts_name);
     }
 
     FTSENT* child = NULL;
     if (flags.R) {
         (void)printf("Going into R\n");
-        recurse(parent, handle);
+        recurse(node, handle);
         return return_value;
     }
-    while ((parent = fts_read(handle)) != NULL) {
-        int parent_err_conditions = (parent->fts_info == FTS_ERR) ||
-                                    (parent->fts_info == FTS_DNR);
+    while ((node = fts_read(handle)) != NULL) {
+        int parent_err_conditions = (node->fts_info == FTS_ERR) ||
+                                    (node->fts_info == FTS_DNR);
         if (parent_err_conditions) {
             /** There is no point in pursuing this parent. */
-            fprintf(stderr, "ls: Error while traversing %s.\n", strerror(parent->fts_errno));
+            fprintf(stderr, "ls: Error while traversing %s.\n", strerror(node->fts_errno));
             return_value = EXIT_FAILURE;
             continue;
         }
 
-        if (parent->fts_info != FTS_DP)
-            (void)printf("%s\n", parent->fts_name);
+        if (node->fts_info != FTS_DP)
+            (void)printf("%s\n", node->fts_name);
 
-        if (parent->fts_info == FTS_D) {
+        if (node->fts_info == FTS_D) {
             if (!flags.R) {
-                (void)fts_set(handle, parent, FTS_SKIP);
+                (void)fts_set(handle, node, FTS_SKIP);
             }
         }
     }

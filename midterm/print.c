@@ -241,6 +241,10 @@ void flush(PF* print_buffer, MP* max_map, struct FLAGS_STRUCT* flags) {
         (void)printf("%02d:%02d ", print_buffer->tm_hour, print_buffer->tm_min);
     }
 
+    if (strlen(print_buffer->file_name) == 0) {
+        return;
+    }
+
     if (flags->d) {
         if (max_map->file_name > -1) {
             (void)printf("%s\n", print_buffer->file_name);
