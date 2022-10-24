@@ -197,6 +197,11 @@ void ls(FTS* handle, FTSENT* node, int FTS_FLAGS, char* const* file_paths, MP* m
     int ideal_number_of_entries = 0;
     int j = 0;
 
+    if (flags.R) {
+        recurse(node, handle);
+        return;
+    }
+
     while ((node = fts_read(handle)) != NULL) {
         if (flags.d) {
             print(&flags, node, print_buffer_current, max_map);
