@@ -17,38 +17,6 @@
 struct FLAGS_STRUCT flags;
 struct SORT_FLAGS sort_flags;
 
-int move_args_and_non_existent_files_to_top(int N, char ** paths) {
-    int i;
-    int slot_available = 1;
-
-    /** These are the arguments passed to our ls. */
-    if ((N > 1) && (paths[slot_available][0] == '-')) {
-        slot_available++;
-    }
-
-    for (i = slot_available; i < N; i ++) {
-        if (access(paths[i], F_OK) != 0) {
-            swap(&paths[slot_available++], &paths[i]);
-        }
-    }
-
-    /** Here the slot_available would represent the number of
-     * non-existent files + arguments to ls (-lah)
-     * NOTE: It is not slot_available - 1 but it is slot_available
-     * since argv contains the name of the executable as entry
-     */
-    return slot_available;
-}
-
-void create_paths(int N, char ** paths, int start, char** required_paths) {
-    int i = start;
-
-    while (i < N) {
-        required_paths[i - start] = paths[i];
-        i++;
-    }
-}
-
 int set_sort_flags_and_call_sort(const FTSENT** one, const FTSENT** two) {
     sort_flags.f = flags.f;
     sort_flags.S = flags.S;
@@ -158,36 +126,16 @@ int set_args_to_struct(char *raw_arguments) {
     return FTS_FLAGS;
 }
 
-int main(int argc, char ** argv) {
-    FTS* handle = NULL;
-    FTSENT* node = NULL;
-    int FTS_FLAGS = FTS_PHYSICAL;
-    char* default_path[2] = {".", NULL};
-
-    /** First of all let's check for the existence of files or dirs passed in argv */
-    int number_of_errors = move_args_and_non_existent_files_to_top(argc, argv);
-    char* paths[argc - number_of_errors + 1];
-
-    if (argc >= MIN_NUM_ARGS) {
-        FTS_FLAGS = set_args_to_struct(argv[1]);
-        report_errors(number_of_errors, argv);
-
-        /** There is a case where all the files passed don't exist and it leads to a SEGFAULT. */
-        if ((argc == number_of_errors) && (argv[argc - 1][0] != '-')) {
-            return EXIT_FAILURE;
-        }
-        create_paths(argc, argv, number_of_errors, paths);
-        paths[argc - number_of_errors] = NULL;
-    }
-    // printf("%s\n", paths[0]);
-    char* const* file_paths = (argc >= MIN_NUM_ARGS) && (argv[argc - 1][0] != '-') ? 
-                                                            paths : default_path;
+void ls(FTS* handle, FTSENT* node, int FTS_FLAGS, char* const* file_paths) {
     handle = fts_open(file_paths, FTS_FLAGS, &set_sort_flags_and_call_sort);
+    PF* print_buffer_head = NULL;
+    PF* print_buffer_current = NULL;
+    MP* max_map = (MP*)malloc(sizeof(MP));
+    max_map = init_max_map(max_map);
 
     while ((node = fts_read(handle)) != NULL) {
         if (flags.d) {
-            printf("Length of the name : %ld\n", strlen(node->fts_name));
-            print(&flags, node);
+            print(&flags, node, print_buffer_current, max_map);
             break;
         }
         bool pre_conditions = (node != NULL) && (node->fts_level > DEFAULT_LEVEL);
@@ -209,15 +157,71 @@ int main(int argc, char ** argv) {
             node = node->fts_link;
             continue;
         }
-        
-        print(&flags, node);
+
+        print(&flags, node, print_buffer_current, max_map);
 
         if (!flags.R && (node->fts_info == FTS_D)) {
             (void)fts_set(handle, node, FTS_SKIP);
         } else {
-            node = node->fts_link;
+            // node = node->fts_link;
         }
+
+        /** Add a new entry for the upcoming iteration. */
+        if (print_buffer_head == NULL) {
+            print_buffer_head = print_buffer_current;
+        }
+        print_buffer_current->next = (PF*)malloc(sizeof(PF));
+        print_buffer_current = print_buffer_current->next;
     }
+    flush(print_buffer_head, max_map, &flags);
+    (void)free(print_buffer_head);
     (void)fts_close(handle);
+}
+
+int main(int argc, char ** argv) {
+    printf("Inside1\n");
+
+    FTS* handle = NULL;
+    FTSENT* node = NULL;
+    int FTS_FLAGS = FTS_PHYSICAL;
+    char* default_path[2] = {".", NULL};
+
+    /** First of all let's check for the existence of files or dirs passed in argv */
+    int number_of_errors = move_args_and_non_existent_files_to_top(argc, argv);
+    char* paths[argc - number_of_errors + 1];
+
+    if (argc >= MIN_NUM_ARGS) {
+        printf("Inside12\n");
+        FTS_FLAGS = set_args_to_struct(argv[1]);
+        report_errors(number_of_errors, argv);
+
+        /** There is a case where all the files passed don't exist and it leads to a SEGFAULT. */
+        if ((argc == number_of_errors) && (argv[argc - 1][0] != '-')) {
+            printf("Inside13\n");
+            
+            return EXIT_FAILURE;
+        }
+        create_paths(argc, argv, number_of_errors, paths);
+        paths[argc - number_of_errors] = NULL;
+    }
+
+    /** Iteratively call ls for each and every option once the errors are reported :) */
+    int iteration = 0;
+    int number_of_valid_files = argc - number_of_errors + 1;
+        printf("Inside13\n");
+    printf("%d", number_of_valid_files);
+    if (number_of_valid_files == 0) {
+        printf("Inside");
+        char* const* file_paths = default_path;
+        ls(handle, node, FTS_FLAGS, file_paths);
+    }
+
+    for (; iteration < number_of_valid_files; iteration++) {
+        printf("%d\n", iteration);
+        char* effective_paths[2] = {paths[iteration], NULL}; 
+        char* const* file_paths = (argc >= MIN_NUM_ARGS) && (argv[argc - 1][0] != '-') ?
+                                                                effective_paths : default_path;
+        ls(handle, node, FTS_FLAGS, file_paths);
+    }
     return EXIT_SUCCESS;
 }

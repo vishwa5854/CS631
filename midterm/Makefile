@@ -9,7 +9,7 @@ depend:
 
 ${PROG}: ${OBJS}
 	@echo $@ depends on $?
-	${CC} -lm ${OBJS} -o ${PROG} ${LDFLAGS}
+	${CC} -lm -lbsd ${OBJS} -o ${PROG} ${LDFLAGS}
 
 clean:
 	rm -f ${PROG} ${OBJS}
