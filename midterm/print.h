@@ -1,7 +1,7 @@
 #include<fts.h>
 #include<stdbool.h>
 #include<sys/param.h>
-#include<syslimits.h>
+#include<sys/limits.h>
 
 #define MAX_BYTES_SIZE 10
 #define STRMODE_LENGTH 11
@@ -10,6 +10,10 @@
 /** I couldn't find the system limits in time, so declaring constants instead. */
 #define MAX_FILE_NAME_LENGTH 255
 #define MAX_MONTH_NAME_LENGTH 3
+
+#ifndef
+#define LOGIN_NAME_MAX 256
+#endif
 
 struct FLAGS_STRUCT {
     bool A;

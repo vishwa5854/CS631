@@ -3,7 +3,7 @@
 #include"sort.h"
 #include<string.h>
 
-int sort(const FTSENT** one, const FTSENT** two, struct SORT_FLAGS *sort_flags) {
+int sort(const FTSENT** one, const FTSENT** two, struct SORT_FLAGS* sort_flags) {
     /** f is the KING, it will override all the sort options irrespective of the order. */
     if (sort_flags->f) {
         return 0;

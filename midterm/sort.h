@@ -11,4 +11,4 @@ struct SORT_FLAGS {
     bool l;
 };
 
-int sort(const FTSENT** one, const FTSENT** two, struct SORT_FLAGS *sort_flags);
+int sort(const FTSENT** one, const FTSENT** two, struct SORT_FLAGS* sort_flags);
