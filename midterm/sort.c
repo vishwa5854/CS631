@@ -18,8 +18,8 @@ int sort(const FTSENT** one, const FTSENT** two, struct SORT_FLAGS *sort_flags) 
                             strcmp((*one)->fts_name, (*two)->fts_name);
             }
             return sort_flags->r ? 
-                        ((*two)->fts_statp->st_ctime < (*one)->fts_statp->st_ctime) : 
-                        ((*one)->fts_statp->st_ctime < (*two)->fts_statp->st_ctime);
+                        (((*two)->fts_statp->st_ctime < (*one)->fts_statp->st_ctime) ? 1 : -1) : 
+                        (((*one)->fts_statp->st_ctime < (*two)->fts_statp->st_ctime) ? 1 : -1);
         }
 
         if (sort_flags->u) {
@@ -29,8 +29,8 @@ int sort(const FTSENT** one, const FTSENT** two, struct SORT_FLAGS *sort_flags) 
                             strcmp((*one)->fts_name, (*two)->fts_name);
             }
             return sort_flags->r ? 
-                        ((*two)->fts_statp->st_atime < (*one)->fts_statp->st_atime) :
-                        ((*one)->fts_statp->st_atime < (*two)->fts_statp->st_atime);
+                        (((*two)->fts_statp->st_atime < (*one)->fts_statp->st_atime) ? 1 : -1) :
+                        (((*one)->fts_statp->st_atime < (*two)->fts_statp->st_atime) ? 1 : -1);
         }
 
         if (sort_flags->t) {
@@ -40,8 +40,8 @@ int sort(const FTSENT** one, const FTSENT** two, struct SORT_FLAGS *sort_flags) 
                             strcmp((*one)->fts_name, (*two)->fts_name);
             }
             return sort_flags->r ? 
-                        ((*two)->fts_statp->st_mtime < (*one)->fts_statp->st_mtime) : 
-                        ((*one)->fts_statp->st_mtime < (*two)->fts_statp->st_mtime);
+                        (((*two)->fts_statp->st_mtime < (*one)->fts_statp->st_mtime) ? 1 : -1) : 
+                        (((*one)->fts_statp->st_mtime < (*two)->fts_statp->st_mtime) ? 1 : -1);
         }
     }
 
@@ -52,8 +52,8 @@ int sort(const FTSENT** one, const FTSENT** two, struct SORT_FLAGS *sort_flags) 
                         strcmp((*one)->fts_name, (*two)->fts_name);
         }
         return sort_flags->r ? 
-                    ((*two)->fts_statp->st_size < (*one)->fts_statp->st_size) : 
-                    ((*one)->fts_statp->st_size < (*two)->fts_statp->st_size);
+                    (((*two)->fts_statp->st_size < (*one)->fts_statp->st_size) ? 1 : -1) : 
+                    (((*one)->fts_statp->st_size < (*two)->fts_statp->st_size) ? 1 : -1);
     }
     return sort_flags->r ? strcmp((*two)->fts_name, (*one)->fts_name)
                    : strcmp((*one)->fts_name, (*two)->fts_name);

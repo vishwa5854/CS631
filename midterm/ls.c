@@ -114,6 +114,9 @@ int set_args_to_struct(char *raw_arguments) {
                 case 'h':
                     flags.h = true;
                     break;
+                case 'k':
+                    flags.k = true;
+                    break;
                 case 'R':
                     flags.R = !flags.d && true;
                     break;
@@ -126,13 +129,12 @@ int set_args_to_struct(char *raw_arguments) {
     return FTS_FLAGS;
 }
 
-void ls(FTS* handle, FTSENT* node, int FTS_FLAGS, char* const* file_paths) {
+void ls(FTS* handle, FTSENT* node, int FTS_FLAGS, char* const* file_paths, MP* max_map) {
     // int return_value = EXIT_SUCCESS;
     handle = fts_open(file_paths, FTS_FLAGS, &set_sort_flags_and_call_sort);
     PF* print_buffer_head = NULL;
     PF* print_buffer_current = (PF*)malloc(sizeof(PF));
-    MP* max_map = (MP*)malloc(sizeof(MP));
-    max_map = init_max_map(max_map);
+    
     int ideal_number_of_entries = 0;
     int j = 0;
 
@@ -192,6 +194,8 @@ int main(int argc, char ** argv) {
     FTSENT* node = NULL;
     int FTS_FLAGS = FTS_PHYSICAL;
     char* default_path[2] = {".", NULL};
+    MP* max_map = (MP*)malloc(sizeof(MP));
+    max_map = init_max_map(max_map);
 
     /** First of all let's check for the existence of files or dirs passed in argv */
     int number_of_errors = move_args_and_non_existent_files_to_top(argc, argv);
@@ -215,14 +219,14 @@ int main(int argc, char ** argv) {
     
     if (number_of_valid_files <= 1) {
         char* const* file_paths = default_path;
-        ls(handle, node, FTS_FLAGS, file_paths);
+        ls(handle, node, FTS_FLAGS, file_paths, max_map);
     }
 
     for (; iteration < number_of_valid_files - 1; iteration++) {
         char* effective_paths[2] = {paths[iteration], NULL}; 
         char* const* file_paths = (argc >= MIN_NUM_ARGS) && (argv[argc - 1][0] != '-') ?
                                                                 effective_paths : default_path;
-        ls(handle, node, FTS_FLAGS, file_paths);
+        ls(handle, node, FTS_FLAGS, file_paths, max_map);
     }
     return EXIT_SUCCESS;
 }
