@@ -13,10 +13,13 @@
 
 #define STRMODE_LENGTH 11
 #define DEFAULT_BLOCK_SIZE 512
+#define MAX_BYTES_SIZE 10
 
 extern char **environ;
 
 void print(struct FLAGS_STRUCT *flags, FTSENT* node) {
+    char bytes_in_human_readable[MAX_BYTES_SIZE];
+
     if (flags->i) {
         printf("%ld ", node->fts_statp->st_ino);
     }
@@ -28,34 +31,26 @@ void print(struct FLAGS_STRUCT *flags, FTSENT* node) {
         float block_size_factor = 0;
         float effective_number_of_blocks;
 
-        if (block_size != DEFAULT_BLOCK_SIZE) {
-            block_size_factor = block_size / DEFAULT_BLOCK_SIZE;
-            effective_number_of_blocks = node->fts_statp->st_blocks / block_size_factor;
-            printf("%d ", (int)ceil(effective_number_of_blocks));
+        if (flags->h) {
+            convert_bytes_to_human_readable(node->fts_statp->st_size, bytes_in_human_readable);
+            printf("%s ", bytes_in_human_readable);
         } else {
-            printf("%ld ", node->fts_statp->st_blocks);
+            if (block_size != DEFAULT_BLOCK_SIZE) {
+                block_size_factor = block_size / DEFAULT_BLOCK_SIZE;
+                effective_number_of_blocks = node->fts_statp->st_blocks / block_size_factor;
+                printf("%f ", ceil(effective_number_of_blocks));
+            } else {
+                printf("%ld ", node->fts_statp->st_blocks);
+            }
         }
     }
 
     if (flags->l || flags->n) {
-        /**
-         * 1. file mode
-         * 2. number of links
-         * 3. owner name
-         * 4. group name
-         * 5. number of bytes in file
-         * 6. abbreviated month file was last modified
-         * 7. day-of-month file was last modified
-         * 8. hour and minute file was last modified
-         * 9. pathname
-        */
-
-        // uncomment this on netbsd -- TODO while submission get rid of all linux hacks.
         char mode_string[STRMODE_LENGTH];
         strmode(node->fts_statp->st_mode, mode_string);
         printf("%s ", mode_string);
         
-        printf("%d ",node->fts_statp->st_nlink);
+        printf("%ld ",node->fts_statp->st_nlink);
 
         if (flags->n) {
             printf("%d ", node->fts_statp->st_uid);
@@ -84,7 +79,8 @@ void print(struct FLAGS_STRUCT *flags, FTSENT* node) {
         }
 
         if (flags->h) {
-
+            convert_bytes_to_human_readable(node->fts_statp->st_size, bytes_in_human_readable);
+            printf("%s ", bytes_in_human_readable);
         } else {
             printf("%ld ", node->fts_statp->st_size);
         }

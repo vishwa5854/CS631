@@ -143,6 +143,9 @@ int set_args_to_struct(char *raw_arguments) {
                 case 's':
                     flags.s = true;
                     break;
+                case 'h':
+                    flags.h = true;
+                    break;
                 case 'R':
                     flags.R = !flags.d && true;
                     break;

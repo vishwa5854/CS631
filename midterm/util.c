@@ -39,13 +39,18 @@ void report_errors(int N, char** argv) {
     }
 }
 
-char* convert_bytes_to_human_readable(double size/*in bytes*/, char *buf) {
+void convert_bytes_to_human_readable(double size, char *buf) {
     int i = 0;
-    const char* units[] = {"B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"};
+    const char* units[] = {"B", "K", "M", "G", "T", "P", "E", "Z", "Y"};
+    int scope_of_this_function = 8;
+
     while (size > 1024) {
         size /= 1024;
         i++;
     }
-    sprintf(buf, "%.*f %s", i, size, units[i]);
-    return buf;
+
+    if (i <= scope_of_this_function) {
+        sprintf(buf, "%.*f%s", i, size, units[i]);
+    }
+    return;
 }
