@@ -25,22 +25,21 @@ error messages?
 YES
 
 Did I use only meaningful and necessary comments?
-  - Your comments should explain the 'why', not the
-    'what'.
+YES
 
 Does my program only generate meaningful output?
-Debugging information should be removed.
-
+YES
 
 Does my program return zero on success, non-zero otherwise?
-
+Mostly but not in all cases, ran out of time for handling that
 
 Did I make sure that my .h files only include function
 forward declarations, macros, etc., no function
 implementations or other code?
-
+YES
 
 Did I check that I have avoided code duplication?
 Writing the same or very similar code multiple times
 is a sign that my program could benefit from being
 restructured.
+Very minimal duplications not more than 3 lines
