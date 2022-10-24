@@ -13,7 +13,7 @@
 #define MAX_FILE_NAME_LENGTH 255
 #define MAX_MONTH_NAME_LENGTH 3
 
-#ifndef
+#ifndef LOGIN_NAME_MAX
 #define LOGIN_NAME_MAX 256
 #endif
 
