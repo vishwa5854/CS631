@@ -147,7 +147,10 @@ void print(struct FLAGS_STRUCT* flags, FTSENT* node, PF* print_buffer, MP* max_m
         file_name = temp;
     }
 
-    print_buffer->file_name = file_name;
+    // print_buffer->file_name = file_name;
+    strncpy(print_buffer->file_name, file_name, strlen(file_name));
+    print_buffer->file_name[strlen(file_name)] = '\0';
+    // printf("Loaded file name : %s\n", print_buffer->file_name);
     max_map->file_name = just_max(max_map->file_name, strlen(file_name));
 
     if (flags->d) {
@@ -212,22 +215,22 @@ void print_empty_spaces(long int how_many) {
 }
 
 void flush(PF* print_buffer, MP* max_map, struct FLAGS_STRUCT* flags) {    
-    printf("max_map->st_ino : %ld", max_map->st_ino);
-    printf("max_map->bytes_in_human_readable : %ld", max_map->bytes_in_human_readable);
-    printf("max_map->effective_number_of_blocks : %ld", max_map->effective_number_of_blocks);
-    printf("max_map->st_blocks : %ld", max_map->st_blocks);
-    printf("max_map->mode_string : %ld", max_map->mode_string);
-    printf("max_map->st_nlink : %ld", max_map->st_nlink);
-    printf("max_map->st_uid : %ld", max_map->st_uid);
-    printf("max_map->pw_name : %ld", max_map->pw_name);
-    printf("max_map->stat : %ld", max_map->stat);
-    printf("max_map->gr_name : %ld", max_map->gr_name);
-    printf("max_map->st_size : %ld", max_map->st_size);
-    printf("max_map->which_month : %ld", max_map->which_month);
-    printf("max_map->tm_mday : %ld", max_map->tm_mday);
-    printf("max_map->tm_hour : %ld", max_map->tm_hour);
-    printf("max_map->tm_min : %ld", max_map->tm_min);
-    printf("max_map->file_name : %ld", max_map->file_name);
+    // printf("max_map->st_ino : %ld\n", max_map->st_ino);
+    // printf("max_map->bytes_in_human_readable : %ld\n", max_map->bytes_in_human_readable);
+    // printf("max_map->effective_number_of_blocks : %ld\n", max_map->effective_number_of_blocks);
+    // printf("max_map->st_blocks : %ld\n", max_map->st_blocks);
+    // printf("max_map->mode_string : %ld\n", max_map->mode_string);
+    // printf("max_map->st_nlink : %ld\n", max_map->st_nlink);
+    // printf("max_map->st_uid : %ld\n", max_map->st_uid);
+    // printf("max_map->pw_name : %ld\n", max_map->pw_name);
+    // printf("max_map->stat : %ld\n", max_map->stat);
+    // printf("max_map->gr_name : %ld\n", max_map->gr_name);
+    // printf("max_map->st_size : %ld\n", max_map->st_size);
+    // printf("max_map->which_month : %ld\n", max_map->which_month);
+    // printf("max_map->tm_mday : %ld\n", max_map->tm_mday);
+    // printf("max_map->tm_hour : %ld\n", max_map->tm_hour);
+    // printf("max_map->tm_min : %ld\n", max_map->tm_min);
+    // printf("max_map->file_name : %ld\n", max_map->file_name);
 
     if (flags->i) {
         print_empty_spaces(max_map->st_ino - get_number_of_digits(print_buffer->st_ino));
@@ -298,8 +301,6 @@ void flush(PF* print_buffer, MP* max_map, struct FLAGS_STRUCT* flags) {
 
         printf("%02d:%02d ", print_buffer->tm_hour, print_buffer->tm_min);
     }
-
-    print_empty_spaces(max_map->file_name - strlen(print_buffer->file_name));
 
     if (flags->d) {
         if (max_map->file_name > -1) {

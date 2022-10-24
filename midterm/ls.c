@@ -129,7 +129,7 @@ int set_args_to_struct(char *raw_arguments) {
 void ls(FTS* handle, FTSENT* node, int FTS_FLAGS, char* const* file_paths) {
     handle = fts_open(file_paths, FTS_FLAGS, &set_sort_flags_and_call_sort);
     PF* print_buffer_head = NULL;
-    PF* print_buffer_current = NULL;
+    PF* print_buffer_current = (PF*)malloc(sizeof(PF));
     MP* max_map = (MP*)malloc(sizeof(MP));
     max_map = init_max_map(max_map);
 
@@ -173,14 +173,17 @@ void ls(FTS* handle, FTSENT* node, int FTS_FLAGS, char* const* file_paths) {
         print_buffer_current->next = (PF*)malloc(sizeof(PF));
         print_buffer_current = print_buffer_current->next;
     }
-    flush(print_buffer_head, max_map, &flags);
+    print_buffer_current = NULL;
+
+    while ((print_buffer_head != NULL)) {
+        flush(print_buffer_head, max_map, &flags);
+        print_buffer_head = print_buffer_head->next;
+    }
     (void)free(print_buffer_head);
     (void)fts_close(handle);
 }
 
 int main(int argc, char ** argv) {
-    printf("Inside1\n");
-
     FTS* handle = NULL;
     FTSENT* node = NULL;
     int FTS_FLAGS = FTS_PHYSICAL;
@@ -191,14 +194,11 @@ int main(int argc, char ** argv) {
     char* paths[argc - number_of_errors + 1];
 
     if (argc >= MIN_NUM_ARGS) {
-        printf("Inside12\n");
         FTS_FLAGS = set_args_to_struct(argv[1]);
         report_errors(number_of_errors, argv);
 
         /** There is a case where all the files passed don't exist and it leads to a SEGFAULT. */
-        if ((argc == number_of_errors) && (argv[argc - 1][0] != '-')) {
-            printf("Inside13\n");
-            
+        if ((argc == number_of_errors) && (argv[argc - 1][0] != '-')) {            
             return EXIT_FAILURE;
         }
         create_paths(argc, argv, number_of_errors, paths);
@@ -208,16 +208,8 @@ int main(int argc, char ** argv) {
     /** Iteratively call ls for each and every option once the errors are reported :) */
     int iteration = 0;
     int number_of_valid_files = argc - number_of_errors + 1;
-        printf("Inside13\n");
-    printf("%d", number_of_valid_files);
-    if (number_of_valid_files == 0) {
-        printf("Inside");
-        char* const* file_paths = default_path;
-        ls(handle, node, FTS_FLAGS, file_paths);
-    }
 
-    for (; iteration < number_of_valid_files; iteration++) {
-        printf("%d\n", iteration);
+    for (; iteration < number_of_valid_files - 1; iteration++) {
         char* effective_paths[2] = {paths[iteration], NULL}; 
         char* const* file_paths = (argc >= MIN_NUM_ARGS) && (argv[argc - 1][0] != '-') ?
                                                                 effective_paths : default_path;

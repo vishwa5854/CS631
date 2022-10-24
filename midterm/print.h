@@ -4,6 +4,7 @@
 #define MAX_BYTES_SIZE 10
 #define STRMODE_LENGTH 11
 #define MAX_MONTH_LENGTH 4
+#define MAX_FILE_NAME_LENGTH 255
 
 struct FLAGS_STRUCT {
     bool A;
@@ -45,7 +46,7 @@ typedef struct PRINTER_FRAME {
     int                    tm_mday;
     int                    tm_hour;
     int                    tm_min;
-    char*                  file_name;
+    char                   file_name[MAX_FILE_NAME_LENGTH];
     mode_t                 st_mode;
     struct PRINTER_FRAME*  next;
 } PF;
