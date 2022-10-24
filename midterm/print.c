@@ -59,7 +59,7 @@ void print(struct FLAGS_STRUCT* flags, FTSENT* node, PF* print_buffer, MP* max_m
             struct passwd *user_info;
             user_info = getpwuid(node->fts_statp->st_uid);
 
-            if (user_info != NULL) {
+            if ((user_info != NULL) && (strlen(user_info->pw_name) > 0)) {
                 (void)strncpy(print_buffer->pw_name, user_info->pw_name, strlen(user_info->pw_name));
                 print_buffer->pw_name[strlen(user_info->pw_name)] = '\0';
                 max_map->pw_name = just_max(max_map->pw_name, strlen(user_info->pw_name));
@@ -67,6 +67,8 @@ void print(struct FLAGS_STRUCT* flags, FTSENT* node, PF* print_buffer, MP* max_m
                 print_buffer->st_uid = node->fts_statp->st_uid;
                 max_map->st_uid = max_of_two(max_map->st_uid, node->fts_statp->st_uid);
             }
+            max_map->st_uid = max_of_two(max_map->pw_name, max_map->st_uid);
+            max_map->pw_name = max_of_two(max_map->pw_name, max_map->st_uid);
         }
 
         if (flags->n) {
@@ -76,7 +78,7 @@ void print(struct FLAGS_STRUCT* flags, FTSENT* node, PF* print_buffer, MP* max_m
             struct group *group_info;
             group_info = getgrgid(node->fts_statp->st_gid);
 
-            if (group_info != NULL) {
+            if ((group_info != NULL) && (strlen(group_info->gr_name) > 0)) {
                 (void)strncpy(print_buffer->gr_name, group_info->gr_name, strlen(group_info->gr_name));
                 print_buffer->gr_name[strlen(group_info->gr_name)] = '\0';
                 max_map->gr_name = just_max(max_map->gr_name, strlen(group_info->gr_name));
@@ -84,6 +86,8 @@ void print(struct FLAGS_STRUCT* flags, FTSENT* node, PF* print_buffer, MP* max_m
                 print_buffer->st_gid = node->fts_statp->st_gid;
                 max_map->st_gid = max_of_two(max_map->st_gid, node->fts_statp->st_gid);
             }
+            max_map->st_gid = max_of_two(max_map->gr_name, max_map->st_gid);
+            max_map->gr_name = max_of_two(max_map->gr_name, max_map->st_gid);
         }
 
         if (flags->h) {
@@ -203,7 +207,7 @@ void flush(PF* print_buffer, MP* max_map, struct FLAGS_STRUCT* flags) {
             print_empty_spaces(max_map->st_uid - get_number_of_digits(print_buffer->st_uid));
             (void)printf("%d ", print_buffer->st_uid);
         } else {
-            if (max_map->pw_name > -1) {
+            if ((max_map->pw_name > 0) && (strlen(print_buffer->pw_name) > 0)) {
                 print_empty_spaces(max_map->pw_name - strlen(print_buffer->pw_name));
                 (void)printf("%s ", print_buffer->pw_name);
             } else {
