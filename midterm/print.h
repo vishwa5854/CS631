@@ -4,7 +4,12 @@
 #define MAX_BYTES_SIZE 10
 #define STRMODE_LENGTH 11
 #define MAX_MONTH_LENGTH 4
+
+/** I couldn't find the system limits in time, so declaring constants instead. */
 #define MAX_FILE_NAME_LENGTH 255
+#define MAX_USER_NAME_LENGTH 255
+#define MAX_GROUP_NAME_LENGTH 255
+#define MAX_MONTH_NAME_LENGTH 3
 
 struct FLAGS_STRUCT {
     bool A;
@@ -38,11 +43,12 @@ typedef struct PRINTER_FRAME {
     nlink_t                st_nlink;
     uid_t                  st_uid;
     gid_t                  st_gid;
-    char*                  pw_name;
+    /** A lesson learnt hard way that never use char* inside of struct :(*/
+    char                   pw_name[MAX_USER_NAME_LENGTH];
     gid_t                  stat;
-    char*                  gr_name;
+    char                   gr_name[MAX_GROUP_NAME_LENGTH];
     off_t                  st_size;
-    char*                  which_month;
+    char                   which_month[MAX_MONTH_NAME_LENGTH];
     int                    tm_mday;
     int                    tm_hour;
     int                    tm_min;

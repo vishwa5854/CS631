@@ -162,8 +162,6 @@ void ls(FTS* handle, FTSENT* node, int FTS_FLAGS, char* const* file_paths) {
 
         if (!flags.R && (node->fts_info == FTS_D)) {
             (void)fts_set(handle, node, FTS_SKIP);
-        } else {
-            // node = node->fts_link;
         }
 
         /** Add a new entry for the upcoming iteration. */
@@ -175,7 +173,7 @@ void ls(FTS* handle, FTSENT* node, int FTS_FLAGS, char* const* file_paths) {
     }
     print_buffer_current = NULL;
 
-    while ((print_buffer_head != NULL)) {
+    while ((print_buffer_head != NULL) && (print_buffer_head->next != NULL)) {
         flush(print_buffer_head, max_map, &flags);
         print_buffer_head = print_buffer_head->next;
     }
