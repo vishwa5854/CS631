@@ -143,7 +143,7 @@ void recurse(FTSENT* one, FTS* handle) {
         }
 
         if (one->fts_info == FTS_D) {
-            (void)printf("\n%s:", one->fts_accpath);
+            (void)printf("%s:\n", one->fts_accpath);
         }
         two = fts_read(twoHandler);
         PF* print_buffer_head = NULL;
