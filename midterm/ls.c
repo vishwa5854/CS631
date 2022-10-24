@@ -129,13 +129,13 @@ int set_args_to_struct(char *raw_arguments) {
     return FTS_FLAGS;
 }
 
-void recurse(FTSENT* one, FTS* handle) {
+void recurse(FTSENT* one, FTS* handle, int FTS_FLAGS) {
     while ((one = fts_read(handle)) != NULL) {
         char* paths[2];
         paths[0] = one->fts_path;
         paths[1] = NULL;
         char* const* req = paths;
-        FTS* twoHandler = fts_open(req, FTS_LOGICAL, &set_sort_flags_and_call_sort);
+        FTS* twoHandler = fts_open(req, FTS_FLAGS, &set_sort_flags_and_call_sort);
         FTSENT* two = NULL;
 
         if (one->fts_info == FTS_DP) {
@@ -198,7 +198,7 @@ void ls(FTS* handle, FTSENT* node, int FTS_FLAGS, char* const* file_paths, MP* m
     int j = 0;
 
     if (flags.R) {
-        recurse(node, handle);
+        recurse(node, handle, FTS_FLAGS);
         return;
     }
 
