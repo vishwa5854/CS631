@@ -3,8 +3,6 @@
 3. The best strategy is to iterate 
 
 integrate R
-sorting is not working in netbsd for some reason
--S sort not working
 pre-process dirs and add '/' for my program to work
 for every dir print a dirname and :
 Handle return values

@@ -129,6 +129,65 @@ int set_args_to_struct(char *raw_arguments) {
     return FTS_FLAGS;
 }
 
+void recurse(FTSENT* one, FTS* handle) {
+    while ((one = fts_read(handle)) != NULL) {
+        char* paths[2];
+        paths[0] = one->fts_path;
+        paths[1] = NULL;
+        char* const* req = paths;
+        FTS* twoHandler = fts_open(req, FTS_LOGICAL, 0);
+        FTSENT* two = NULL;
+
+        if (one->fts_info == FTS_DP) {
+            continue;
+        }
+
+        if (one->fts_info == FTS_D) {
+            (void)printf("\n%s:", one->fts_accpath);
+        }
+        two = fts_read(twoHandler);
+        PF* print_buffer_head = NULL;
+        PF* print_buffer_current = (PF*)malloc(sizeof(PF));
+        MP* max_map = (MP*)malloc(sizeof(MP));
+        max_map = init_max_map(max_map);
+        int ideal_number_of_entries = 0;
+        int j = 0;
+
+        while ((two = fts_read(twoHandler)) != NULL) {
+            if (two->fts_info == FTS_DP) {
+                continue;
+            }
+            ideal_number_of_entries++;
+            print(&flags, two, print_buffer_current, max_map);
+            // (void)printf("%s\n", two->fts_name);
+
+            if (two->fts_info == FTS_D) {
+                (void)fts_set(twoHandler, two, FTS_SKIP);
+            }
+
+            /** Add a new entry for the upcoming iteration. */
+            if (print_buffer_head == NULL) {
+                print_buffer_head = print_buffer_current;
+            }
+            print_buffer_current->next = (PF*)malloc(sizeof(PF));
+            print_buffer_current = print_buffer_current->next;
+        }
+        print_buffer_current = NULL;
+
+        while ((print_buffer_head != NULL) && (print_buffer_head->next != NULL) && (j < ideal_number_of_entries)) {
+            flush(print_buffer_head, max_map, &flags);
+            print_buffer_head = print_buffer_head->next;
+            j++;
+        }
+        (void)free(print_buffer_head);
+
+        (void)fts_close(twoHandler);
+        if (one->fts_info == FTS_D)  {
+            (void)printf("\n");
+        }
+    }
+}
+
 void ls(FTS* handle, FTSENT* node, int FTS_FLAGS, char* const* file_paths, MP* max_map) {
     // int return_value = EXIT_SUCCESS;
     handle = fts_open(file_paths, FTS_FLAGS, &set_sort_flags_and_call_sort);

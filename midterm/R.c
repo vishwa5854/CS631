@@ -32,17 +32,6 @@ struct FLAGS_STRUCT {
 void print(struct FLAGS_STRUCT *flags, FTSENT* node);
 
 void recurse(FTSENT* one, FTS* handle) {
-//    if ((one == NULL) || (handle == NULL)) {
-//        return;
-//    }
-
-    /** if it's not at all a dir */
-//    if (one->fts_info != FTS_D) {
-//        one = fts_read(handle);
-//        recurse(one, handle);
-//        return;
-//    }
-
     while ((one = fts_read(handle)) != NULL) {
         char* paths[2];
         paths[0] = one->fts_path;
@@ -56,7 +45,7 @@ void recurse(FTSENT* one, FTS* handle) {
         }
 
         if (one->fts_info == FTS_D) {
-            (void)printf("%s:\n", one->fts_accpath);
+            (void)printf("\n%s:", one->fts_accpath);
         }
         two = fts_read(twoHandler);
 
@@ -75,15 +64,13 @@ void recurse(FTSENT* one, FTS* handle) {
             (void)printf("\n");
         }
     }
-
-
 }
 
 int main(int argc, char* const argv[]) {
     FTSENT* node = NULL;
     // FTSENT* child = NULL;
     struct FLAGS_STRUCT flags;
-    flags.R = false;
+    flags.R = true;
     char* paths[2];
     paths[0] = argv[1];
     paths[1] = NULL;
@@ -93,7 +80,7 @@ int main(int argc, char* const argv[]) {
     FTS* handle = fts_open(required, FTS_LOGICAL | FTS_SEEDOT, 0);
     int return_value = EXIT_SUCCESS;
 
-    (void)printf("%d\n", argc);
+    (void)printf("\n%d\n", argc);
     node = fts_read(handle);
 
     // If the given file is not a directory.
