@@ -1,0 +1,374 @@
+commit 0a48003311e56ac236f839d39932db10411899c1
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Oct 24 15:04:44 2022 -0400
+
+    Changed var lengths
+
+commit 7fd78084e9016562d66901fd319233e14dccac5d
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Oct 24 14:25:59 2022 -0400
+
+    Added S_ISLINK for normal args
+
+commit 2533a02df764ff4ee9ed9adc8e118a50a1f36549
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Oct 24 14:23:27 2022 -0400
+
+    Added file path for symlink
+
+commit 9f86c7b47827210ed35377e88ffd71207c722543
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Oct 24 14:08:24 2022 -0400
+
+    Added flags
+
+commit e5762938407c61337c98ab34aa35a7af323a9c60
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Oct 24 14:00:42 2022 -0400
+
+    Forgot about the sort ?? How bruh ?
+
+commit 17bbcba3a49836241aaff51bf33350e02c441b8d
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Oct 24 13:59:45 2022 -0400
+
+    Formatting bruh
+
+commit 95192d891ae8a29ba9077c9a7852f6300c5139e2
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Oct 24 13:58:34 2022 -0400
+
+    R integration is done
+
+commit b45445c2809963c50adf8c49ec68afc6a605e307
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Oct 24 13:56:18 2022 -0400
+
+    R integration is done
+
+commit c9316b9c7903414f47aa33e26244633b7eb66892
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Oct 24 13:16:50 2022 -0400
+
+    Fixed empty user name or group name bug
+
+commit 1c9343726fc50e460539781f140d87a9b7ad3861
+Merge: d978757 2a78146
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Oct 24 12:50:24 2022 -0400
+
+    Merge branch 'master' of https://github.com/vishwa5854/CS631
+
+commit d97875744c7203c5d7f58f8e84ba548852a01e92
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Oct 24 12:49:20 2022 -0400
+
+    Sort is fixed for NETBSD
+
+commit eddfd1c2a73993e8fb919a2da3fec2b352cff648
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Oct 24 10:46:18 2022 -0400
+
+    Things are back to normal
+
+commit 2a7814676cb8590cab58fa5d1a0c069fd425e385
+Author: vish <vishwanath5854@gmail.com>
+Date:   Mon Oct 24 08:52:51 2022 +0000
+
+    Working on NETBSD
+
+commit ef61e83201cbb5a00844e7f7343f1c5eae47cf9f
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Oct 24 03:05:01 2022 -0400
+
+    Fixed a small bug
+
+commit 70e3823a1224c7b801e1286c5f2e7049993662ad
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Oct 24 02:26:09 2022 -0400
+
+    Finally everything works now :)
+
+commit 3b6f518e4fe34576bb962c6f50e626f297b3bb3e
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Oct 24 02:08:20 2022 -0400
+
+    Finally something works with SEGFAULT
+
+commit 80f8dd70ae6e93420adb69e9c68566583922d8fe
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Oct 24 01:00:13 2022 -0400
+
+    Everything is broken :(
+
+commit 524d83cf706cde8dede93ff74f0e9c588e391ee9
+Merge: 4bc2b2b 6d05c8c
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sun Oct 23 20:42:15 2022 -0400
+
+    Merge branch 'master' of https://github.com/vishwa5854/CS631
+
+commit 4bc2b2be53ac59534487c7b46b0be435d24fe83f
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sun Oct 23 20:42:12 2022 -0400
+
+    things are stable but by my next commit a big shit is gonna happen
+
+commit 6d05c8c602ccae7364850043e8af6a641ff31e59
+Author: Vishwanath Bondugula <vishwanath5854@outlook.com>
+Date:   Sun Oct 23 20:41:08 2022 -0400
+
+    Create R.c
+
+commit 9e103321c494e6df044aabbe9ac7fa1b8d701831
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sun Oct 23 16:32:25 2022 -0400
+
+    Changes in make fiel
+
+commit 983ac816f3842b53fbbac5a1d7c9961a303aea92
+Merge: 8134b5c 26f6f0d
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sun Oct 23 16:19:19 2022 -0400
+
+    Merge branch 'master' of https://github.com/vishwa5854/CS631
+
+commit 8134b5c96e83e294b5a04694be4630ae80cd591c
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sun Oct 23 16:18:57 2022 -0400
+
+    Done with s, added Makefile
+
+commit 26f6f0d7f7a1eab198f29ec47917b3ab4526ca1e
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sun Oct 23 02:28:08 2022 -0400
+
+    Apparently fixed something even idk what
+
+commit 03771dbac66244fb3bb22de0c289b3768f90a8ca
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sat Oct 22 23:36:45 2022 -0400
+
+    Added q and w
+
+commit 6b901d90d2fc7f52710d3deab44f38fd6b148379
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sat Oct 22 22:26:38 2022 -0400
+
+    Added error handling for getpwuid and getgrid
+
+commit 20880903760e7f8ac8c4f8304e18f7f7e0bd42bb
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sat Oct 22 22:16:40 2022 -0400
+
+    Added else case for F
+
+commit 753ef7357d46a4529c82dde42f327bd8ea5c1917
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sat Oct 22 22:09:34 2022 -0400
+
+    -F is supposed to be done.
+
+commit c410193c26bf821805999324ecaef490e8823240
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sat Oct 22 20:52:41 2022 -0400
+
+    Fixed few bugs
+
+commit ae4eb0030306d861bfe2defbfae0d6750f3db11e
+Author: vish <vishwanath5854@outlook.com>
+Date:   Fri Oct 21 16:59:31 2022 -0400
+
+    Temporary Optimization before R
+
+commit 028d3087c730bd7e39ce8bc3fca637d7adf2ee58
+Author: vish <vishwanath5854@outlook.com>
+Date:   Fri Oct 21 16:54:19 2022 -0400
+
+    Small optimisation
+
+commit 911dfafeb68d2b6b5b9ba6584588beae8535d88a
+Author: vish <vishwanath5854@outlook.com>
+Date:   Fri Oct 21 16:51:40 2022 -0400
+
+    Fixed arg parsing bug
+
+commit 2681b00760cf143ba4ac32383df7510555b2e6bf
+Author: vish <vishwanath5854@outlook.com>
+Date:   Fri Oct 21 16:30:50 2022 -0400
+
+    Added separate .c and .h files for sort
+
+commit c8de64f8659986b037988a3091134bce304b1992
+Author: vish <vishwanath5854@outlook.com>
+Date:   Fri Oct 21 16:29:40 2022 -0400
+
+    Restructured sort function
+
+commit cabae33c87f93bbfcd4c3fe5d92502006d4a885c
+Author: vish <vishwanath5854@outlook.com>
+Date:   Fri Oct 21 15:16:00 2022 -0400
+
+    Restructured and removed unnecessary comments
+
+commit bbd4f5e14155799e5ac06e51802051aa9728aaa0
+Author: vish <vishwanath5854@outlook.com>
+Date:   Fri Oct 21 15:13:41 2022 -0400
+
+    Apparently f needs a
+
+commit 29b69cf2212e618ded85fc96ad3d309678ef8f47
+Author: vish <vishwanath5854@outlook.com>
+Date:   Fri Oct 21 15:12:20 2022 -0400
+
+    Sorting flags without nanosec comparision are done t,u,c,S,r,f
+
+commit 2d03e779874e706e98832c913dbddf5666b0e0df
+Author: vish <vishwanath5854@outlook.com>
+Date:   Fri Oct 21 00:35:46 2022 -0400
+
+    Apparently fctur all sorting ops are done.
+
+commit 883e1d34ea6fb73abac61c77703fb5b60e8116d4
+Author: vish <vishwanath5854@outlook.com>
+Date:   Thu Oct 20 19:16:14 2022 -0400
+
+    -n is done
+
+commit be178d19dc3b0e04b852230969399366eb534359
+Author: vish <vishwanath5854@outlook.com>
+Date:   Thu Oct 20 19:04:22 2022 -0400
+
+    Finally some peace with split into multiple files and things start working again :)
+
+commit f5f1ce896c771a6203a28bb36b8deb32e6263be9
+Author: vish <vishwanath5854@outlook.com>
+Date:   Thu Oct 20 16:18:07 2022 -0400
+
+    Chaos
+
+commit 818a9c7c9fb96f54b69dc795b5aa85884b633ae8
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sun Oct 16 15:53:10 2022 -0400
+
+    Added -i
+
+commit 81a9073d76a3b04054dd61de166997434440f531
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sun Oct 16 14:55:53 2022 -0400
+
+    Added support for euid==0, proper conditions to skip hidden files for a & A.
+
+commit 32f12ae3f968c5900563b6cc9b8dd8e240e205d9
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sat Oct 15 23:52:35 2022 -0400
+
+    Acieved A a c
+
+commit 3e9b9cbd3b265618efb3599c56d3fb61bf5f4f6b
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sat Oct 15 22:34:10 2022 -0400
+
+    this could be the start of something painful
+
+commit 1e2f07e4d4b56285a0637554985a73810b24d91b
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sat Oct 15 22:33:31 2022 -0400
+
+    Added notes for oct 11 lol
+
+commit 218c695a2b3e46eed3aa99d69c2192c1b669b194
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sat Oct 8 23:52:31 2022 -0400
+
+    oct3 notes updated
+
+commit 64747f1e5a237d4b372b6148397ee7083f238704
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sat Oct 8 20:11:55 2022 -0400
+
+    Added notes for week4-part1
+
+commit a64f35ceb085ee6f553486b5d1fca9c45bcd3359
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sat Oct 8 18:29:03 2022 -0400
+
+    Restructured
+
+commit 19779d684f31ace0626a4fa71c6d5b0ee778c670
+Author: vish <vishwanath5854@outlook.com>
+Date:   Wed Oct 5 21:22:36 2022 -0400
+
+    oct 3
+
+commit d6bf1b25eeb768568c94b86875fbc9be81a6dd3d
+Author: Vishwanath Bondugula <vishwanath5854@outlook.com>
+Date:   Mon Oct 3 15:11:53 2022 -0400
+
+    Update spe-26
+
+commit 9ea05341090e4926ef3d1b6b0648d9bbfaeaa4b2
+Author: Vishwanath Bondugula <vishwanath5854@outlook.com>
+Date:   Mon Oct 3 14:39:13 2022 -0400
+
+    Update spe-26
+
+commit 8a90fb3a23c3fd1f0da3f28e8be259de7b147cd7
+Author: vish <vishwanath5854@outlook.com>
+Date:   Thu Sep 29 16:35:26 2022 -0400
+
+    Handled more test cases that would fail.
+
+commit f8ef3a6c44ce78f07b56bda056ae9bf31ca61ca4
+Author: vish <vishwanath5854@outlook.com>
+Date:   Tue Sep 27 15:53:51 2022 -0400
+
+    Added notes and tar files
+
+commit 97cdc1b53815c67bfe9943f6b03d3fc6730d7d08
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Sep 26 15:52:07 2022 -0400
+
+    Restructured few things
+
+commit 09b67f70df62ba27716f8235d2b35efa0e3ce940
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Sep 26 15:41:43 2022 -0400
+
+    Restructured few things
+
+commit 2abde1919fed48ebdc3deebb4ea12ce458edd48e
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Sep 26 15:31:05 2022 -0400
+
+    Removed binary file
+
+commit f008aa32f4ca526238a9e0bace49ac35d28fbcab
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Sep 26 15:16:25 2022 -0400
+
+    Made some changes as per compiler warnings, added checklist
+
+commit c30f36b7d606d0e393d35638a40433a278d126a5
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Sep 26 14:50:28 2022 -0400
+
+    Added make file for the assignment-1
+
+commit de8df421795a0175780814e2d6e7d26555654c4d
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sun Sep 25 14:02:20 2022 -0400
+
+    Removed redundant file in the src dir
+
+commit 7a99e704251d7cecab6624c3e90b51071e1d381d
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sun Sep 25 14:01:44 2022 -0400
+
+    bbcp for normal files is done, gotta handle the dirs
+
+commit ee304c609070781a18d4a9399eacf485163b5f13
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Sep 12 14:18:22 2022 -0400
+
+    Birth of 631 class notes.

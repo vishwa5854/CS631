@@ -10,6 +10,9 @@
         "pwd.h": "c",
         "grp.h": "c",
         "util.h": "c",
-        "flags.h": "c"
+        "flags.h": "c",
+        "syslimits.h": "c",
+        "limits.h": "c",
+        "param.h": "c"
     }
 }

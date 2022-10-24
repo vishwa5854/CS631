@@ -1,0 +1,7 @@
+This is a simple ls utility tool written in C
+
+Things that don't work as of now
+1. -a & -A are broken, I need some time to fix this
+2. Return values are not hanled properly, need some time for that
+3. For a directory, if you want to display all the descendants
+    you should add a '/' at the end of your path, need to fix this as well.
