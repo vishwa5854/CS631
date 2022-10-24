@@ -1,5 +1,6 @@
-#include<bsd/stdlib.h>
-#include<bsd/string.h>
+#include<unistd.h>
+#include<stdlib.h>
+#include<string.h>
 #include<ctype.h>
 #include<grp.h>
 #include<math.h>
@@ -118,7 +119,7 @@ void print(struct FLAGS_STRUCT* flags, FTSENT* node, PF* print_buffer, MP* max_m
     if (flags->q) {
         char temp[node->fts_namelen];
         char* replacement = "?";
-        int j = 0;
+        size_t j = 0;
 
         for (; j < node->fts_namelen; j++) {
             if (isprint(file_name[j]) != 0) {
@@ -196,7 +197,7 @@ void flush(PF* print_buffer, MP* max_map, struct FLAGS_STRUCT* flags) {
         (void)printf("%s ", print_buffer->mode_string);
 
         print_empty_spaces(max_map->st_nlink - get_number_of_digits(print_buffer->st_nlink));
-        (void)printf("%ld ",print_buffer->st_nlink);
+        (void)printf("%d ",print_buffer->st_nlink);
 
         if (flags->n) {
             print_empty_spaces(max_map->st_uid - get_number_of_digits(print_buffer->st_uid));
@@ -236,7 +237,7 @@ void flush(PF* print_buffer, MP* max_map, struct FLAGS_STRUCT* flags) {
         (void)printf("%s ", print_buffer->which_month);
 
         print_empty_spaces(max_map->tm_mday - get_number_of_digits(print_buffer->tm_mday));
-        (void)printf("%d ", print_buffer->tm_mday);
+        (void)printf("%02d ", print_buffer->tm_mday);
 
         (void)printf("%02d:%02d ", print_buffer->tm_hour, print_buffer->tm_min);
     }
