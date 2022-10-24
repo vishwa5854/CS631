@@ -1,11 +1,11 @@
-// printf("%s\n", paths[0]);
+// (void)printf("%s\n", paths[0]);
     char* const* file_paths = (argc >= MIN_NUM_ARGS) && (argv[argc - 1][0] != '-') ? 
                                                             paths : default_path;
     handle = fts_open(file_paths, FTS_FLAGS, &set_sort_flags_and_call_sort);
 
     while ((node = fts_read(handle)) != NULL) {
         if (flags.d) {
-            printf("Length of the name : %ld\n", strlen(node->fts_name));
+            (void)printf("Length of the name : %ld\n", strlen(node->fts_name));
             print(&flags, node);
             break;
         }

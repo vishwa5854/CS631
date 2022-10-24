@@ -56,7 +56,7 @@ void recurse(FTSENT* one, FTS* handle) {
         }
 
         if (one->fts_info == FTS_D) {
-            printf("%s:\n", one->fts_accpath);
+            (void)printf("%s:\n", one->fts_accpath);
         }
         two = fts_read(twoHandler);
 
@@ -64,7 +64,7 @@ void recurse(FTSENT* one, FTS* handle) {
             if (two->fts_info == FTS_DP) {
                 continue;
             }
-            printf("%s\n", two->fts_name);
+            (void)printf("%s\n", two->fts_name);
 
             if (two->fts_info == FTS_D) {
                 (void)fts_set(twoHandler, two, FTS_SKIP);
@@ -72,7 +72,7 @@ void recurse(FTSENT* one, FTS* handle) {
         }
         (void)fts_close(twoHandler);
         if (one->fts_info == FTS_D)  {
-            printf("\n");
+            (void)printf("\n");
         }
     }
 
@@ -83,7 +83,7 @@ int main(int argc, char* const argv[]) {
     FTSENT* parent = NULL;
     // FTSENT* child = NULL;
     struct FLAGS_STRUCT flags;
-    flags.R = true;
+    flags.R = false;
     char* paths[2];
     paths[0] = argv[1];
     paths[1] = NULL;
@@ -93,17 +93,17 @@ int main(int argc, char* const argv[]) {
     FTS* handle = fts_open(required, FTS_LOGICAL, 0);
     int return_value = EXIT_SUCCESS;
 
-    printf("%d\n", argc);
-//    parent = fts_read(handle);
+    (void)printf("%d\n", argc);
+    parent = fts_read(handle);
 
     // If the given file is not a directory.
-//    if (parent->fts_info != FTS_D) {
-//        printf("%s\n", parent->fts_name);
-//    }
+    if (parent->fts_info != FTS_D) {
+        (void)printf("%s\n", parent->fts_name);
+    }
 
-    // FTSENT* child = NULL;r
+    FTSENT* child = NULL;
     if (flags.R) {
-        printf("Going into R\n");
+        (void)printf("Going into R\n");
         recurse(parent, handle);
         return return_value;
     }
@@ -118,31 +118,13 @@ int main(int argc, char* const argv[]) {
         }
 
         if (parent->fts_info != FTS_DP)
-            printf("%s\n", parent->fts_name);
+            (void)printf("%s\n", parent->fts_name);
 
         if (parent->fts_info == FTS_D) {
-            // child = fts_children(handle, 0);
-
             if (!flags.R) {
                 (void)fts_set(handle, parent, FTS_SKIP);
-            } else {
-                /**
-                 * Init dir_list
-                 * Print all files in this dir
-                 * if file is a dir
-                 *      push into dir_list
-                 * recursive_print()
-                */
-                recurse(parent, handle);
             }
         }
-
-        // print(flags, )
-
-        // if (parent->fts_info == FTS_DP) {
-        //     continue;
-        // }
-
     }
     (void)fts_close(handle);
     return return_value;

@@ -166,84 +166,84 @@ void print_empty_spaces(long int how_many) {
     long int i = 0;
 
     for (; i < how_many; i++) {
-        printf(" ");
+        (void)printf(" ");
     }
 }
 
 void flush(PF* print_buffer, MP* max_map, struct FLAGS_STRUCT* flags) {    
     if (flags->i) {
         print_empty_spaces(max_map->st_ino - get_number_of_digits(print_buffer->st_ino));
-        printf("%ld ", print_buffer->st_ino);
+        (void)printf("%ld ", print_buffer->st_ino);
     }
 
     if (flags->s) {
         if (flags->h) {
             print_empty_spaces(max_map->bytes_in_human_readable - strlen(print_buffer->bytes_in_human_readable));
-            printf("%s ", print_buffer->bytes_in_human_readable);
+            (void)printf("%s ", print_buffer->bytes_in_human_readable);
         } else {
             if (max_map->effective_number_of_blocks > -1) {
                 print_empty_spaces(max_map->effective_number_of_blocks - get_number_of_digits(print_buffer->effective_number_of_blocks));
-                printf("%f ", print_buffer->effective_number_of_blocks);
+                (void)printf("%f ", print_buffer->effective_number_of_blocks);
             } else {
                 print_empty_spaces(max_map->st_blocks - get_number_of_digits(print_buffer->st_blocks));
-                printf("%ld ", print_buffer->st_blocks);
+                (void)printf("%ld ", print_buffer->st_blocks);
             }
         }
     }
 
     if (flags->l || flags->n) {
         print_empty_spaces(max_map->mode_string - strlen(print_buffer->mode_string));
-        printf("%s ", print_buffer->mode_string);
+        (void)printf("%s ", print_buffer->mode_string);
 
         print_empty_spaces(max_map->st_nlink - get_number_of_digits(print_buffer->st_nlink));
-        printf("%ld ",print_buffer->st_nlink);
+        (void)printf("%ld ",print_buffer->st_nlink);
 
         if (flags->n) {
             print_empty_spaces(max_map->st_uid - get_number_of_digits(print_buffer->st_uid));
-            printf("%d ", print_buffer->st_uid);
+            (void)printf("%d ", print_buffer->st_uid);
         } else {
             if (max_map->pw_name > -1) {
                 print_empty_spaces(max_map->pw_name - strlen(print_buffer->pw_name));
-                printf("%s ", print_buffer->pw_name);
+                (void)printf("%s ", print_buffer->pw_name);
             } else {
                 print_empty_spaces(max_map->st_uid - get_number_of_digits(print_buffer->st_uid));
-                printf("%d ", print_buffer->st_uid);
+                (void)printf("%d ", print_buffer->st_uid);
             }
         }
 
         if (flags->n) {
             print_empty_spaces(max_map->st_gid - get_number_of_digits(print_buffer->st_gid));
-            printf("%d ", print_buffer->st_gid);
+            (void)printf("%d ", print_buffer->st_gid);
         } else {
             if (max_map->gr_name > -1) {
                 print_empty_spaces(max_map->gr_name - strlen(print_buffer->gr_name));
-                printf("%s ", print_buffer->gr_name);
+                (void)printf("%s ", print_buffer->gr_name);
             } else {
                 print_empty_spaces(max_map->st_gid - get_number_of_digits(print_buffer->st_gid));
-                printf("%d ", print_buffer->st_gid);
+                (void)printf("%d ", print_buffer->st_gid);
             }
         }
 
         if (flags->h) {
             print_empty_spaces(max_map->bytes_in_human_readable - strlen(print_buffer->bytes_in_human_readable));
-            printf("%s ", print_buffer->bytes_in_human_readable);
+            (void)printf("%s ", print_buffer->bytes_in_human_readable);
         } else {
             print_empty_spaces(max_map->st_size - get_number_of_digits(print_buffer->st_size));
-            printf("%ld ", print_buffer->st_size);
+            (void)printf("%ld ", print_buffer->st_size);
         }
 
         print_empty_spaces(max_map->which_month - strlen(print_buffer->which_month));
-        printf("%s ", print_buffer->which_month);
+        (void)printf("%s ", print_buffer->which_month);
 
         print_empty_spaces(max_map->tm_mday - get_number_of_digits(print_buffer->tm_mday));
-        printf("%d ", print_buffer->tm_mday);
+        (void)printf("%d ", print_buffer->tm_mday);
 
-        printf("%02d:%02d ", print_buffer->tm_hour, print_buffer->tm_min);
+        (void)printf("%02d:%02d ", print_buffer->tm_hour, print_buffer->tm_min);
     }
 
     if (flags->d) {
         if (max_map->file_name > -1) {
-            printf("%s\n", print_buffer->file_name);
+            (void)printf("%s\n", print_buffer->file_name);
         }
 
         return;
@@ -252,21 +252,21 @@ void flush(PF* print_buffer, MP* max_map, struct FLAGS_STRUCT* flags) {
     /** F arg prep */
     if (flags->F) {
         if (S_ISDIR(print_buffer->st_mode)) {
-            printf("%s/\n", print_buffer->file_name);
+            (void)printf("%s/\n", print_buffer->file_name);
         } else if (S_IEXEC & print_buffer->st_mode) {
-            printf("%s*\n", print_buffer->file_name);
+            (void)printf("%s*\n", print_buffer->file_name);
         } else if (S_ISLNK(print_buffer->st_mode)) {
-            printf("%s@\n", print_buffer->file_name);
+            (void)printf("%s@\n", print_buffer->file_name);
         } else if (S_IFCHR & print_buffer->st_mode) {
-            printf("%s%c\n", print_buffer->file_name, '%');
+            (void)printf("%s%c\n", print_buffer->file_name, '%');
         } else if (S_ISSOCK(print_buffer->st_mode)) {
-            printf("%s=\n", print_buffer->file_name);
+            (void)printf("%s=\n", print_buffer->file_name);
         } else if (S_ISFIFO(print_buffer->st_mode)) {
-            printf("%s|\n", print_buffer->file_name);
+            (void)printf("%s|\n", print_buffer->file_name);
         } else {
-            printf("%s\n", print_buffer->file_name);
+            (void)printf("%s\n", print_buffer->file_name);
         }
     } else {
-        printf("%s\n", print_buffer->file_name);
+        (void)printf("%s\n", print_buffer->file_name);
     }
 }

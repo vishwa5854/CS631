@@ -9,6 +9,10 @@ char* which_month(int month) {
 long int get_number_of_digits(long int number) {
     long int count = 0;
 
+    if (number == 0) {
+        return 1;
+    }
+
     while (number != 0) {
       number = number / 10;
       count++;
