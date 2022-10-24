@@ -135,7 +135,7 @@ void recurse(FTSENT* one, FTS* handle) {
         paths[0] = one->fts_path;
         paths[1] = NULL;
         char* const* req = paths;
-        FTS* twoHandler = fts_open(req, FTS_LOGICAL, 0);
+        FTS* twoHandler = fts_open(req, FTS_LOGICAL, &set_sort_flags_and_call_sort);
         FTSENT* two = NULL;
 
         if (one->fts_info == FTS_DP) {
