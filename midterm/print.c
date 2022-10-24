@@ -139,6 +139,9 @@ void print(struct FLAGS_STRUCT* flags, FTSENT* node, PF* print_buffer, MP* max_m
     print_buffer->file_name[strlen(file_name)] = '\0';
     max_map->file_name = just_max(max_map->file_name, strlen(file_name));
 
+    strncpy(print_buffer->file_path, node->fts_accpath, strlen(node->fts_accpath));
+    print_buffer->file_path[strlen(node->fts_accpath)] = '\0';
+
     /** F arg prep */
     if (flags->F) {
         print_buffer->st_mode = node->fts_statp->st_mode;        
@@ -265,7 +268,7 @@ void flush(PF* print_buffer, MP* max_map, struct FLAGS_STRUCT* flags) {
         } else if (S_IEXEC & print_buffer->st_mode) {
             (void)printf("%s*\n", print_buffer->file_name);
         } else if (S_ISLNK(print_buffer->st_mode)) {
-            (void)printf("%s@\n", print_buffer->file_name);
+            (void)printf("%s -> %s@\n", print_buffer->file_name, print_buffer->file_path);
         } else if (S_IFCHR & print_buffer->st_mode) {
             (void)printf("%s%c\n", print_buffer->file_name, '%');
         } else if (S_ISSOCK(print_buffer->st_mode)) {

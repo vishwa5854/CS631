@@ -1,5 +1,6 @@
 #include<fts.h>
 #include<stdbool.h>
+#include<sys/param.h>
 
 #define MAX_BYTES_SIZE 10
 #define STRMODE_LENGTH 11
@@ -53,6 +54,7 @@ typedef struct PRINTER_FRAME {
     int                    tm_hour;
     int                    tm_min;
     char                   file_name[MAX_FILE_NAME_LENGTH];
+    char                   file_path[MAXPATHLEN];
     mode_t                 st_mode;
     struct PRINTER_FRAME*  next;
 } PF;

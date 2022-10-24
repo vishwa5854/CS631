@@ -2,7 +2,7 @@
 2. If we pass the files with names it is not ls'sing them
 3. The best strategy is to iterate 
 
-integrate R
+-l symlink pointer
 pre-process dirs and add '/' for my program to work
 for every dir print a dirname and :
 Handle return values
