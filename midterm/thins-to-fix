@@ -6,4 +6,4 @@
 pre-process dirs and add '/' for my program to work
 for every dir print a dirname and :
 Handle return values
--a is not working properly
+-a is not working properly -A

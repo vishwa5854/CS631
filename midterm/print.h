@@ -1,6 +1,7 @@
 #include<fts.h>
 #include<stdbool.h>
 #include<sys/param.h>
+#include<syslimits.h>
 
 #define MAX_BYTES_SIZE 10
 #define STRMODE_LENGTH 11
@@ -8,8 +9,6 @@
 
 /** I couldn't find the system limits in time, so declaring constants instead. */
 #define MAX_FILE_NAME_LENGTH 255
-#define MAX_USER_NAME_LENGTH 255
-#define MAX_GROUP_NAME_LENGTH 255
 #define MAX_MONTH_NAME_LENGTH 3
 
 struct FLAGS_STRUCT {
@@ -45,9 +44,9 @@ typedef struct PRINTER_FRAME {
     uid_t                  st_uid;
     gid_t                  st_gid;
     /** A lesson learnt hard way that never use char* inside of struct :(*/
-    char                   pw_name[MAX_USER_NAME_LENGTH];
+    char                   pw_name[LOGIN_NAME_MAX];
     gid_t                  stat;
-    char                   gr_name[MAX_GROUP_NAME_LENGTH];
+    char                   gr_name[LOGIN_NAME_MAX];
     off_t                  st_size;
     char                   which_month[MAX_MONTH_NAME_LENGTH];
     int                    tm_mday;
