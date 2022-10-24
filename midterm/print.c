@@ -268,7 +268,7 @@ void flush(PF* print_buffer, MP* max_map, struct FLAGS_STRUCT* flags) {
         } else if (S_IEXEC & print_buffer->st_mode) {
             (void)printf("%s*\n", print_buffer->file_name);
         } else if (S_ISLNK(print_buffer->st_mode)) {
-            (void)printf("%s -> %s@\n", print_buffer->file_name, print_buffer->file_path);
+            (void)printf("%s@ -> %s\n", print_buffer->file_name, print_buffer->file_path);
         } else if (S_IFCHR & print_buffer->st_mode) {
             (void)printf("%s%c\n", print_buffer->file_name, '%');
         } else if (S_ISSOCK(print_buffer->st_mode)) {
@@ -279,6 +279,10 @@ void flush(PF* print_buffer, MP* max_map, struct FLAGS_STRUCT* flags) {
             (void)printf("%s\n", print_buffer->file_name);
         }
     } else {
-        (void)printf("%s\n", print_buffer->file_name);
+        if (S_ISLNK(print_buffer->st_mode)) {
+            (void)printf("%s -> %s\n", print_buffer->file_name, print_buffer->file_path);
+        } else {
+            (void)printf("%s\n", print_buffer->file_name);
+        }
     }
 }
