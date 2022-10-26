@@ -16,7 +16,7 @@
 
 extern char **environ;
 
-void print(struct FLAGS_STRUCT* flags, FTSENT* node, PF* print_buffer, MP* max_map) {
+void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map) {
     if (flags->i) {
         print_buffer->st_ino = node->fts_statp->st_ino;
         max_map->st_ino = max_of_two(max_map->st_ino, node->fts_statp->st_ino);
@@ -178,7 +178,7 @@ void print_empty_spaces(long int how_many) {
     }
 }
 
-void flush(PF* print_buffer, MP* max_map, struct FLAGS_STRUCT* flags) {    
+void flush(PF* print_buffer, MP* max_map, FLAGS* flags) {    
     if (flags->i) {
         print_empty_spaces(max_map->st_ino - get_number_of_digits(print_buffer->st_ino));
         (void)printf("%ld ", print_buffer->st_ino);

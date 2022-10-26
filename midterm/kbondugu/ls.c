@@ -13,7 +13,7 @@
 #define MIN_NUM_ARGS 2
 #define DEFAULT_LEVEL 1
 
-struct FLAGS_STRUCT flags;
+FLAGS flags;
 
 int sorter(const FTSENT** one, const FTSENT** two) {
     return sort(one, two, &flags);
