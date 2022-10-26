@@ -5,8 +5,6 @@
 #include<string.h>
 #include<sys/stat.h>
 
-extern int RETURN_VALUE;
-
 void preprocess_files(int argc, char** args, FT* args_meta) {
     /** ukik 0 is exec name, 1 is flags */
     int i = 2;
