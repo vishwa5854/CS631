@@ -1,10 +1,12 @@
 #include<fts.h>
+#include"sort.h"
 #include<stdbool.h>
 #include<stdio.h>
 #include<string.h>
 #include"structures.h"
+#include<sys/stat.h>
 
-void ls(char* const* file_names, int FTS_OPTIONS, int* sorter) {
+void ls(char* const* file_names, int FTS_OPTIONS, int (*sorter)(const FTSENT **, const FTSENT **)) {
     PF* print_buffer_head = NULL;
     PF* print_buffer_current = (PF*)malloc(sizeof(PF));
     MP* max_map = (MP*)malloc(sizeof(MP));
