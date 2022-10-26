@@ -26,9 +26,7 @@ void ls(char* const* file_names, int FTS_OPTIONS, int* sorter) {
         }
 
         if (node->fts_info == FTS_D) {
-            if (!flags.R) {
-                (void)fts_set(handle, node, FTS_SKIP);
-            }
+            (void)fts_set(handle, node, FTS_SKIP);
         }
         n_files++;
     }
