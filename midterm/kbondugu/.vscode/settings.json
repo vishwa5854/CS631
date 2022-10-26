@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "data-structures.h": "c",
+        "structures.h": "c"
+    }
+}

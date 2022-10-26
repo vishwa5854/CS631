@@ -2,8 +2,51 @@
 2. If we pass the files with names it is not ls'sing them
 3. The best strategy is to iterate 
 
+
 -l symlink pointer
 pre-process dirs and add '/' for my program to work
 for every dir print a dirname and :
 Handle return values
 -a is not working properly -A
+
+
+all files first, then dir
+isatty -- must
+sudo user direct -a
+free everything
+there is a blocks num1, num2
+humanize number function -- use this
+printDir, printFiles separate would be good
+for more than one dir ; dir_name : \n data
+gotta print total as well for every directory
+check for cyclic dir, error dir
+
+print total only when is l or n or to a terminal
+look up getopts -- this is some black magic
+entryStat or stat ???
+
+
+future times -- time printing handling that
++- 6 months only it displays the time -> hour : secs but any more than that just 
+month and year
+
+for executables check for all perms S_IXUSR, SIXGRP, S_IXOTH
+
+if file name is not there just refer to the path burh in the stat
+
+put exit function somewhere in some other function
+
+directly use nsec instead for time
+
+-- check ls 5 4 2 3 1 what's the output
+
+symlink to a file that does'nt exist
+
+non printable char
+
+1, 1 for charecter device
+
+default include path is usr/include
+just do a grep for constansts in /usr/include
+
+sys/syslimits -> is what u need
