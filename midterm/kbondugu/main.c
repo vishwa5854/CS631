@@ -29,15 +29,20 @@ int main(int argc, char ** argv) {
     
     if (args_meta.n_files > 0) {
         /** We can group all the files together and call ls. */
-        ls(args_meta.files, FTS_OPTIONS, &sorter);
+        ls(args_meta.files, FTS_OPTIONS, &sorter, false, &flags);
+        printf("\n");
     }
 
     if (args_meta.n_directories > 0) {
         qsort(args_meta.directories, args_meta.n_directories, sizeof(char *), sort_by_name);
 
         for (i = 0; i < args_meta.n_directories; i++) {
-           char *const required[2] = { args_meta.directories[i], NULL };
-           ls(required, FTS_OPTIONS, &sorter);
+            char *const required[2] = { args_meta.directories[i], NULL };
+            ls(required, FTS_OPTIONS, &sorter, true, &flags);
+           
+            if (i != (args_meta.n_directories - 1)) {
+                printf("\n");
+            }
         }
     }
 

@@ -240,46 +240,49 @@ void flush(PF* print_buffer, MP* max_map, FLAGS* flags) {
         print_empty_spaces(max_map->which_month - strlen(print_buffer->which_month));
         (void)printf("%s ", print_buffer->which_month);
 
-        print_empty_spaces(max_map->tm_mday - get_number_of_digits(print_buffer->tm_mday));
+        // print_empty_spaces(max_map->tm_mday - get_number_of_digits(print_buffer->tm_mday));
         (void)printf("%02d ", print_buffer->tm_mday);
 
         (void)printf("%02d:%02d ", print_buffer->tm_hour, print_buffer->tm_min);
     }
 
     if (strlen(print_buffer->file_name) == 0) {
+        (void)printf("\n");
         return;
     }
 
     if (flags->d) {
         if (max_map->file_name > -1) {
-            (void)printf("%s\n", print_buffer->file_name);
+            (void)printf("%s", print_buffer->file_name);
         }
-
+        (void)printf("\n");
         return;
     }
 
     /** F arg prep */
     if (flags->F) {
         if (S_ISDIR(print_buffer->st_mode)) {
-            (void)printf("%s/\n", print_buffer->file_name);
+            (void)printf("%s/", print_buffer->file_name);
         } else if (S_IEXEC & print_buffer->st_mode) {
-            (void)printf("%s*\n", print_buffer->file_name);
+            (void)printf("%s*", print_buffer->file_name);
         } else if (S_ISLNK(print_buffer->st_mode)) {
-            (void)printf("%s@ -> %s\n", print_buffer->file_name, print_buffer->file_path);
+            (void)printf("%s@ -> %s", print_buffer->file_name, print_buffer->file_path);
         } else if (S_IFCHR & print_buffer->st_mode) {
-            (void)printf("%s%c\n", print_buffer->file_name, '%');
+            (void)printf("%s%c", print_buffer->file_name, '%');
         } else if (S_ISSOCK(print_buffer->st_mode)) {
-            (void)printf("%s=\n", print_buffer->file_name);
+            (void)printf("%s=", print_buffer->file_name);
         } else if (S_ISFIFO(print_buffer->st_mode)) {
-            (void)printf("%s|\n", print_buffer->file_name);
+            (void)printf("%s|", print_buffer->file_name);
         } else {
-            (void)printf("%s\n", print_buffer->file_name);
+            (void)printf("%s", print_buffer->file_name);
         }
     } else {
         if (S_ISLNK(print_buffer->st_mode)) {
-            (void)printf("%s -> %s\n", print_buffer->file_name, print_buffer->file_path);
+            (void)printf("%s -> %s", print_buffer->file_name, print_buffer->file_path);
         } else {
-            (void)printf("%s\n", print_buffer->file_name);
+            (void)printf("%s", print_buffer->file_name);
         }
     }
+
+    (void)printf("\n");
 }

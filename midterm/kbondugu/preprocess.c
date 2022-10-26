@@ -52,7 +52,9 @@ void preprocess_files(int argc, char** args, FT* args_meta) {
         }
 
         if (S_ISDIR(file_info.st_mode)) {
+            // args_meta->directories[i] = malloc((strlen(args[i]) + 1) * sizeof(char));
             args_meta->directories[args_meta->n_directories++] = args[i];
+            // strncat(args_meta->directories[i], "/", 1);
         } else {
             args_meta->files[args_meta->n_files++] = args[i];
         }
