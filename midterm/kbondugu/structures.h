@@ -6,6 +6,7 @@
 #include<stdbool.h>
 #include<sys/stat.h>
 #include<sys/syslimits.h>
+#include<stdlib.h>
 
 #define STRMODE_LENGTH 11
 #define MAX_MONTH_NAME_LENGTH 3
@@ -14,6 +15,8 @@
 #ifndef LOGIN_NAME_MAX
 #define LOGIN_NAME_MAX 256
 #endif
+
+int RETURN_VALUE = EXIT_SUCCESS;
 
 typedef struct FLAGS_STRUCT {
     bool A;
@@ -81,5 +84,12 @@ typedef struct MAX_MAP {
     long int tm_min;
     long int file_name;
 } MP;
+
+typedef struct FILE_TYPES {
+    char** files;
+    char** directories;
+    int    n_files;
+    int    n_directories;
+} FT;
 
 #endif

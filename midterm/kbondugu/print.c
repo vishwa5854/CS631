@@ -101,7 +101,6 @@ void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map) {
         struct tm *tm;
 
         if ((tm = localtime(&node->fts_statp->st_mtim.tv_sec)) == NULL) {
-            // For now I am going to skip this error.
             fprintf(stderr, "ls: Error while fetching the local time");
         }
 
@@ -142,10 +141,8 @@ void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map) {
     strncpy(print_buffer->file_path, node->fts_accpath, strlen(node->fts_accpath));
     print_buffer->file_path[strlen(node->fts_accpath)] = '\0';
 
-    /** F arg prep */
     if (flags->F) {
         print_buffer->st_mode = node->fts_statp->st_mode;        
-    } else {
     }
 }
 
@@ -178,7 +175,7 @@ void print_empty_spaces(long int how_many) {
     }
 }
 
-void flush(PF* print_buffer, MP* max_map, FLAGS* flags) {    
+void flush(PF* print_buffer, MP* max_map, FLAGS* flags) {
     if (flags->i) {
         print_empty_spaces(max_map->st_ino - get_number_of_digits(print_buffer->st_ino));
         (void)printf("%ld ", print_buffer->st_ino);
