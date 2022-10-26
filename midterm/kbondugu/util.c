@@ -1,6 +1,9 @@
-#include<fts.h>
 #include<stdio.h>
 #include"structures.h"
+#include<string.h>
+#include<sys/types.h>
+#include<sys/stat.h>
+#include<fts.h>
 #include<unistd.h>
 
 char* which_month(int month) {
@@ -176,4 +179,5 @@ int init_flags_from_args(FLAGS* flags, char* args) {
                 break;
         }
     }
+    return FTS_FLAGS;
 }

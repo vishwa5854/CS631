@@ -1,5 +1,5 @@
 PROG=	ls
-OBJS=	ls.o print.o sort.o util.o
+OBJS=	ls.o print.o sort.o util.o main.o preprocess.o
 CFLAGS=	-Wall -Werror -Wextra -g
 
 all: ${PROG}

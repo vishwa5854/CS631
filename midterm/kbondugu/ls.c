@@ -1,10 +1,11 @@
-#include<fts.h>
 #include"sort.h"
 #include<stdbool.h>
 #include<stdio.h>
 #include<string.h>
 #include"structures.h"
+#include<sys/types.h>
 #include<sys/stat.h>
+#include<fts.h>
 
 void ls(char* const* file_names, int FTS_OPTIONS, int (*sorter)(const FTSENT **, const FTSENT **)) {
     PF* print_buffer_head = NULL;

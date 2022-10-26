@@ -6,6 +6,9 @@
         "preprocess.h": "c",
         "cstdlib": "c",
         "cerrno": "c",
-        "unistd.h": "c"
+        "unistd.h": "c",
+        "ls.h": "c",
+        "stdlib.h": "c",
+        "sort.h": "c"
     }
 }

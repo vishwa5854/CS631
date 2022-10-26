@@ -1,6 +1,7 @@
 #include<sys/stat.h>
 #include"sort.h"
 #include<string.h>
+#include<stdio.h>
 
 int sort(const FTSENT** one, const FTSENT** two, FLAGS* flags) {
     /** f is the KING, it will override all the sort options irrespective of the order. */
@@ -56,4 +57,12 @@ int sort(const FTSENT** one, const FTSENT** two, FLAGS* flags) {
     }
     return flags->r ? strcmp((*two)->fts_name, (*one)->fts_name)
                    : strcmp((*one)->fts_name, (*two)->fts_name);
+}
+
+/** 
+ * Inspired by GEEKSFORGEEKS 
+ * https://www.geeksforgeeks.org/c-program-sort-array-names-strings/ 
+ */
+int sort_by_name(const void* a, const void* b) {
+    return strcmp(*(const char**)a, *(const char**)b);
 }

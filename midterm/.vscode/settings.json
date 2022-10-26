@@ -13,6 +13,7 @@
         "flags.h": "c",
         "syslimits.h": "c",
         "limits.h": "c",
-        "param.h": "c"
+        "param.h": "c",
+        "cstdlib": "c"
     }
 }

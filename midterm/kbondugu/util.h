@@ -1,3 +1,8 @@
+#ifndef UTIL_H_
+#define UTIL_H_
+
+#include"structures.h"
+
 char* which_month(int month);
 
 long int get_number_of_digits(long int number);
@@ -15,3 +20,7 @@ void convert_bytes_to_human_readable(double size, char* buff);
 int move_args_and_non_existent_files_to_top(int N, char ** paths);
 
 void create_paths(int N, char ** paths, int start, char** required_paths);
+
+int init_flags_from_args(FLAGS* flags, char* args);
+
+#endif
