@@ -13,8 +13,18 @@ void preprocess_files(int argc, char** args, FT* args_meta) {
         struct stat file_info;
 
         if (stat(args[i], &file_info) < 0) {
-            fprintf(stderr, "ls: cannot stat %s : %s\n", args[i], strerror(errno));
-            RETURN_VALUE = EXIT_FAILURE;
+            if (errno == ENOENT) {
+                fprintf(stderr, "ls: %s: No such file or directory\n", argv[i]);
+            } else {
+                fprintf(stderr, "ls: cannot stat %s : %s\n", args[i], strerror(errno));
+            }
+            continue;
+        }
+
+        if (S_ISDIR(file_info.st_mode)) {
+            args_meta->directories[args_meta->n_directories++] = args[i];
+        } else {
+            args_meta->files[args_meta->n_files++] = args[i];
         }
     }
 }

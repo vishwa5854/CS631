@@ -70,14 +70,15 @@ int main(int argc, char* const argv[]) {
     FTSENT* node = NULL;
     // FTSENT* child = NULL;
     struct FLAGS_STRUCT flags;
-    flags.R = true;
-    char* paths[2];
+    flags.R = false;
+    char* paths[3];
     paths[0] = argv[1];
+    paths[1] = argv[2];
     paths[1] = NULL;
 
     char* const* required = paths;
 
-    FTS* handle = fts_open(required, FTS_LOGICAL | FTS_SEEDOT, 0);
+    FTS* handle = fts_open(required, FTS_LOGICAL, 0);
     int return_value = EXIT_SUCCESS;
 
     (void)printf("\n%d\n", argc);

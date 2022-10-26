@@ -1,4 +1,6 @@
+#include<fts.h>
 #include<stdio.h>
+#include"structures.h"
 #include<unistd.h>
 
 char* which_month(int month) {
@@ -95,5 +97,83 @@ void create_paths(int N, char ** paths, int start, char** required_paths) {
     while (i < N) {
         required_paths[i - start] = paths[i];
         i++;
+    }
+}
+
+int init_flags_from_args(FLAGS* flags, char* args) {
+    int FTS_FLAGS = FTS_LOGICAL;
+    size_t n_args = strlen(args);
+    size_t i;
+
+    if (geteuid() == 0) {
+        flags->A = true;
+    }
+
+    for (i = 0; i < n_args; i++) {
+        if (args[i] == '-') {
+            continue;
+        }
+
+        switch (args[i]) {
+            case 'A':
+                flags->A = true;
+                break;
+            case 'a':
+                flags->a = true;
+                flags->A = true;
+                FTS_FLAGS = FTS_FLAGS | FTS_SEEDOT;
+                break;
+            case 'c':
+                flags->c = true;
+                break;
+            case 'd':
+                flags->d = true;
+                break;
+            case 'F':
+                flags->F = true;
+                break;
+            case 'f':
+                flags->f = true;
+                break;
+            case 'h':
+                flags->h = true;
+                break;
+            case 'i':
+                flags->i = true;
+                break;
+            case 'k':
+                flags->k = true;
+                break;
+            case 'l':
+                flags->l = true;
+                break;
+            case 'n':
+                flags->n = true;
+                break;
+            case 'q':
+                flags->q = true;
+                break;
+            case 'R':
+                flags->R = true;
+                break;
+            case 'r':
+                flags->r = true;
+                break;
+            case 'S':
+                flags->S = true;
+                break;
+            case 's':
+                flags->s = true;
+                break;
+            case 't':
+                flags->t = true;
+                break;
+            case 'u':
+                flags->u = true;
+                break;
+            case 'w':
+                flags->w = true;
+                break;
+        }
     }
 }
