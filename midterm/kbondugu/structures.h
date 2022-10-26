@@ -1,7 +1,7 @@
-/** @fileoverview This file consists of all the structures and other data structures used in this project. */
+/** @fileoverview Header of all the structures and other data structures used in this project. */
 
-#ifndef DATA_STRUCTURES_H
-#define DATA_STRUCTURES_H
+#ifndef STRUCTURES_H_
+#define STRUCTURES_H_
 
 #include<stdbool.h>
 #include<sys/stat.h>

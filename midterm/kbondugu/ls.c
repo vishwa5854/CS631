@@ -1,5 +1,4 @@
 #include<sys/stat.h>
-
 #include<fts.h>
 #include"sort.h"
 #include<stdbool.h>
@@ -17,16 +16,8 @@
 struct FLAGS_STRUCT flags;
 struct SORT_FLAGS sort_flags;
 
-int set_sort_flags_and_call_sort(const FTSENT** one, const FTSENT** two) {
-    sort_flags.f = flags.f;
-    sort_flags.S = flags.S;
-    sort_flags.t = flags.t;
-    sort_flags.c = flags.c;
-    sort_flags.u = flags.u;
-    sort_flags.r = flags.r;
-    sort_flags.l = flags.l;
-
-    return sort(one, two, &sort_flags);
+int sorter(const FTSENT** one, const FTSENT** two) {
+    return sort(one, two, &flags);
 }
 
 int set_args_to_struct(char *raw_arguments) {
@@ -135,7 +126,7 @@ void recurse(FTSENT* one, FTS* handle, int FTS_FLAGS) {
         paths[0] = one->fts_path;
         paths[1] = NULL;
         char* const* req = paths;
-        FTS* twoHandler = fts_open(req, FTS_FLAGS, &set_sort_flags_and_call_sort);
+        FTS* twoHandler = fts_open(req, FTS_FLAGS, &sorter);
         FTSENT* two = NULL;
 
         if (one->fts_info == FTS_DP) {
@@ -197,7 +188,7 @@ void recurse(FTSENT* one, FTS* handle, int FTS_FLAGS) {
 
 void ls(FTS* handle, FTSENT* node, int FTS_FLAGS, char* const* file_paths, MP* max_map) {
     // int return_value = EXIT_SUCCESS;
-    handle = fts_open(file_paths, FTS_FLAGS, &set_sort_flags_and_call_sort);
+    handle = fts_open(file_paths, FTS_FLAGS, &sorter);
     PF* print_buffer_head = NULL;
     PF* print_buffer_current = (PF*)malloc(sizeof(PF));
     

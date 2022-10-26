@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "data-structures.h": "c",
-        "structures.h": "c"
+        "structures.h": "c",
+        "stdbool.h": "c"
     }
 }

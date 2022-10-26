@@ -1,14 +1,12 @@
+/** @fileoverview Header for sorting */
+
+#ifndef SORT_H_
+#define SORT_H_
+
 #include<fts.h>
 #include<stdbool.h>
+#include"structures.h"
 
-struct SORT_FLAGS {
-    bool f;
-    bool S;
-    bool t;
-    bool c;
-    bool u;
-    bool r;
-    bool l;
-};
+int sort(const FTSENT** one, const FTSENT** two, FLAGS* sort_flags);
 
-int sort(const FTSENT** one, const FTSENT** two, struct SORT_FLAGS* sort_flags);
+#endif
