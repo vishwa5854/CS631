@@ -5,7 +5,7 @@
 
 #include<stdbool.h>
 #include<sys/stat.h>
-// #include<sys/syslimits.h>
+#include<sys/syslimits.h>
 #include<stdlib.h>
 
 #define STRMODE_LENGTH 11
@@ -15,9 +15,6 @@
 #ifndef LOGIN_NAME_MAX
 #define LOGIN_NAME_MAX 256
 #endif
-
-#define NAME_MAX 256
-#define PATH_MAX 256
 
 typedef struct FLAGS_STRUCT {
     bool A;
