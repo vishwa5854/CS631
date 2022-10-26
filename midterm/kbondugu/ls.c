@@ -14,7 +14,6 @@
 #define DEFAULT_LEVEL 1
 
 struct FLAGS_STRUCT flags;
-struct SORT_FLAGS sort_flags;
 
 int sorter(const FTSENT** one, const FTSENT** two) {
     return sort(one, two, &flags);
