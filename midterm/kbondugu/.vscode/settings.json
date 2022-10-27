@@ -9,6 +9,7 @@
         "unistd.h": "c",
         "ls.h": "c",
         "stdlib.h": "c",
-        "sort.h": "c"
+        "sort.h": "c",
+        "print.h": "c"
     }
 }

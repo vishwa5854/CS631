@@ -9,8 +9,8 @@
 #include<fts.h>
 
 void ls(char* const* file_names, int FTS_OPTIONS, int (*sorter)(const FTSENT **, const FTSENT **), bool is_dir, FLAGS* flags) {
-    PF* print_buffer_head = NULL;
     PF* print_buffer_current = (PF*)malloc(sizeof(PF));
+    PF* print_buffer_head = print_buffer_current;
     MP* max_map = (MP*)malloc(sizeof(MP));
     int n_files = 0, j = 0;
     FTS* handle = fts_open(file_names, FTS_OPTIONS, sorter);
@@ -18,23 +18,17 @@ void ls(char* const* file_names, int FTS_OPTIONS, int (*sorter)(const FTSENT **,
 
     while ((node = fts_read(handle)) != NULL) {
         bool errors = (node->fts_info == FTS_ERR) ||
-                     (node->fts_info == FTS_DNR);
+                     (node->fts_info == FTS_DNR) || (node->fts_info == FTS_DC);
         
         if (errors) {
             fprintf(stderr, "ls: Error while traversing %s.\n", strerror(node->fts_errno));
             continue;
         }
 
-        if ((n_files++ == 0) && is_dir) {
+        if ((n_files == 0) && is_dir) {
+            n_files++;
             (void)printf("%s:\n", node->fts_path);
             continue;
-        }
-
-        if (node->fts_info != FTS_DP) {
-            print_buffer_current->next = (PF*)malloc(sizeof(PF));
-            print_buffer_current = print_buffer_current->next;
-            print(flags, node, print_buffer_current, max_map);
-            n_files++;
         }
 
         bool skip_conditions = (node->fts_info == FTS_D) && !is_dir;
@@ -44,14 +38,25 @@ void ls(char* const* file_names, int FTS_OPTIONS, int (*sorter)(const FTSENT **,
             (void)fts_set(handle, node, FTS_SKIP);
         }
 
-        /** Add a new entry for the upcoming iteration. */
-        if (print_buffer_head == NULL) {
-            print_buffer_head = print_buffer_current;
+        if (node->fts_info != FTS_DP) {
+            if ((strlen(node->fts_name) > 0) && (node->fts_name[0] == '.') && !flags->A) {
+                continue;
+            }
+
+            if (strlen(node->fts_name) > 0) {
+                print_buffer_current->next = (PF*)malloc(sizeof(PF));
+                print(flags, node, print_buffer_current, max_map);
+                print_buffer_current = print_buffer_current->next;
+                n_files++;
+            }
         }
     }
 
-    while ((print_buffer_head != NULL) && (j < (n_files - 1))) {
-        flush(print_buffer_head, max_map, flags);
+    // j < n_files + !is_dir
+    while (print_buffer_head != NULL) {
+        if (strlen(print_buffer_head->file_name) != 0) {
+            flush(print_buffer_head, max_map, flags);
+        }
         print_buffer_head = print_buffer_head->next;
         j++;
     }
