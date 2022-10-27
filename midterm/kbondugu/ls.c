@@ -12,7 +12,7 @@ void ls(char* const* file_names, int FTS_OPTIONS, int (*sorter)(const FTSENT **,
     PF* print_buffer_current = (PF*)malloc(sizeof(PF));
     PF* print_buffer_head = print_buffer_current;
     MP* max_map = (MP*)malloc(sizeof(MP));
-    int n_files = 0, j = 0;
+    int n_files = 0;
     FTS* handle = fts_open(file_names, FTS_OPTIONS, sorter);
     FTSENT* node;
 
@@ -52,13 +52,11 @@ void ls(char* const* file_names, int FTS_OPTIONS, int (*sorter)(const FTSENT **,
         }
     }
 
-    // j < n_files + !is_dir
     while (print_buffer_head != NULL) {
         if (strlen(print_buffer_head->file_name) != 0) {
             flush(print_buffer_head, max_map, flags);
         }
         print_buffer_head = print_buffer_head->next;
-        j++;
     }
     (void)fts_close(handle);
     free(print_buffer_head);
