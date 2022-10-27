@@ -51,7 +51,7 @@ void report_errors(int N, char** argv) {
     }
 
     for (; i < N; i++) {
-        fprintf(stderr, "ls: %s: No such file or directory\n", argv[i]);
+        (void)fprintf(stderr, "ls: %s: No such file or directory\n", argv[i]);
     }
 }
 
@@ -66,7 +66,7 @@ void convert_bytes_to_human_readable(double size, char *buf) {
     }
 
     if (i <= scope_of_this_function) {
-        sprintf(buf, "%.*f%s", i, size, units[i]);
+        (void)sprintf(buf, "%.*f%s", i, size, units[i]);
     }
     return;
 }
@@ -124,6 +124,7 @@ int init_flags_from_args(FLAGS* flags, char* args) {
                 break;
             case 'c':
                 flags->c = true;
+                flags->u = false;
                 break;
             case 'd':
                 flags->d = true;
@@ -145,34 +146,44 @@ int init_flags_from_args(FLAGS* flags, char* args) {
                 break;
             case 'l':
                 flags->l = true;
+                flags->n = false;
                 break;
             case 'n':
+                flags->l = false;
                 flags->n = true;
                 break;
             case 'q':
                 flags->q = true;
+                flags->w = false;
                 break;
             case 'R':
-                flags->R = true;
+                flags->R = !flags->d && true;;
                 break;
             case 'r':
                 flags->r = true;
                 break;
             case 'S':
                 flags->S = true;
+                flags->t = false;
                 break;
             case 's':
                 flags->s = true;
                 break;
             case 't':
                 flags->t = true;
+                flags->S = false;
                 break;
             case 'u':
                 flags->u = true;
+                flags->c = false;
                 break;
             case 'w':
                 flags->w = true;
+                flags->q = false;
                 break;
+            default:
+                (void)fprintf(stderr, "ls: unknown option -- %c\nusage: ls [ −AacdFfhiklnqRrSstuw] [file . . .]\n", args[i]);
+                return -1;
         }
     }
     return FTS_FLAGS;

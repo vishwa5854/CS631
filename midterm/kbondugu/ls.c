@@ -21,7 +21,7 @@ void ls(char* const* file_names, int FTS_OPTIONS, int (*sorter)(const FTSENT **,
                      (node->fts_info == FTS_DNR) || (node->fts_info == FTS_DC);
         
         if (errors) {
-            fprintf(stderr, "ls: Error while traversing %s.\n", strerror(node->fts_errno));
+            (void)fprintf(stderr, "ls: Error while traversing %s.\n", strerror(node->fts_errno));
             continue;
         }
 

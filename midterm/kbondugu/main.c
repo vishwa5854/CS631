@@ -30,12 +30,16 @@ int main(int argc, char ** argv) {
 
     if ((argc > MIN_ARGS) && (argv[1][0] == '-')) {
         FTS_OPTIONS = init_flags_from_args(&flags, argv[1]);
+        
+        if (FTS_OPTIONS == -1) {
+            return EXIT_FAILURE;
+        }
     }
     
     if (args_meta.n_files > 0) {
         /** We can group all the files together and call ls. */
         ls(args_meta.files, FTS_OPTIONS, &sorter, false, &flags);
-        printf("\n");
+        (void)printf("\n");
     }
 
     if (args_meta.n_directories > 0) {
@@ -46,7 +50,7 @@ int main(int argc, char ** argv) {
             ls(required, FTS_OPTIONS, &sorter, true, &flags);
            
             if (i != (args_meta.n_directories - 1)) {
-                printf("\n");
+                (void)printf("\n");
             }
         }
     }

@@ -44,9 +44,9 @@ void preprocess_files(int argc, char** args, FT* args_meta) {
 
         if (stat(args[i], &file_info) < 0) {
             if (errno == ENOENT) {
-                fprintf(stderr, "ls: %s: No such file or directory\n", args[i]);
+                (void)fprintf(stderr, "ls: %s: No such file or directory\n", args[i]);
             } else {
-                fprintf(stderr, "ls: cannot stat %s : %s\n", args[i], strerror(errno));
+                (void)fprintf(stderr, "ls: cannot stat %s : %s\n", args[i], strerror(errno));
             }
             continue;
         }

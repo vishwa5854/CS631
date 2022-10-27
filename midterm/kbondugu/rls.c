@@ -147,7 +147,7 @@ void recurse(FTSENT* one, FTS* handle, int FTS_FLAGS) {
             int parent_err_conditions = (two->fts_info == FTS_ERR) ||
                                     (two->fts_info == FTS_DNR);
             if (parent_err_conditions) {
-                (void)fprintf(stderr, "ls: Error while traversing %s.\n", strerror(two->fts_errno));
+                (void)(void)fprintf(stderr, "ls: Error while traversing %s.\n", strerror(two->fts_errno));
                 continue;
             }
 
@@ -203,7 +203,7 @@ void ls(FTS* handle, FTSENT* node, int FTS_FLAGS, char* const* file_paths, MP* m
         int parent_err_conditions = (node->fts_info == FTS_ERR) ||
                                 (node->fts_info == FTS_DNR);
         if (parent_err_conditions) {
-            (void)fprintf(stderr, "ls: Error while traversing %s.\n", strerror(node->fts_errno));
+            (void)(void)fprintf(stderr, "ls: Error while traversing %s.\n", strerror(node->fts_errno));
             continue;
         }
 

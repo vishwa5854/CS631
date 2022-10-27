@@ -101,7 +101,7 @@ void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map) {
         struct tm *tm;
 
         if ((tm = localtime(&node->fts_statp->st_mtim.tv_sec)) == NULL) {
-            fprintf(stderr, "ls: Error while fetching the local time");
+            (void)fprintf(stderr, "ls: Error while fetching the local time");
         }
 
         (void)strncpy(print_buffer->which_month, which_month(tm->tm_mon), strlen(which_month(tm->tm_mon)));
