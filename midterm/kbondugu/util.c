@@ -108,10 +108,6 @@ int init_flags_from_args(FLAGS* flags, char* args) {
     size_t n_args = strlen(args);
     size_t i;
 
-    if (geteuid() == 0) {
-        flags->A = true;
-    }
-
     for (i = 0; i < n_args; i++) {
         if (args[i] == '-') {
             continue;

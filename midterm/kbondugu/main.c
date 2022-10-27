@@ -5,6 +5,7 @@
 #include<stdlib.h>
 #include"structures.h"
 #include"sort.h"
+#include<unistd.h>
 #include"util.h"
 
 #define MIN_ARGS 1
@@ -22,6 +23,10 @@ int main(int argc, char ** argv) {
     args_meta.files = malloc(sizeof(char*) * argc);
     args_meta.directories = malloc(sizeof(char*) * argc);
     preprocess_files(argc, argv, &args_meta);
+
+    if ((geteuid() == 0) || (getuid() == 0)) {
+        flags.A = true;
+    }
 
     if ((argc > MIN_ARGS) && (argv[1][0] == '-')) {
         FTS_OPTIONS = init_flags_from_args(&flags, argv[1]);
