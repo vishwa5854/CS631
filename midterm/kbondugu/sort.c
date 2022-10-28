@@ -9,7 +9,7 @@ int sort(const FTSENT** one, const FTSENT** two, FLAGS* flags) {
         return 0;
     }
 
-    if (flags->t || (flags->l && !flags->S)) {
+    if (flags->t && flags->l) {
         if (flags->c) {
             /** Lexicographical sort in case of equal values of ctime */
             if ((*one)->fts_statp->st_ctimensec == (*two)->fts_statp->st_ctimensec) {
