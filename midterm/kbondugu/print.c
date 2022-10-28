@@ -99,8 +99,15 @@ void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map) {
         }
         
         struct tm *tm;
+        time_t* which_time = &node->fts_statp->st_mtim.tv_sec;
 
-        if ((tm = localtime(&node->fts_statp->st_mtim.tv_sec)) == NULL) {
+        if (flags->c) {
+            which_time = &node->fts_statp->st_ctim.tv_sec;
+        } else if (flags->u) {
+            which_time = &node->fts_statp->st_atim.tv_sec;
+        }
+
+        if ((tm = localtime(which_time)) == NULL) {
             (void)fprintf(stderr, "ls: Error while fetching the local time");
         }
 
