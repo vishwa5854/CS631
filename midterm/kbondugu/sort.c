@@ -12,36 +12,36 @@ int sort(const FTSENT** one, const FTSENT** two, FLAGS* flags) {
     if (flags->t || (flags->l && !flags->S)) {
         if (flags->c) {
             /** Lexicographical sort in case of equal values of ctime */
-            if ((*one)->fts_statp->st_ctime == (*two)->fts_statp->st_ctime) {
+            if ((*one)->fts_statp->st_ctimensec == (*two)->fts_statp->st_ctimensec) {
                 return flags->r ? 
                             strcmp((*two)->fts_name, (*one)->fts_name) :
                             strcmp((*one)->fts_name, (*two)->fts_name);
             }
             return flags->r ? 
-                        (((*two)->fts_statp->st_ctime < (*one)->fts_statp->st_ctime) ? 1 : -1) : 
-                        (((*one)->fts_statp->st_ctime < (*two)->fts_statp->st_ctime) ? 1 : -1);
+                        (((*two)->fts_statp->st_ctimensec < (*one)->fts_statp->st_ctimensec) ? 1 : -1) : 
+                        (((*one)->fts_statp->st_ctimensec < (*two)->fts_statp->st_ctimensec) ? 1 : -1);
         }
 
         if (flags->u) {
-            if ((*one)->fts_statp->st_atime == (*two)->fts_statp->st_atime) {
+            if ((*one)->fts_statp->st_atimensec == (*two)->fts_statp->st_atimensec) {
                 return flags->r ? 
                             strcmp((*two)->fts_name, (*one)->fts_name) :
                             strcmp((*one)->fts_name, (*two)->fts_name);
             }
             return flags->r ? 
-                        (((*two)->fts_statp->st_atime < (*one)->fts_statp->st_atime) ? 1 : -1) :
-                        (((*one)->fts_statp->st_atime < (*two)->fts_statp->st_atime) ? 1 : -1);
+                        (((*two)->fts_statp->st_atimensec < (*one)->fts_statp->st_atimensec) ? 1 : -1) :
+                        (((*one)->fts_statp->st_atimensec < (*two)->fts_statp->st_atimensec) ? 1 : -1);
         }
 
         if (flags->t) {
-            if ((*one)->fts_statp->st_mtime == (*two)->fts_statp->st_mtime) {
+            if ((*one)->fts_statp->st_mtimensec == (*two)->fts_statp->st_mtimensec) {
                 return flags->r ? 
                             strcmp((*two)->fts_name, (*one)->fts_name) :
                             strcmp((*one)->fts_name, (*two)->fts_name);
             }
             return flags->r ? 
-                        (((*two)->fts_statp->st_mtime < (*one)->fts_statp->st_mtime) ? 1 : -1) : 
-                        (((*one)->fts_statp->st_mtime < (*two)->fts_statp->st_mtime) ? 1 : -1);
+                        (((*two)->fts_statp->st_mtimensec < (*one)->fts_statp->st_mtimensec) ? 1 : -1) : 
+                        (((*one)->fts_statp->st_mtimensec < (*two)->fts_statp->st_mtimensec) ? 1 : -1);
         }
     }
 
