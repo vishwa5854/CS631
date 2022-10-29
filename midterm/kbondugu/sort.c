@@ -4,11 +4,6 @@
 #include<stdio.h>
 
 int sort(const FTSENT** one, const FTSENT** two, FLAGS* flags) {
-    /** f is the KING, it will override all the sort options irrespective of the order. */
-    if (flags->f) {
-        return 0;
-    }
-
     if (flags->t && flags->l) {
         if (flags->c) {
             /** Lexicographical sort in case of equal values of ctime */

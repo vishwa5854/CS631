@@ -21,7 +21,7 @@ void ls(
     MP* max_map = (MP*)malloc(sizeof(MP));
     max_map = init_max_map(max_map);
     int n_files = 0;
-    FTS* handle = fts_open(file_names, FTS_OPTIONS, sorter);
+    FTS* handle = fts_open(file_names, FTS_OPTIONS, flags->f ? NULL : sorter);
     FTSENT* node;
 
     while ((node = fts_read(handle)) != NULL) {
