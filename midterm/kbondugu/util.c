@@ -104,7 +104,7 @@ void create_paths(int N, char ** paths, int start, char** required_paths) {
 }
 
 int init_flags_from_args(FLAGS* flags, char* args) {
-    int FTS_FLAGS = FTS_LOGICAL;
+    int FTS_FLAGS = FTS_PHYSICAL;
     size_t n_args = strlen(args);
     size_t i;
 

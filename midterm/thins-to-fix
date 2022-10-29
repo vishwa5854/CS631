@@ -10,13 +10,13 @@ Handle return values
 -a is not working properly -A
 
 
-all files first, then dir
+-- done all files first, then dir
 isatty -- must
-sudo user direct -a
-free everything
+sudo user direct -a -- done
+free everything -- done
 there is a blocks num1, num2
 humanize number function -- use this
-printDir, printFiles separate would be good
+printDir, printFiles separate would be good -- didn't separate but good
 for more than one dir ; dir_name : \n data
 gotta print total as well for every directory
 check for cyclic dir, error dir

@@ -39,7 +39,10 @@ int main(int argc, char ** argv) {
     if (args_meta.n_files > 0) {
         /** We can group all the files together and call ls. */
         ls(args_meta.files, FTS_OPTIONS, &sorter, false, &flags);
-        (void)printf("\n");
+
+        if (args_meta.n_directories > 0) {
+            (void)printf("\n");
+        }
     }
 
     if (args_meta.n_directories > 0) {

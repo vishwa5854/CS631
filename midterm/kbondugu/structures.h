@@ -69,7 +69,9 @@ typedef struct PRINTER_FRAME {
     char                   file_name[NAME_MAX];
     char                   file_path[PATH_MAX];
     mode_t                 st_mode;
+    long int               total_bytes;
     struct PRINTER_FRAME*  next;
+    int                    fts_info;
 } PF;
 
 typedef struct MAX_MAP {

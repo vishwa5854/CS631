@@ -1,22 +1,27 @@
-#include<unistd.h>
-#include<stdlib.h>
-#include<string.h>
 #include<ctype.h>
+#include<errno.h>
 #include<grp.h>
 #include<math.h>
 #include"print.h"
 #include<pwd.h>
 #include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
 #include<sys/types.h>
 #include<sys/stat.h>
 #include<time.h>
 #include"util.h"
+#include<unistd.h>
+
 
 #define DEFAULT_BLOCK_SIZE 512
 
 extern char **environ;
 
 void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map) {
+    print_buffer->total_bytes = 0;
+    print_buffer->fts_info = node->fts_info;
+
     if (flags->i) {
         print_buffer->st_ino = node->fts_statp->st_ino;
         max_map->st_ino = max_of_two(max_map->st_ino, node->fts_statp->st_ino);
@@ -26,6 +31,10 @@ void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map) {
         int header_length;
         long block_size;
         (void)getbsize(&header_length, &block_size);
+
+        if (flags->k) {
+            block_size = 1024;
+        }
         float block_size_factor = 0;
         float effective_number_of_blocks;
 
@@ -145,10 +154,10 @@ void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map) {
     print_buffer->file_name[strlen(file_name)] = '\0';
     max_map->file_name = just_max(max_map->file_name, strlen(file_name));
 
-    strncpy(print_buffer->file_path, node->fts_accpath, strlen(node->fts_accpath));
-    print_buffer->file_path[strlen(node->fts_accpath)] = '\0';
+    strncpy(print_buffer->file_path, node->fts_path, strlen(node->fts_path));
+    print_buffer->file_path[strlen(node->fts_path)] = '\0';
 
-    if (flags->F) {
+    if (flags->F || flags->l) {
         print_buffer->st_mode = node->fts_statp->st_mode;        
     }
 }
@@ -266,26 +275,32 @@ void flush(PF* print_buffer, MP* max_map, FLAGS* flags) {
         return;
     }
 
-    /** F arg prep */
     if (flags->F) {
         if (S_ISDIR(print_buffer->st_mode)) {
             (void)printf("%s/", print_buffer->file_name);
-        } else if (S_IEXEC & print_buffer->st_mode) {
-            (void)printf("%s*", print_buffer->file_name);
         } else if (S_ISLNK(print_buffer->st_mode)) {
-            (void)printf("%s@ -> %s", print_buffer->file_name, print_buffer->file_path);
-        } else if (S_IFCHR & print_buffer->st_mode) {
+            (void)printf("%s@", print_buffer->file_name);
+        } else if (print_buffer->fts_info == FTS_W) {
             (void)printf("%s%c", print_buffer->file_name, '%');
         } else if (S_ISSOCK(print_buffer->st_mode)) {
             (void)printf("%s=", print_buffer->file_name);
         } else if (S_ISFIFO(print_buffer->st_mode)) {
             (void)printf("%s|", print_buffer->file_name);
+        } else if (S_IEXEC & print_buffer->st_mode) {
+            (void)printf("%s*", print_buffer->file_name);
         } else {
             (void)printf("%s", print_buffer->file_name);
         }
     } else {
         if (S_ISLNK(print_buffer->st_mode)) {
-            (void)printf("%s -> %s", print_buffer->file_name, print_buffer->file_path);
+            char buffer[PATH_MAX];
+            ssize_t len;
+
+            if ((len = readlink(print_buffer->file_path, buffer, sizeof(buffer)-1)) == -1) {
+                len = 0;
+            }
+            buffer[len] = '\0';
+            (void)printf("%s -> %s", print_buffer->file_name, buffer);
         } else {
             (void)printf("%s", print_buffer->file_name);
         }
