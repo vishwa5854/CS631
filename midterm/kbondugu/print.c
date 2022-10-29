@@ -211,7 +211,8 @@ void flush(PF* print_buffer, MP* max_map, FLAGS* flags) {
     if (
         (max_map->total_blocks != -1) &&
         (flags->l || flags->s || flags->n) &&
-        (print_buffer->is_dir)
+        (print_buffer->is_dir) &&
+        (!flags->d)
     ) {
         if (flags->h) {
             char hr_blocks_buffer[MAX_BYTES_SIZE];
@@ -298,17 +299,9 @@ void flush(PF* print_buffer, MP* max_map, FLAGS* flags) {
         return;
     }
 
-    if (flags->d) {
-        if (max_map->file_name > -1) {
-            (void)printf("%s", print_buffer->file_name);
-        }
-        (void)printf("\n");
-        return;
-    }
-
     if (flags->F) {
         if (S_ISDIR(print_buffer->st_mode)) {
-            (void)printf("%s/", print_buffer->file_name);
+            (void)printf("%s/", get_file_name(print_buffer, flags));
         } else if (S_ISLNK(print_buffer->st_mode)) {
             (void)printf("%s@", print_buffer->file_name);
         } else if (print_buffer->fts_info == FTS_W) {
@@ -322,9 +315,9 @@ void flush(PF* print_buffer, MP* max_map, FLAGS* flags) {
             (S_IXGRP & print_buffer->st_mode) || 
             (S_IXOTH & print_buffer->st_mode)
         ) {
-            (void)printf("%s*", print_buffer->file_name);
+            (void)printf("%s*", get_file_name(print_buffer, flags));
         } else {
-            (void)printf("%s", print_buffer->file_name);
+            (void)printf("%s", get_file_name(print_buffer, flags));
         }
     } else {
         if (S_ISLNK(print_buffer->st_mode)) {
@@ -337,7 +330,7 @@ void flush(PF* print_buffer, MP* max_map, FLAGS* flags) {
             buffer[len] = '\0';
             (void)printf("%s -> %s", print_buffer->file_name, buffer);
         } else {
-            (void)printf("%s", print_buffer->file_name);
+            (void)printf("%s", get_file_name(print_buffer, flags));
         }
     }
 

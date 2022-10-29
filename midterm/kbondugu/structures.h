@@ -57,7 +57,6 @@ typedef struct PRINTER_FRAME {
     nlink_t                st_nlink;
     uid_t                  st_uid;
     gid_t                  st_gid;
-    /** A lesson learnt hard way that never use char* inside of struct :(*/
     char                   pw_name[LOGIN_NAME_MAX];
     gid_t                  stat;
     char                   gr_name[LOGIN_NAME_MAX];

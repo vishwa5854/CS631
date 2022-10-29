@@ -25,4 +25,6 @@ int init_flags_from_args(FLAGS* flags, char* args);
 
 double effective_number_of_blocks(int set_block_size, int env_block_size, blkcnt_t st_blocks);
 
+char* get_file_name(PF* print_buffer, FLAGS* flags);
+
 #endif

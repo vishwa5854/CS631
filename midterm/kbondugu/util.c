@@ -133,6 +133,9 @@ int init_flags_from_args(FLAGS* flags, char* args) {
                 break;
             case 'd':
                 flags->d = true;
+                flags->a = true;
+                flags->A = true;
+                FTS_FLAGS = FTS_FLAGS | FTS_SEEDOT;
                 break;
             case 'F':
                 flags->F = true;
@@ -200,4 +203,16 @@ double effective_number_of_blocks(long int set_block_size, long int env_block_si
     float block_size_factor = (env_block_size / set_block_size);
     double effective_number_of_blocks = (st_blocks / block_size_factor);
     return ceil(effective_number_of_blocks);
+}
+
+char* get_file_name(PF* print_buffer, FLAGS* flags) {
+    if (print_buffer->is_dir && flags->d) {
+        if (print_buffer->file_path[0] != '.') {
+            size_t path_len = strlen(print_buffer->file_path);
+            print_buffer->file_path[path_len - 1] = '\0';
+        }
+        return print_buffer->file_path;
+    }
+    
+    return print_buffer->file_name;
 }

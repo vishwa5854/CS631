@@ -33,7 +33,7 @@ void ls(
             continue;
         }
 
-        if ((n_files == 0) && is_dir && print_dir_name) {
+        if ((n_files == 0) && is_dir && print_dir_name && !flags->d) {
             n_files++;
             (void)printf("%s:\n", node->fts_path);
             continue;
@@ -47,6 +47,12 @@ void ls(
         }
 
         if (node->fts_info != FTS_DP) {
+            if (flags->d && is_dir) {
+                if ((strlen(node->fts_name) > 1) || (node->fts_name[0] != '.')) {
+                    continue;
+                }
+            }
+
             if ((strlen(node->fts_name) > 0) && (node->fts_name[0] == '.') && !flags->A) {
                 continue;
             }
@@ -56,6 +62,10 @@ void ls(
                 print(flags, node, print_buffer_current, max_map, is_dir);
                 print_buffer_current = print_buffer_current->next;
                 n_files++;
+
+                if (flags->d && is_dir) {
+                    break;
+                }
             }
         }
     }
