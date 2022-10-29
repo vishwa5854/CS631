@@ -133,24 +133,28 @@ void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map) {
         print_buffer->tm_min = tm->tm_min;
         max_map->tm_min = max_of_two(max_map->tm_mday, tm->tm_min);
     }
-    char* file_name = node->fts_name;
+    char file_name[node->fts_namelen];
+    strncpy(file_name, node->fts_name, node->fts_namelen);
 
     if (flags->q) {
-        char temp[node->fts_namelen];
-        char* replacement = "?";
+        char temp[node->fts_namelen + 1];
+        char replacement = '?';
         size_t j = 0;
 
         for (; j < node->fts_namelen; j++) {
             if (isprint(file_name[j]) != 0) {
-                (void)strncat(temp, &file_name[j], 1);
+                temp[j] = file_name[j];
+                // (void)strncat(temp, &file_name[j], 1);
             } else {
-                (void)strncat(temp, replacement, 1);
+                temp[j] = replacement;
+                // (void)strncat(temp, replacement, 1);
             }
         }
-        file_name = temp;
+        temp[node->fts_namelen + 1] = '\0';
+        strncpy(file_name, temp, node->fts_namelen);
     }
-
-    strncpy(print_buffer->file_name, file_name, strlen(file_name));
+    
+    strncpy(print_buffer->file_name, file_name, node->fts_namelen);
     print_buffer->file_name[strlen(file_name)] = '\0';
     max_map->file_name = just_max(max_map->file_name, strlen(file_name));
 

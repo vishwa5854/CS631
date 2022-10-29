@@ -18,6 +18,7 @@ int sorter(const FTSENT** one, const FTSENT** two) {
 
 int main(int argc, char ** argv) {
     FT args_meta;
+    int stdout_fd;
     int i;
     int FTS_OPTIONS = FTS_PHYSICAL;
     args_meta.files = malloc(sizeof(char*) * argc);
@@ -34,6 +35,14 @@ int main(int argc, char ** argv) {
         if (FTS_OPTIONS == -1) {
             return EXIT_FAILURE;
         }
+    }
+
+    if ((stdout_fd = fileno(stdout)) != -1) {
+        if (isatty(stdout_fd) == 1) {
+            flags.q = !flags.w && true;
+        }
+    } else {
+        (void)fprintf(stderr, "ls: Cannot recognise the output stream");
     }
     
     if (args_meta.n_files > 0) {
