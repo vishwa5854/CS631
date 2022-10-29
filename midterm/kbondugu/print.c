@@ -30,7 +30,6 @@ void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map, bool is_di
         max_map->st_ino = max_of_two(max_map->st_ino, node->fts_statp->st_ino);
     }
 
-    /** Total blocks */
     if ((flags->l || flags->s || flags->n) && (is_dir)) {
         if (flags->k) {
             max_map->total_blocks += effective_number_of_blocks(DEFAULT_BLOCK_SIZE, KILO_BLOCK_SIZE, node->fts_statp->st_blocks);
@@ -45,13 +44,6 @@ void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map, bool is_di
         }
     }
 
-    /** 
-     * Number of file system blocks used for this file, should also display a total. 
-     * -s -- in terms of 512 bytes or BLOCKSIZE bytes
-     * -h -- Modifies the −s and −l options, causing the sizes to be reported in bytes displayed in a human
-        readable format. Overrides −k
-        -k -- overrides -h and reports in kilobytes
-     */
     if (flags->s) {
         int header_length;
         long block_size;
@@ -66,7 +58,7 @@ void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map, bool is_di
             max_map->bytes_in_human_readable = just_max(max_map->bytes_in_human_readable, strlen(print_buffer->bytes_in_human_readable));
         } else {
             if (block_size != DEFAULT_BLOCK_SIZE) {
-                print_buffer->effective_number_of_blocks = effective_number_of_blocks(block_size, DEFAULT_BLOCK_SIZE, node->fts_statp->st_blocks);
+                print_buffer->effective_number_of_blocks = effective_number_of_blocks(DEFAULT_BLOCK_SIZE, block_size, node->fts_statp->st_blocks);
                 max_map->effective_number_of_blocks = max_of_two(max_map->effective_number_of_blocks, print_buffer->effective_number_of_blocks);
             } else {
                 print_buffer->st_blocks = node->fts_statp->st_blocks;
@@ -243,7 +235,7 @@ void flush(PF* print_buffer, MP* max_map, FLAGS* flags) {
         } else {
             if (max_map->effective_number_of_blocks > -1) {
                 print_empty_spaces(max_map->effective_number_of_blocks - get_number_of_digits(print_buffer->effective_number_of_blocks));
-                (void)printf("%f ", print_buffer->effective_number_of_blocks);
+                (void)printf("%ld ", (long int)print_buffer->effective_number_of_blocks);
             } else {
                 print_empty_spaces(max_map->st_blocks - get_number_of_digits(print_buffer->st_blocks));
                 (void)printf("%ld ", print_buffer->st_blocks);
