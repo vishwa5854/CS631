@@ -13,20 +13,45 @@
 #include"util.h"
 #include<unistd.h>
 
-
 #define DEFAULT_BLOCK_SIZE 512
+#define KILO_BLOCK_SIZE 1024
 
 extern char **environ;
 
-void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map) {
-    print_buffer->total_bytes = 0;
+void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map, bool is_dir) {
+    int header_length = 0;
+    long block_size = 0;
+    (void)getbsize(&header_length, &block_size);
     print_buffer->fts_info = node->fts_info;
+    print_buffer->is_dir = is_dir;
 
     if (flags->i) {
         print_buffer->st_ino = node->fts_statp->st_ino;
         max_map->st_ino = max_of_two(max_map->st_ino, node->fts_statp->st_ino);
     }
 
+    /** Total blocks */
+    if ((flags->l || flags->s || flags->n) && (is_dir)) {
+        if (flags->k) {
+            max_map->total_blocks += effective_number_of_blocks(DEFAULT_BLOCK_SIZE, KILO_BLOCK_SIZE, node->fts_statp->st_blocks);
+        } else if (flags->h) {
+            max_map->total_blocks += node->fts_statp->st_size;
+        } else {
+            if (block_size != DEFAULT_BLOCK_SIZE) {
+                max_map->total_blocks += effective_number_of_blocks(DEFAULT_BLOCK_SIZE, block_size, node->fts_statp->st_blocks);
+            } else {
+                max_map->total_blocks += node->fts_statp->st_blocks;
+            }
+        }
+    }
+
+    /** 
+     * Number of file system blocks used for this file, should also display a total. 
+     * -s -- in terms of 512 bytes or BLOCKSIZE bytes
+     * -h -- Modifies the −s and −l options, causing the sizes to be reported in bytes displayed in a human
+        readable format. Overrides −k
+        -k -- overrides -h and reports in kilobytes
+     */
     if (flags->s) {
         int header_length;
         long block_size;
@@ -35,17 +60,13 @@ void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map) {
         if (flags->k) {
             block_size = 1024;
         }
-        float block_size_factor = 0;
-        float effective_number_of_blocks;
 
         if (flags->h) {
             convert_bytes_to_human_readable(node->fts_statp->st_size, print_buffer->bytes_in_human_readable);
             max_map->bytes_in_human_readable = just_max(max_map->bytes_in_human_readable, strlen(print_buffer->bytes_in_human_readable));
         } else {
             if (block_size != DEFAULT_BLOCK_SIZE) {
-                block_size_factor = block_size / DEFAULT_BLOCK_SIZE;
-                effective_number_of_blocks = node->fts_statp->st_blocks / block_size_factor;
-                print_buffer->effective_number_of_blocks = ceil(effective_number_of_blocks);
+                print_buffer->effective_number_of_blocks = effective_number_of_blocks(block_size, DEFAULT_BLOCK_SIZE, node->fts_statp->st_blocks);
                 max_map->effective_number_of_blocks = max_of_two(max_map->effective_number_of_blocks, print_buffer->effective_number_of_blocks);
             } else {
                 print_buffer->st_blocks = node->fts_statp->st_blocks;
@@ -181,6 +202,7 @@ MP* init_max_map(MP* max_map) {
     max_map->tm_hour = -1;
     max_map->tm_min = -1;
     max_map->file_name = -1;
+    max_map->total_blocks = 0;
 
     return max_map;
 }
@@ -194,6 +216,21 @@ void print_empty_spaces(long int how_many) {
 }
 
 void flush(PF* print_buffer, MP* max_map, FLAGS* flags) {
+    if (
+        (max_map->total_blocks != -1) &&
+        (flags->l || flags->s || flags->n) &&
+        (print_buffer->is_dir)
+    ) {
+        if (flags->h) {
+            char hr_blocks_buffer[MAX_BYTES_SIZE];
+            convert_bytes_to_human_readable(max_map->total_blocks, hr_blocks_buffer);
+            (void)printf("total %s \n", hr_blocks_buffer);
+        } else {
+            (void)printf("total %ld\n", max_map->total_blocks);
+        }
+        max_map->total_blocks = -1;
+    }
+
     if (flags->i) {
         print_empty_spaces(max_map->st_ino - get_number_of_digits(print_buffer->st_ino));
         (void)printf("%ld ", print_buffer->st_ino);

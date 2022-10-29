@@ -52,3 +52,6 @@ just do a grep for constansts in /usr/include
 sys/syslimits -> is what u need
 
 -s -- not working
+-l c dev is not done, 0 spacing needs to be handled for n_blocks
+-R option is pending
+total is also pending

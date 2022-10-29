@@ -19,6 +19,7 @@ void ls(
     PF* print_buffer_current = (PF*)malloc(sizeof(PF));
     PF* print_buffer_head = print_buffer_current;
     MP* max_map = (MP*)malloc(sizeof(MP));
+    max_map = init_max_map(max_map);
     int n_files = 0;
     FTS* handle = fts_open(file_names, FTS_OPTIONS, sorter);
     FTSENT* node;
@@ -52,7 +53,7 @@ void ls(
 
             if (strlen(node->fts_name) > 0) {
                 print_buffer_current->next = (PF*)malloc(sizeof(PF));
-                print(flags, node, print_buffer_current, max_map);
+                print(flags, node, print_buffer_current, max_map, is_dir);
                 print_buffer_current = print_buffer_current->next;
                 n_files++;
             }

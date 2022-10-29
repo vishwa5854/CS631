@@ -1,3 +1,4 @@
+#include<math.h>
 #include<stdio.h>
 #include"structures.h"
 #include<string.h>
@@ -55,6 +56,10 @@ void report_errors(int N, char** argv) {
     }
 }
 
+/** 
+ * This function is inspired by this
+ * https://gist.github.com/dgoguerra/7194777
+*/
 void convert_bytes_to_human_readable(double size, char *buf) {
     int i = 0;
     const char* units[] = {"B", "K", "M", "G", "T", "P", "E", "Z", "Y"};
@@ -137,12 +142,14 @@ int init_flags_from_args(FLAGS* flags, char* args) {
                 break;
             case 'h':
                 flags->h = true;
+                flags->k = false;
                 break;
             case 'i':
                 flags->i = true;
                 break;
             case 'k':
                 flags->k = true;
+                flags->h = false;
                 break;
             case 'l':
                 flags->l = true;
@@ -187,4 +194,10 @@ int init_flags_from_args(FLAGS* flags, char* args) {
         }
     }
     return FTS_FLAGS;
+}
+
+double effective_number_of_blocks(long int set_block_size, long int env_block_size, blkcnt_t st_blocks) {
+    float block_size_factor = (env_block_size / set_block_size);
+    double effective_number_of_blocks = (st_blocks / block_size_factor);
+    return ceil(effective_number_of_blocks);
 }
