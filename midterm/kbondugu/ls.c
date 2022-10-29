@@ -8,7 +8,14 @@
 #include<sys/stat.h>
 #include<fts.h>
 
-void ls(char* const* file_names, int FTS_OPTIONS, int (*sorter)(const FTSENT **, const FTSENT **), bool is_dir, FLAGS* flags) {
+void ls(
+    char* const* file_names, 
+    int FTS_OPTIONS, 
+    int (*sorter)(const FTSENT **, const FTSENT **), 
+    bool is_dir, 
+    FLAGS* flags, 
+    bool print_dir_name
+) {
     PF* print_buffer_current = (PF*)malloc(sizeof(PF));
     PF* print_buffer_head = print_buffer_current;
     MP* max_map = (MP*)malloc(sizeof(MP));
@@ -25,7 +32,7 @@ void ls(char* const* file_names, int FTS_OPTIONS, int (*sorter)(const FTSENT **,
             continue;
         }
 
-        if ((n_files == 0) && is_dir) {
+        if ((n_files == 0) && is_dir && print_dir_name) {
             n_files++;
             (void)printf("%s:\n", node->fts_path);
             continue;

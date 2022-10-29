@@ -47,7 +47,7 @@ int main(int argc, char ** argv) {
     
     if (args_meta.n_files > 0) {
         /** We can group all the files together and call ls. */
-        ls(args_meta.files, FTS_OPTIONS, &sorter, false, &flags);
+        ls(args_meta.files, FTS_OPTIONS, &sorter, false, &flags, false);
 
         if (args_meta.n_directories > 0) {
             (void)printf("\n");
@@ -59,7 +59,7 @@ int main(int argc, char ** argv) {
 
         for (i = 0; i < args_meta.n_directories; i++) {
             char *const required[2] = { args_meta.directories[i], NULL };
-            ls(required, FTS_OPTIONS, &sorter, true, &flags);
+            ls(required, FTS_OPTIONS, &sorter, true, &flags, ((args_meta.n_files + args_meta.n_directories + args_meta.n_errors) > 1));
            
             if (i != (args_meta.n_directories - 1)) {
                 (void)printf("\n");

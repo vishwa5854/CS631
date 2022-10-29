@@ -11,7 +11,7 @@ Handle return values
 
 
 -- done all files first, then dir
-isatty -- must
+isatty -- must done
 sudo user direct -a -- done
 free everything -- done
 there is a blocks num1, num2
@@ -30,19 +30,19 @@ future times -- time printing handling that
 +- 6 months only it displays the time -> hour : secs but any more than that just 
 month and year
 
-for executables check for all perms S_IXUSR, SIXGRP, S_IXOTH
+for executables check for all perms S_IXUSR, SIXGRP, S_IXOTH -- done
 
 if file name is not there just refer to the path burh in the stat
 
-put exit function somewhere in some other function
+put exit function somewhere in some other function -- using errno instead
 
-directly use nsec instead for time
+directly use nsec instead for time -- done
 
--- check ls 5 4 2 3 1 what's the output
+-- check ls 5 4 2 3 1 what's the output -- done
 
-symlink to a file that does'nt exist
+symlink to a file that does'nt exist -- done
 
-non printable char
+non printable char -- done
 
 1, 1 for charecter device
 
@@ -50,3 +50,5 @@ default include path is usr/include
 just do a grep for constansts in /usr/include
 
 sys/syslimits -> is what u need
+
+-s -- not working

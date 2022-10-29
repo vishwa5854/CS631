@@ -7,6 +7,12 @@
 #include<stdbool.h>
 #include"structures.h"
 
-void ls(char* const* file_names, int FTS_OPTIONS, int (*sorter)(const FTSENT **, const FTSENT **), bool is_dir, FLAGS* flags);
+void ls(
+    char* const* file_names, 
+    int FTS_OPTIONS, 
+    int (*sorter)(const FTSENT **, const FTSENT **), 
+    bool is_dir, FLAGS* flags, 
+    bool print_dir_name
+);
 
 #endif

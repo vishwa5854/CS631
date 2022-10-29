@@ -99,6 +99,7 @@ typedef struct FILE_TYPES {
     char** directories;
     int    n_files;
     int    n_directories;
+    int    n_errors;
 } FT;
 
 #endif

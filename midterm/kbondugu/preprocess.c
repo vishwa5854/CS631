@@ -10,6 +10,7 @@
 void preprocess_files(int argc, char** args, FT* args_meta) {
     args_meta->n_files = 0;
     args_meta->n_directories = 0;
+    args_meta->n_errors = 0;
     int i = 0;
 
     /** Just ./ls */
@@ -43,6 +44,8 @@ void preprocess_files(int argc, char** args, FT* args_meta) {
         struct stat file_info;
 
         if (stat(args[i], &file_info) < 0) {
+            args_meta->n_errors++;
+            
             if (errno == ENOENT) {
                 (void)fprintf(stderr, "ls: %s: No such file or directory\n", args[i]);
             } else {

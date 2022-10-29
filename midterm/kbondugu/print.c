@@ -144,10 +144,8 @@ void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map) {
         for (; j < node->fts_namelen; j++) {
             if (isprint(file_name[j]) != 0) {
                 temp[j] = file_name[j];
-                // (void)strncat(temp, &file_name[j], 1);
             } else {
                 temp[j] = replacement;
-                // (void)strncat(temp, replacement, 1);
             }
         }
         temp[node->fts_namelen + 1] = '\0';
@@ -290,7 +288,11 @@ void flush(PF* print_buffer, MP* max_map, FLAGS* flags) {
             (void)printf("%s=", print_buffer->file_name);
         } else if (S_ISFIFO(print_buffer->st_mode)) {
             (void)printf("%s|", print_buffer->file_name);
-        } else if (S_IEXEC & print_buffer->st_mode) {
+        } else if (
+            (S_IXUSR & print_buffer->st_mode) || 
+            (S_IXGRP & print_buffer->st_mode) || 
+            (S_IXOTH & print_buffer->st_mode)
+        ) {
             (void)printf("%s*", print_buffer->file_name);
         } else {
             (void)printf("%s", print_buffer->file_name);
