@@ -1,3 +1,243 @@
+commit 45561c71e4d42b5a8d6ddcf0a197f9eddc65aa1f
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sun Oct 30 14:16:55 2022 -0400
+
+    Finalising part 1
+
+commit 77c265955ec38095879b5024ba0cf7194332bd24
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sun Oct 30 14:05:15 2022 -0400
+
+    Removed old file
+
+commit ee6c2e4481370aeed872cf8ff41a5f9c7f92d9cf
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sun Oct 30 14:03:59 2022 -0400
+
+    Code formatting changes
+
+commit 2ae4a31342a60e3edc89da9b2af647f69483fabf
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sun Oct 30 13:51:02 2022 -0400
+
+    Small formatting bug in printer
+
+commit daa8c4ebdc5d5eefd3ca5ee3caf2ca35172c8ed0
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sun Oct 30 13:40:53 2022 -0400
+
+    Finally done :)
+
+commit 02a67566492e4f1a8ce68bdf0313c50edaf974ce
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sat Oct 29 23:16:30 2022 -0400
+
+    Future time and past time are handled in -l
+
+commit 76bc383d5796988ca8557087d4164dd41b10114f
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sat Oct 29 22:06:38 2022 -0400
+
+    Major dev minor dev nos in -l are done
+
+commit bf7fe9deaa8a31ffbe08db12d3536016e24ee384
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sat Oct 29 14:55:25 2022 -0400
+
+    -d is done
+
+commit 3652a3bee0f9faf1cff49da4884fa82305ab8368
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sat Oct 29 13:41:51 2022 -0400
+
+    Fixed a bug in sort option f
+
+commit 14dfb36a6601c770fc5b6341fe9335028cb3d622
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sat Oct 29 13:23:03 2022 -0400
+
+    option -s is done
+
+commit 425fd0b7b850fb96e9eed9f16c15e727c126d318
+Author: vish <vishwanath5854@outlook.com>
+Date:   Sat Oct 29 13:05:21 2022 -0400
+
+    Total is working
+
+commit ef3b8608711d384d0135061daf2aaa49d2b7b72e
+Author: vish <vishwanath5854@outlook.com>
+Date:   Fri Oct 28 22:45:14 2022 -0400
+
+    When to print dir path is done.
+
+commit 308d195722ea9ab2314f410b5c9ef99b7bf2d83f
+Author: vish <vishwanath5854@outlook.com>
+Date:   Fri Oct 28 22:19:10 2022 -0400
+
+    -w, -q are properly done
+
+commit d3ed6073d82d0ead1f30c326f8ce769dfaa1ce73
+Author: vish <vishwanath5854@outlook.com>
+Date:   Fri Oct 28 20:32:05 2022 -0400
+
+    Symlinks in -l and -F option are supposed to be done.
+
+commit daa7fbe423e287cd1a3de3da6da0fe0e85c1d7cd
+Author: vish <vishwanath5854@outlook.com>
+Date:   Fri Oct 28 16:50:21 2022 -0400
+
+    -u, -c for printing are done.
+
+commit fc4dd177ab8c0cdddbfd5519208fd11a01653cd3
+Author: vish <vishwanath5854@outlook.com>
+Date:   Fri Oct 28 16:41:59 2022 -0400
+
+    Fixed a bug in sort
+
+commit 281d5040ef00a64600465b08b1fc9d0a238e33b1
+Author: vish <vishwanath5854@outlook.com>
+Date:   Fri Oct 28 16:23:33 2022 -0400
+
+    Sort is done with nsec now
+
+commit b2b96e1e59f15ccde8e5206bb4d95927d10182eb
+Author: vish <vishwanath5854@outlook.com>
+Date:   Fri Oct 28 16:11:42 2022 -0400
+
+    Sorting is done now on nsec instead
+
+commit 345fd9bff75915c4c786a8bf12a1978f216502c3
+Author: vish <vishwanath5854@outlook.com>
+Date:   Wed Oct 26 22:19:16 2022 -0400
+
+    Added support for invalid args
+
+commit 62d8031a853ff878c1517bcec329eca4ab5a78e9
+Author: vish <vishwanath5854@outlook.com>
+Date:   Wed Oct 26 21:53:35 2022 -0400
+
+    Flags a & A are fixed
+
+commit e17c99cfb5489ff827728c1006fddf5f6d3166bb
+Author: vish <vishwanath5854@outlook.com>
+Date:   Wed Oct 26 21:43:09 2022 -0400
+
+    Removed unnecessary funcs
+
+commit 0d79812442e8c738b88f8648bcc97c024e14771b
+Author: vish <vishwanath5854@outlook.com>
+Date:   Wed Oct 26 21:41:45 2022 -0400
+
+    Removed unnecessary vars
+
+commit 0396f13444e38029f6bd61b896f9b8e7039236b0
+Author: vish <vishwanath5854@outlook.com>
+Date:   Wed Oct 26 21:38:08 2022 -0400
+
+    Fixed segfault in PF
+
+commit 5726ea0b947442ee91ff39fa0ae422dd7cb4ba55
+Author: vish <vishwanath5854@outlook.com>
+Date:   Wed Oct 26 19:24:23 2022 -0400
+
+    Integration of printer is done
+
+commit 673b00b01bbe396a3994422045236d5b8f9135c2
+Author: vish <vishwanath5854@outlook.com>
+Date:   Wed Oct 26 18:00:52 2022 -0400
+
+    Preprocessing is kind of done
+
+commit f655c869c8a2f6989a607978a65a01658f77cdb0
+Author: vish <vishwanath5854@outlook.com>
+Date:   Wed Oct 26 15:33:26 2022 -0400
+
+    Errors fixed
+
+commit cd622116032f3077fa4dcc7ceb2f47e76e6206c2
+Author: vish <vishwanath5854@outlook.com>
+Date:   Wed Oct 26 15:27:32 2022 -0400
+
+    Removed my defs
+
+commit c038ac376b302fe80dafafe869cccab7f6d6fdbd
+Author: vish <vishwanath5854@outlook.com>
+Date:   Wed Oct 26 15:24:29 2022 -0400
+
+    Removed flags
+
+commit 61b48892632969745afb10642d1b073b90b98095
+Author: vish <vishwanath5854@outlook.com>
+Date:   Wed Oct 26 15:21:34 2022 -0400
+
+    Restructuring changes
+
+commit c726674cbcc30f9d71bce33ae01d9f8b1b6c723b
+Author: vish <vishwanath5854@outlook.com>
+Date:   Wed Oct 26 02:02:09 2022 -0400
+
+    Removed redundant declarations
+
+commit 06523b3dd5afa4f22d7ef9c7095ee13ea54125a2
+Author: vish <vishwanath5854@outlook.com>
+Date:   Wed Oct 26 02:00:31 2022 -0400
+
+    Preprocessing + return value
+
+commit 8a280f36914cd3add010219ea022ec510169fde8
+Author: vish <vishwanath5854@outlook.com>
+Date:   Wed Oct 26 01:05:44 2022 -0400
+
+    Using typedefd structures instead of raw structs
+
+commit 5d97b01b7773ecff559126bc2309f9036caab972
+Author: vish <vishwanath5854@outlook.com>
+Date:   Wed Oct 26 01:03:51 2022 -0400
+
+    Removed outdated declarations.
+
+commit fe64155d49ad98ca3ac30d0c587cb12697690bcc
+Author: vish <vishwanath5854@outlook.com>
+Date:   Wed Oct 26 01:03:07 2022 -0400
+
+    Removed un-necessary data structure for sorting
+
+commit 6a10d5d16c0ffeaad3de834a523414b7c750f7ce
+Author: vish <vishwanath5854@outlook.com>
+Date:   Wed Oct 26 00:55:24 2022 -0400
+
+    Added new header file for just structures
+
+commit 75147bf9a440d6e1b77fe964bd04a715c019d383
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Oct 24 15:47:07 2022 -0400
+
+    Submission
+
+commit baa3b5eb87838dfffab5c15ea6797be237d17c22
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Oct 24 15:39:00 2022 -0400
+
+    Added user dir
+
+commit 287f174a008a464b965013760d38b703e03ec7f0
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Oct 24 15:27:50 2022 -0400
+
+    Limits header removed
+
+commit 2b9ee6f574784ac9af29caee46e1baab7f1e547a
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Oct 24 15:26:51 2022 -0400
+
+    Limits header removed
+
+commit 8790ddc07297ec44c782c52e0245a4587e3974d5
+Author: vish <vishwanath5854@outlook.com>
+Date:   Mon Oct 24 15:25:46 2022 -0400
+
+    Limits header
+
 commit 0a48003311e56ac236f839d39932db10411899c1
 Author: vish <vishwanath5854@outlook.com>
 Date:   Mon Oct 24 15:04:44 2022 -0400

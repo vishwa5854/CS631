@@ -5,4 +5,4 @@
 
 void preprocess_files(int argc, char** args, FT* args_meta);
 
-#endif
+#endif /* !PRE_PROCESS_H_ */

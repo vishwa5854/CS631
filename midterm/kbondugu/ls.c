@@ -8,12 +8,8 @@
 #include<sys/stat.h>
 #include<fts.h>
 
-/** 
- * This function could have been written in a better way, but it took me a lot of time to
- * come up with this two pointer approach, my previous recursive solutions were throwing SEGFAULT
- * due to sack overflow.
-*/
-void recurse(FTSENT* one, FTS* handle, int FTS_FLAGS, int (*sorter)(const FTSENT **, const FTSENT **), FLAGS* flags) {
+void recurse(FTSENT* one, FTS* handle, int FTS_FLAGS, 
+                int (*sorter)(const FTSENT **, const FTSENT **), FLAGS* flags) {
     while ((one = fts_read(handle)) != NULL) {
         char* paths[2];
         paths[0] = one->fts_path;
@@ -77,19 +73,15 @@ void recurse(FTSENT* one, FTS* handle, int FTS_FLAGS, int (*sorter)(const FTSENT
     }
 }
 
-void ls(
-    char* const* file_names, 
-    int FTS_OPTIONS, 
+void ls(char* const* file_names, int FTS_OPTIONS, 
     int (*sorter)(const FTSENT **, const FTSENT **), 
-    bool is_dir, 
-    FLAGS* flags, 
-    bool print_dir_name
+    bool is_dir, FLAGS* flags, bool print_dir_name
 ) {
     PF* print_buffer_current = (PF*)malloc(sizeof(PF));
     PF* print_buffer_head = print_buffer_current;
     MP* max_map = (MP*)malloc(sizeof(MP));
     max_map = init_max_map(max_map);
-    int n_files = 0;
+    int n_files = 0, n_files_usable = 0, iterator = 0;
     FTS* handle = fts_open(file_names, FTS_OPTIONS, flags->f ? NULL : sorter);
     FTSENT* node = NULL;
 
@@ -136,6 +128,7 @@ void ls(
                 print(flags, node, print_buffer_current, max_map, is_dir);
                 print_buffer_current = print_buffer_current->next;
                 n_files++;
+                n_files_usable++;
 
                 if (flags->d && is_dir) {
                     break;
@@ -144,11 +137,12 @@ void ls(
         }
     }
 
-    while (print_buffer_head != NULL) {
+    while ((print_buffer_head != NULL) && (iterator < n_files_usable)) {
         if (strlen(print_buffer_head->file_name) != 0) {
             flush(print_buffer_head, max_map, flags);
         }
         print_buffer_head = print_buffer_head->next;
+        iterator++;
     }
     (void)fts_close(handle);
     free(print_buffer_head);

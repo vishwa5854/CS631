@@ -98,4 +98,4 @@ typedef struct FILE_TYPES {
     int    n_errors;
 } FT;
 
-#endif
+#endif /* !STRUCTURES_H_ */

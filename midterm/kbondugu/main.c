@@ -17,6 +17,7 @@ int sorter(const FTSENT** one, const FTSENT** two) {
 }
 
 int main(int argc, char ** argv) {
+    setprogname(argv[0]);
     FT args_meta;
     int stdout_fd;
     int i;

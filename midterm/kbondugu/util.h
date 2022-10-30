@@ -29,4 +29,4 @@ char* get_file_name(PF* print_buffer, FLAGS* flags);
 
 bool is_time_within_six_months(time_t* target_time);
 
-#endif
+#endif /* !UTIL_H_ */

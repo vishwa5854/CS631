@@ -26,4 +26,4 @@ Things I have learnt
 1. stat - Now I am pretty confident about all the params in it lol
 2. fts - file traversing using fts
 3. A lot of things in C language like memory management, buffers,
-    pointers, segfaults :(, wild errors and crashes.
+    pointers, structs, typedefs, segfaults :(, wild errors and crashes.

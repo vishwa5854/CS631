@@ -15,4 +15,4 @@ void ls(
     bool print_dir_name
 );
 
-#endif
+#endif /* !LS_H_ */

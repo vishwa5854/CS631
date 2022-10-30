@@ -13,4 +13,4 @@ int sort(const FTSENT** one, const FTSENT** two, FLAGS* sort_flags);
 
 int sort_by_name(const void* a, const void* b);
 
-#endif
+#endif /* !SORT_H_ */

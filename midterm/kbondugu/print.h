@@ -14,4 +14,4 @@ void flush(PF* print_buffer, MP* max_map, FLAGS* flags);
 
 MP* init_max_map(MP* max_map);
 
-#endif
+#endif /* !PRINT_H_ */
