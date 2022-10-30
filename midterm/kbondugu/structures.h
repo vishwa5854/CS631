@@ -5,7 +5,7 @@
 
 #include<stdbool.h>
 #include<sys/stat.h>
-// #include<sys/syslimits.h>
+#include<sys/syslimits.h>
 #include<stdlib.h>
 
 #define STRMODE_LENGTH 11
@@ -14,15 +14,6 @@
 
 #ifndef LOGIN_NAME_MAX
 #define LOGIN_NAME_MAX 256
-#endif
-
-/** Remove this before submission TODO*/
-#ifndef NAME_MAX
-#define NAME_MAX 256
-#endif
-
-#ifndef PATH_MAX
-#define PATH_MAX 256
 #endif
 
 typedef struct FLAGS_STRUCT {

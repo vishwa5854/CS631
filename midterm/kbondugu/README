@@ -1,7 +1,29 @@
 This is a simple ls utility tool written in C
 
-Things that don't work as of now
-1. -a & -A are broken, I need some time to fix this
-2. Return values are not hanled properly, need some time for that
-3. For a directory, if you want to display all the descendants
-    you should add a '/' at the end of your path, need to fix this as well.
+Problems I have faced
+1. Getting the base ls function with fts was confusing, mostly
+    because of my poor understanding of the manual page in the 
+    starting.
+2. Parsing the spaces between different types of data
+3. Dealing with time was a little bit tricky, I almost forgot
+    that the tm_year we get in the struct tm*  from localtime
+    is year - 1900, I wasted like 2 hours debugging that.
+4. Header files, common data structures management, eventually
+    with the help of provided sample guide by prof. I figured
+    out how to share a header properly accross multiple c files.
+
+
+Things that were crazy
+1. Trying to implement ls -R without running into segfaults
+    or stack overflow or memory errors, I spent more than 
+    2 days until I landed on this two pointer approach
+    which took a lot of thinking, It was even in my sleep :(
+2. Formatting, its a tedious thing to implement, its not hard
+    but very lengthy and made me feel dumb for writing those
+    many lines of same logic
+
+Things I have learnt
+1. stat - Now I am pretty confident about all the params in it lol
+2. fts - file traversing using fts
+3. A lot of things in C language like memory management, buffers,
+    pointers, segfaults :(, wild errors and crashes.
