@@ -71,6 +71,8 @@ typedef struct PRINTER_FRAME {
     struct PRINTER_FRAME*  next;
     int                    fts_info;
     bool                   is_dir;
+    int                    major_dev_num;
+    int                    minor_dev_num;
 } PF;
 
 typedef struct MAX_MAP {
@@ -92,6 +94,8 @@ typedef struct MAX_MAP {
     long int tm_min;
     long int file_name;
     long int total_blocks;
+    long int major_dev_num;
+    long int minor_dev_num;
 } MP;
 
 typedef struct FILE_TYPES {

@@ -54,8 +54,7 @@ sys/syslimits -> is what u need
 -s -- done
 0 spacing needs to be handled for n_blocks -- done
 total is also pending -- done
-
+-d done
 
 -l c dev is not done, 
 -R option is pending
--d pending 
