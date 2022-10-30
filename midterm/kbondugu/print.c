@@ -32,12 +32,14 @@ void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map, bool is_di
 
     if ((flags->l || flags->s || flags->n) && (is_dir)) {
         if (flags->k) {
-            max_map->total_blocks += effective_number_of_blocks(DEFAULT_BLOCK_SIZE, KILO_BLOCK_SIZE, node->fts_statp->st_blocks);
+            max_map->total_blocks += effective_number_of_blocks(DEFAULT_BLOCK_SIZE, 
+                                        KILO_BLOCK_SIZE, node->fts_statp->st_blocks);
         } else if (flags->h) {
             max_map->total_blocks += node->fts_statp->st_size;
         } else {
             if (block_size != DEFAULT_BLOCK_SIZE) {
-                max_map->total_blocks += effective_number_of_blocks(DEFAULT_BLOCK_SIZE, block_size, node->fts_statp->st_blocks);
+                max_map->total_blocks += effective_number_of_blocks(DEFAULT_BLOCK_SIZE, 
+                                            block_size, node->fts_statp->st_blocks);
             } else {
                 max_map->total_blocks += node->fts_statp->st_blocks;
             }
@@ -54,12 +56,23 @@ void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map, bool is_di
         }
 
         if (flags->h) {
-            convert_bytes_to_human_readable(node->fts_statp->st_size, print_buffer->bytes_in_human_readable);
-            max_map->bytes_in_human_readable = just_max(max_map->bytes_in_human_readable, strlen(print_buffer->bytes_in_human_readable));
+            convert_bytes_to_human_readable(node->fts_statp->st_size, 
+                            print_buffer->bytes_in_human_readable);
+            max_map->bytes_in_human_readable = just_max(
+                                                max_map->bytes_in_human_readable,
+                                                strlen(print_buffer->bytes_in_human_readable)
+                                            );
         } else {
             if (block_size != DEFAULT_BLOCK_SIZE) {
-                print_buffer->effective_number_of_blocks = effective_number_of_blocks(DEFAULT_BLOCK_SIZE, block_size, node->fts_statp->st_blocks);
-                max_map->effective_number_of_blocks = max_of_two(max_map->effective_number_of_blocks, print_buffer->effective_number_of_blocks);
+                print_buffer->effective_number_of_blocks = effective_number_of_blocks(
+                                                            DEFAULT_BLOCK_SIZE, 
+                                                            block_size, 
+                                                            node->fts_statp->st_blocks
+                                                        );
+                max_map->effective_number_of_blocks = max_of_two(
+                                                        max_map->effective_number_of_blocks, 
+                                                        print_buffer->effective_number_of_blocks
+                                                    );
             } else {
                 print_buffer->st_blocks = node->fts_statp->st_blocks;
                 max_map->st_blocks = max_of_two(max_map->st_blocks, print_buffer->st_blocks);
@@ -69,7 +82,8 @@ void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map, bool is_di
 
     if (flags->l || flags->n) {
         strmode(node->fts_statp->st_mode, print_buffer->mode_string);
-        max_map->mode_string = just_max(max_map->mode_string, strlen(print_buffer->mode_string));
+        max_map->mode_string = just_max(max_map->mode_string, 
+                                        strlen(print_buffer->mode_string));
         
         print_buffer->st_nlink = node->fts_statp->st_nlink;
         max_map->st_nlink = max_of_two(max_map->st_nlink, node->fts_statp->st_nlink);
@@ -82,7 +96,8 @@ void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map, bool is_di
             user_info = getpwuid(node->fts_statp->st_uid);
 
             if ((user_info != NULL) && (strlen(user_info->pw_name) > 0)) {
-                (void)strncpy(print_buffer->pw_name, user_info->pw_name, strlen(user_info->pw_name));
+                (void)strncpy(print_buffer->pw_name, user_info->pw_name, 
+                                            strlen(user_info->pw_name));
                 print_buffer->pw_name[strlen(user_info->pw_name)] = '\0';
                 max_map->pw_name = just_max(max_map->pw_name, strlen(user_info->pw_name));
             } else {
@@ -101,7 +116,8 @@ void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map, bool is_di
             group_info = getgrgid(node->fts_statp->st_gid);
 
             if ((group_info != NULL) && (strlen(group_info->gr_name) > 0)) {
-                (void)strncpy(print_buffer->gr_name, group_info->gr_name, strlen(group_info->gr_name));
+                (void)strncpy(print_buffer->gr_name, group_info->gr_name, 
+                                                    strlen(group_info->gr_name));
                 print_buffer->gr_name[strlen(group_info->gr_name)] = '\0';
                 max_map->gr_name = just_max(max_map->gr_name, strlen(group_info->gr_name));
             } else {
@@ -115,15 +131,22 @@ void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map, bool is_di
         if (S_ISCHR(node->fts_statp->st_mode) || S_ISBLK(node->fts_statp->st_mode)) {
             print_buffer->major_dev_num = major(node->fts_statp->st_rdev);
             print_buffer->minor_dev_num = minor(node->fts_statp->st_rdev);
-            max_map->major_dev_num = max_of_two(max_map->major_dev_num, print_buffer->major_dev_num);
-            max_map->minor_dev_num = max_of_two(max_map->minor_dev_num, print_buffer->minor_dev_num);
+            max_map->major_dev_num = max_of_two(max_map->major_dev_num, 
+                                                print_buffer->major_dev_num);
+            max_map->minor_dev_num = max_of_two(max_map->minor_dev_num, 
+                                                print_buffer->minor_dev_num);
             long int spaces = max_map->major_dev_num + max_map->minor_dev_num + 2;
             max_map->st_size = (max_map->st_size > spaces) ? max_map->st_size : spaces;
-            max_map->bytes_in_human_readable = (max_map->bytes_in_human_readable > spaces) ? max_map->bytes_in_human_readable : spaces;
+            max_map->bytes_in_human_readable = (max_map->bytes_in_human_readable > spaces) ? 
+                                                max_map->bytes_in_human_readable : spaces;
         } else {
             if (flags->h) {
-                convert_bytes_to_human_readable(node->fts_statp->st_size, print_buffer->bytes_in_human_readable);
-                max_map->bytes_in_human_readable = just_max(max_map->bytes_in_human_readable, strlen(print_buffer->bytes_in_human_readable));
+                convert_bytes_to_human_readable(node->fts_statp->st_size, 
+                                                print_buffer->bytes_in_human_readable);
+                max_map->bytes_in_human_readable = just_max(
+                                                    max_map->bytes_in_human_readable, 
+                                                    strlen(print_buffer->bytes_in_human_readable)
+                                                );
             } else {
                 print_buffer->st_size = node->fts_statp->st_size;
                 max_map->st_size = max_of_two(max_map->st_size, node->fts_statp->st_size);
@@ -143,9 +166,11 @@ void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map, bool is_di
             (void)fprintf(stderr, "ls: Error while fetching the local time");
         }
 
-        (void)strncpy(print_buffer->which_month, which_month(tm->tm_mon), strlen(which_month(tm->tm_mon)));
+        (void)strncpy(print_buffer->which_month, which_month(tm->tm_mon), 
+                                                strlen(which_month(tm->tm_mon)));
         print_buffer->which_month[strlen(which_month(tm->tm_mon))] = '\0';
-        max_map->which_month = just_max(max_map->which_month, strlen(which_month(tm->tm_mon)));
+        max_map->which_month = just_max(max_map->which_month, 
+                                                strlen(which_month(tm->tm_mon)));
 
         print_buffer->tm_mday = tm->tm_mday;
         max_map->tm_mday = max_of_two(max_map->tm_mday, tm->tm_mday);     
@@ -249,49 +274,60 @@ void flush(PF* print_buffer, MP* max_map, FLAGS* flags) {
 
     if (flags->s) {
         if (flags->h) {
-            print_empty_spaces(max_map->bytes_in_human_readable - strlen(print_buffer->bytes_in_human_readable));
+            print_empty_spaces(max_map->bytes_in_human_readable - 
+                                        strlen(print_buffer->bytes_in_human_readable));
             (void)printf("%s ", print_buffer->bytes_in_human_readable);
         } else {
             if (max_map->effective_number_of_blocks > -1) {
-                print_empty_spaces(max_map->effective_number_of_blocks - get_number_of_digits(print_buffer->effective_number_of_blocks));
+                print_empty_spaces(
+                    max_map->effective_number_of_blocks - 
+                    get_number_of_digits(print_buffer->effective_number_of_blocks)
+                );
                 (void)printf("%ld ", (long int)print_buffer->effective_number_of_blocks);
             } else {
-                print_empty_spaces(max_map->st_blocks - get_number_of_digits(print_buffer->st_blocks));
+                print_empty_spaces(max_map->st_blocks - 
+                                    get_number_of_digits(print_buffer->st_blocks));
                 (void)printf("%ld ", print_buffer->st_blocks);
             }
         }
     }
 
     if (flags->l || flags->n) {
-        print_empty_spaces(max_map->mode_string - strlen(print_buffer->mode_string));
+        print_empty_spaces(max_map->mode_string - 
+                                    strlen(print_buffer->mode_string));
         (void)printf("%s ", print_buffer->mode_string);
 
-        print_empty_spaces(max_map->st_nlink - get_number_of_digits(print_buffer->st_nlink));
+        print_empty_spaces(max_map->st_nlink - 
+                                get_number_of_digits(print_buffer->st_nlink));
         (void)printf("%d ",print_buffer->st_nlink);
 
         if (flags->n) {
             (void)printf("%d ", print_buffer->st_uid);
-            print_empty_spaces(max_map->st_uid - get_number_of_digits(print_buffer->st_uid));
+            print_empty_spaces(max_map->st_uid - 
+                                    get_number_of_digits(print_buffer->st_uid));
         } else {
             if ((max_map->pw_name > 0) && (strlen(print_buffer->pw_name) > 0)) {
                 (void)printf("%s ", print_buffer->pw_name);
                 print_empty_spaces(max_map->pw_name - strlen(print_buffer->pw_name));
             } else {
                 (void)printf("%d ", print_buffer->st_uid);
-                print_empty_spaces(max_map->st_uid - get_number_of_digits(print_buffer->st_uid));
+                print_empty_spaces(max_map->st_uid - 
+                                    get_number_of_digits(print_buffer->st_uid));
             }
         }
 
         if (flags->n) {
             (void)printf("%d ", print_buffer->st_gid);
-            print_empty_spaces(max_map->st_gid - get_number_of_digits(print_buffer->st_gid));
+            print_empty_spaces(max_map->st_gid - 
+                                    get_number_of_digits(print_buffer->st_gid));
         } else {
             if ((max_map->gr_name > -1) && (strlen(print_buffer->gr_name) > 0)) {
                 (void)printf("%s ", print_buffer->gr_name);
                 print_empty_spaces(max_map->gr_name - strlen(print_buffer->gr_name));
             } else {
                 (void)printf("%d ", print_buffer->st_gid);
-                print_empty_spaces(max_map->st_gid - get_number_of_digits(print_buffer->st_gid));
+                print_empty_spaces(max_map->st_gid - 
+                                    get_number_of_digits(print_buffer->st_gid));
             }
         }
 
@@ -300,33 +336,43 @@ void flush(PF* print_buffer, MP* max_map, FLAGS* flags) {
 
             if (flags->h) {
                 if (major_minor_spacing >= max_map->bytes_in_human_readable) {
-                    print_empty_spaces(max_map->major_dev_num - get_number_of_digits(print_buffer->major_dev_num));
+                    print_empty_spaces(
+                        max_map->major_dev_num - 
+                        get_number_of_digits(print_buffer->major_dev_num)
+                    );
                 } else {
                     print_empty_spaces(
-                        max_map->bytes_in_human_readable - get_number_of_digits(print_buffer->major_dev_num) - 
+                        max_map->bytes_in_human_readable - 
+                        get_number_of_digits(print_buffer->major_dev_num) - 
                         get_number_of_digits(print_buffer->minor_dev_num) - 2
                     );
                 }
             } else {
                 if (major_minor_spacing >= max_map->st_size) {
-                    print_empty_spaces(max_map->major_dev_num - get_number_of_digits(print_buffer->major_dev_num));
+                    print_empty_spaces(max_map->major_dev_num - 
+                        get_number_of_digits(print_buffer->major_dev_num));
                 } else {
                     print_empty_spaces(
-                        max_map->st_size - get_number_of_digits(print_buffer->major_dev_num) - 
+                        max_map->st_size - 
+                        get_number_of_digits(print_buffer->major_dev_num) - 
                         get_number_of_digits(print_buffer->minor_dev_num) - 2
                     );
                 }
             }
-            print_empty_spaces(max_map->major_dev_num - get_number_of_digits(print_buffer->major_dev_num));
+            print_empty_spaces(max_map->major_dev_num - 
+                                get_number_of_digits(print_buffer->major_dev_num));
             (void)printf("%d, ", print_buffer->major_dev_num);
-            print_empty_spaces(max_map->minor_dev_num - get_number_of_digits(print_buffer->minor_dev_num));
+            print_empty_spaces(max_map->minor_dev_num - 
+                                get_number_of_digits(print_buffer->minor_dev_num));
             (void)printf("%d ", print_buffer->minor_dev_num);
         } else {
             if (flags->h) {
-                print_empty_spaces(max_map->bytes_in_human_readable - strlen(print_buffer->bytes_in_human_readable));
+                print_empty_spaces(max_map->bytes_in_human_readable - 
+                                    strlen(print_buffer->bytes_in_human_readable));
                 (void)printf("%s ", print_buffer->bytes_in_human_readable);
             } else {
-                print_empty_spaces(max_map->st_size - get_number_of_digits(print_buffer->st_size));
+                print_empty_spaces(max_map->st_size - 
+                                    get_number_of_digits(print_buffer->st_size));
                 (void)printf("%ld ", print_buffer->st_size);
             }
         }
