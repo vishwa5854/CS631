@@ -62,7 +62,7 @@ void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map, bool is_di
                 max_map->effective_number_of_blocks = max_of_two(max_map->effective_number_of_blocks, print_buffer->effective_number_of_blocks);
             } else {
                 print_buffer->st_blocks = node->fts_statp->st_blocks;
-                max_map->st_blocks = max_of_two(max_map->effective_number_of_blocks, print_buffer->st_blocks);
+                max_map->st_blocks = max_of_two(max_map->st_blocks, print_buffer->st_blocks);
             }
         }
     }
