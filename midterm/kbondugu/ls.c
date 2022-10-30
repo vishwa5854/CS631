@@ -8,6 +8,75 @@
 #include<sys/stat.h>
 #include<fts.h>
 
+/** 
+ * This function could have been written in a better way, but it took me a lot of time to
+ * come up with this two pointer approach, my previous recursive solutions were throwing SEGFAULT
+ * due to sack overflow.
+*/
+void recurse(FTSENT* one, FTS* handle, int FTS_FLAGS, int (*sorter)(const FTSENT **, const FTSENT **), FLAGS* flags) {
+    while ((one = fts_read(handle)) != NULL) {
+        char* paths[2];
+        paths[0] = one->fts_path;
+        paths[1] = NULL;
+        char* const* req = paths;
+        FTS* twoHandler = fts_open(req, FTS_FLAGS, sorter);
+        FTSENT* two = NULL;
+
+        if (one->fts_info == FTS_DP) {
+            continue;
+        }
+
+        if (one->fts_info == FTS_D) {
+            (void)printf("%s:\n", one->fts_accpath);
+        }
+        two = fts_read(twoHandler);
+        PF* print_buffer_head = NULL;
+        PF* print_buffer_current = (PF*)malloc(sizeof(PF));
+        MP* max_map = (MP*)malloc(sizeof(MP));
+        max_map = init_max_map(max_map);
+        int ideal_number_of_entries = 0;
+        int j = 0;
+
+        while ((two = fts_read(twoHandler)) != NULL) {
+            int parent_err_conditions = (two->fts_info == FTS_ERR) || (two->fts_info == FTS_DNR);
+            if (parent_err_conditions) {
+                (void)(void)fprintf(stderr, "ls: Error while traversing %s.\n", strerror(two->fts_errno));
+                continue;
+            }
+
+            if (two->fts_info == FTS_DP) {
+                continue;
+            }
+            ideal_number_of_entries++;
+            print(flags, two, print_buffer_current, max_map, true);
+
+            if (two->fts_info == FTS_D) {
+                (void)fts_set(twoHandler, two, FTS_SKIP);
+            }
+
+            /** Add a new entry for the upcoming iteration. */
+            if (print_buffer_head == NULL) {
+                print_buffer_head = print_buffer_current;
+            }
+            print_buffer_current->next = (PF*)malloc(sizeof(PF));
+            print_buffer_current = print_buffer_current->next;
+        }
+        print_buffer_current = NULL;
+
+        while ((print_buffer_head != NULL) && (print_buffer_head->next != NULL) && (j < ideal_number_of_entries)) {
+            flush(print_buffer_head, max_map, flags);
+            print_buffer_head = print_buffer_head->next;
+            j++;
+        }
+        (void)free(print_buffer_head);
+
+        (void)fts_close(twoHandler);
+        if (one->fts_info == FTS_D)  {
+            (void)printf("\n");
+        }
+    }
+}
+
 void ls(
     char* const* file_names, 
     int FTS_OPTIONS, 
@@ -22,7 +91,12 @@ void ls(
     max_map = init_max_map(max_map);
     int n_files = 0;
     FTS* handle = fts_open(file_names, FTS_OPTIONS, flags->f ? NULL : sorter);
-    FTSENT* node;
+    FTSENT* node = NULL;
+
+    if (flags->R && is_dir) {
+        recurse(node, handle, FTS_OPTIONS, sorter, flags);
+        return;
+    }
 
     while ((node = fts_read(handle)) != NULL) {
         bool errors = (node->fts_info == FTS_ERR) ||

@@ -110,7 +110,7 @@ void create_paths(int N, char ** paths, int start, char** required_paths) {
 }
 
 int init_flags_from_args(FLAGS* flags, char* args) {
-    int FTS_FLAGS = FTS_PHYSICAL;
+    int FTS_FLAGS;
     size_t n_args = strlen(args);
     size_t i;
 
@@ -126,7 +126,6 @@ int init_flags_from_args(FLAGS* flags, char* args) {
             case 'a':
                 flags->a = true;
                 flags->A = true;
-                FTS_FLAGS = FTS_FLAGS | FTS_SEEDOT;
                 break;
             case 'c':
                 flags->c = true;
@@ -136,7 +135,7 @@ int init_flags_from_args(FLAGS* flags, char* args) {
                 flags->d = true;
                 flags->a = true;
                 flags->A = true;
-                FTS_FLAGS = FTS_FLAGS | FTS_SEEDOT;
+                flags->R = false;
                 break;
             case 'F':
                 flags->F = true;
@@ -168,7 +167,7 @@ int init_flags_from_args(FLAGS* flags, char* args) {
                 flags->w = false;
                 break;
             case 'R':
-                flags->R = !flags->d && true;;
+                flags->R = !flags->d && true;
                 break;
             case 'r':
                 flags->r = true;
@@ -196,6 +195,11 @@ int init_flags_from_args(FLAGS* flags, char* args) {
                 (void)fprintf(stderr, "ls: unknown option -- %c\nusage: ls [ −AacdFfhiklnqRrSstuw] [file . . .]\n", args[i]);
                 return -1;
         }
+    }
+    FTS_FLAGS = flags->R ? FTS_LOGICAL : FTS_PHYSICAL;
+
+    if (flags->a || flags->d) {
+        FTS_FLAGS = FTS_FLAGS | FTS_SEEDOT;
     }
     return FTS_FLAGS;
 }
