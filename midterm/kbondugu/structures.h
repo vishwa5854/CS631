@@ -73,6 +73,7 @@ typedef struct PRINTER_FRAME {
     bool                   is_dir;
     int                    major_dev_num;
     int                    minor_dev_num;
+    int                    year;
 } PF;
 
 typedef struct MAX_MAP {

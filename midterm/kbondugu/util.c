@@ -5,6 +5,7 @@
 #include<sys/types.h>
 #include<sys/stat.h>
 #include<fts.h>
+#include<sys/time.h>
 #include<unistd.h>
 
 char* which_month(int month) {
@@ -215,4 +216,16 @@ char* get_file_name(PF* print_buffer, FLAGS* flags) {
     }
     
     return print_buffer->file_name;
+}
+
+bool is_time_within_six_months(time_t* target_time) {
+    if (*target_time < 0) {
+        return false;
+    }
+
+    time_t six_months = 15778800000;
+    struct timeval curr_time;
+    gettimeofday(&curr_time, NULL);
+
+    return (labs(curr_time.tv_sec - *target_time) > six_months) ? false : true;
 }

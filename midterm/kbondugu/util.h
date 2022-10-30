@@ -27,4 +27,6 @@ double effective_number_of_blocks(int set_block_size, int env_block_size, blkcnt
 
 char* get_file_name(PF* print_buffer, FLAGS* flags);
 
+bool is_time_within_six_months(time_t* target_time);
+
 #endif

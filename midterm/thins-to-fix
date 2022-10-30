@@ -44,7 +44,7 @@ symlink to a file that does'nt exist -- done
 
 non printable char -- done
 
-1, 1 for charecter device
+1, 1 for charecter device -- done
 
 default include path is usr/include
 just do a grep for constansts in /usr/include
@@ -56,5 +56,4 @@ sys/syslimits -> is what u need
 total is also pending -- done
 -d done
 
--l c dev is not done, 
 -R option is pending

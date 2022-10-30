@@ -155,6 +155,12 @@ void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map, bool is_di
 
         print_buffer->tm_min = tm->tm_min;
         max_map->tm_min = max_of_two(max_map->tm_mday, tm->tm_min);
+
+        if (is_time_within_six_months(which_time)) {
+            print_buffer->year = -1;
+        } else {
+            print_buffer->year = tm->tm_year;
+        }
     }
     char file_name[node->fts_namelen];
     strncpy(file_name, node->fts_name, node->fts_namelen);
@@ -331,7 +337,11 @@ void flush(PF* print_buffer, MP* max_map, FLAGS* flags) {
         // print_empty_spaces(max_map->tm_mday - get_number_of_digits(print_buffer->tm_mday));
         (void)printf("%02d ", print_buffer->tm_mday);
 
-        (void)printf("%02d:%02d ", print_buffer->tm_hour, print_buffer->tm_min);
+        if (print_buffer->year != -1) {
+            (void)printf(" %d ", print_buffer->year + 1900);
+        } else {
+            (void)printf("%02d:%02d ", print_buffer->tm_hour, print_buffer->tm_min);
+        }
     }
 
     if (strlen(print_buffer->file_name) == 0) {
