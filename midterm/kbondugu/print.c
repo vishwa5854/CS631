@@ -153,7 +153,7 @@ void print(FLAGS* flags, FTSENT* node, PF* print_buffer, MP* max_map, bool is_di
             }
         }
         
-        struct tm *tm;
+        struct tm* tm;
         time_t* which_time = &node->fts_statp->st_mtim.tv_sec;
 
         if (flags->c) {
