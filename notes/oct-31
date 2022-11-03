@@ -1,0 +1,8 @@
+1. Pipe can be used among related process but a named pipe FIFO can be used accross unrelated processes.
+2. Shared Memory is the fastest IPC since the memory exists in kernel space and process can read from it
+using the shmkey and no copying of data into the new process buffer or something of that sort
+3. popen will create an IPC, fork a new process, invoke the shell and execute commands on the shell
+4. Message queues store the data in the queue until and unless the message is read by another 
+process, once read it will be removed from the queue, and we can assign priorites to push the message 
+forward or backward in the queue
+5. Tee command takes one input and splits the data into two output streams 
