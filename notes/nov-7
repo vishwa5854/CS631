@@ -1,0 +1,6 @@
+sockets allow us for commmunication accross the internet or local with wide variety of protocols
+SOCKET_STREAM -- allows for connection oriented, reliable two way sequential communication
+SOCKET_DGRAM -- allows for connectionless unreliable messages like UDP
+SOCKET_RAW for anything else and u wanna deal with other internal protocols
+SOCKET_RAW is accessible only for super user
+Sockets are used to communicate among unrelated processes
