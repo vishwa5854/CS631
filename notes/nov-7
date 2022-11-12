@@ -4,3 +4,5 @@ SOCKET_DGRAM -- allows for connectionless unreliable messages like UDP
 SOCKET_RAW for anything else and u wanna deal with other internal protocols
 SOCKET_RAW is accessible only for super user
 Sockets are used to communicate among unrelated processes
+We get a file descriptor on succesful creation of socket with which we can use read write calls to
+send and recieve the data. But we use send and sendto to send the data
