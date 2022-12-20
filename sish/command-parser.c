@@ -5,6 +5,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
+#include <errno.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 //#include "command-parser.h"
 
 typedef struct command {
@@ -80,15 +84,20 @@ int parser(char *original_command) {
         }
     }
     i = 0;
-
-    while ((head != NULL) && (i < n_tokens)) {
+    Command *t_head = head;
+//&& (i < n_tokens)
+    while ((t_head != NULL) ) {
 //        if (head->is_pipe) {
 //            (void) printf("It is pipe duh\n");
 //        } else {
 
-        (void)printf("Token is # %s\n", head->command_str);
+        if (t_head->command_str == NULL) {
+            puts("I am nulll");
+        }
+
+        (void)printf("Token is # %s\n", t_head->command_str);
 //        }
-        head = head->next;
+        t_head = t_head->next;
         i++;
     }
 
@@ -133,29 +142,82 @@ void not_so_dumb_parser(char *full_command) {
     }
 }
 
-/** All you gotta do is check for the existence of a file on the right */
-void has_valid_redirection(Command *head) {
-
-}
-
 int is_redirection(char *token) {
-    return (strncmp(head->command_str, "<", 1) == 0) ||
-           (strncmp(head->command_str, ">", 1) == 0) ||
-           (strncmp(head->command_str, ">>", 2) == 0);
+    return (strncmp(token, "<", 1) == 0) ||
+           (strncmp(token, ">", 1) == 0) ||
+           (strncmp(token, ">>", 2) == 0);
 }
 
-void find_the_executable(Command *head) {
-    /** The first string without any redirections before it is the exec name */
+void check_permissions(char *redirection_token, char *file_path) {
     if (
-            (head->command_str[0] != '<') &&
-            (head->command_str[0] != '>')
+            (strncmp(redirection_token, ">", 1) == 0) ||
+            (strncmp(redirection_token, ">>", 2) == 0)
             ) {
-        (void)puts(head->command_str);
-    } else {
-
+        if (access(file_path, W_OK) == -1) {
+            if (errno != ENOENT) {
+                (void)printf("SISH: %s: %s", file_path, strerror(errno));
+                exit(EXIT_FAILURE);
+            }
+        }
+    } else if (strncmp(redirection_token, "<", 1) == 0) {
+        if (access(file_path, R_OK) == -1) {
+            (void)printf("SISH: %s: %s", file_path, strerror(errno));
+            exit(EXIT_FAILURE);
+        }
     }
+}
 
+/** All you gotta do is check for the existence of a file on the right */
+void has_valid_redirection(Command *top) {
+    /** If the current token is a redirection, then the next token should be a file name */
+    while ((top != NULL) && (top->command_str != NULL)) {
+        if (is_redirection(top->command_str)) {
+            /** Gotta check if we have a next token or not and also if we have a token then
+             * let's check for file permissions as well */
+            if (
+                    (top->next == NULL) ||
+                    (top->next->command_str == NULL)
+                    ) {
+                puts("Invalid Syntax of redirection");
+                exit(EXIT_FAILURE);
+            }
+            check_permissions(top->command_str, top->next->command_str);
+        }
+        top = top->next;
+    }
+}
 
+void find_the_executable_and_args(Command *top, int n_args) {
+    char *args[n_args];
+    bzero(args, sizeof(args));
+    int start = 0;
+    char *exec = NULL;
+
+    /** The first string without any redirections is the exec name */
+    while ((top != NULL) && (start < n_args) && (top->command_str != NULL)) {
+        if (is_redirection(top->command_str)) {
+            if (top->next != NULL) {
+                top = top->next->next;
+            } else {
+                top = NULL;
+            }
+        } else {
+            /** This token doesn't belong to a redirection bruh */
+            if (exec == NULL) {
+                exec = top->command_str;
+            } else {
+                args[start++] = top->command_str;
+            }
+            top = top->next;
+        }
+    }
+    args[start] = NULL;
+
+    puts(exec);
+
+    for (int i = 0; i < start; i++) {
+        puts(args[i]);
+    }
 }
 
 int main() {
@@ -170,6 +232,11 @@ int main() {
     } else {
         printf("Number of tokens are %d\n", re);
     }
-//    free(head);
+
+    Command *redirection_head = head;
+    has_valid_redirection(redirection_head);
+
+    Command *exec_head = head;
+    find_the_executable_and_args(exec_head, re);
     free(current);
 }
