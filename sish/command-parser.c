@@ -7,9 +7,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <errno.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-//#include "command-parser.h"
+#include <fcntl.h>
+#include <sys/wait.h>
 
 typedef struct command {
     char *command_str;
@@ -83,25 +82,8 @@ int parser(char *original_command) {
             i_updated = 0;
         }
     }
-    i = 0;
-    Command *t_head = head;
-//&& (i < n_tokens)
-    while ((t_head != NULL) ) {
-//        if (head->is_pipe) {
-//            (void) printf("It is pipe duh\n");
-//        } else {
 
-        if (t_head->command_str == NULL) {
-            puts("I am nulll");
-        }
-
-        (void)printf("Token is # %s\n", t_head->command_str);
-//        }
-        t_head = t_head->next;
-        i++;
-    }
-
-    return n_tokens;
+    return (int)n_tokens;
 }
 
 
@@ -187,16 +169,52 @@ void has_valid_redirection(Command *top) {
     }
 }
 
-void find_the_executable_and_args(Command *top, int n_args) {
+int is_input_redirection(char *token) {
+    return (strncmp(token, "<", 1) == 0);
+}
+
+int is_output_redirection(char *token) {
+    return (strncmp(token, ">", 1) == 0) ||
+           (strncmp(token, ">>", 2) == 0);
+}
+
+int is_append_redirection(char *token) {
+    return strncmp(token, ">>", 2) == 0;
+}
+
+typedef struct ParsedCommand {
+    char *exec_name;
+    char **args;
+    /** Note that we could only have one input or output redirections */
+    char *input_redirection;
+    char *output_redirection;
+    int append;
+    int n_args;
+} PCommand;
+PCommand *parsed_command;
+
+void find_the_executable_and_args(Command *top, int n_args, PCommand *p_command) {
     char *args[n_args];
     bzero(args, sizeof(args));
     int start = 0;
     char *exec = NULL;
+    char *in_redirection = NULL, *out_redirection = NULL;
+    p_command->args = (char**) malloc(sizeof(char*) * n_args);
 
     /** The first string without any redirections is the exec name */
     while ((top != NULL) && (start < n_args) && (top->command_str != NULL)) {
         if (is_redirection(top->command_str)) {
             if (top->next != NULL) {
+                if (is_input_redirection(top->command_str)) {
+                    in_redirection = top->next->command_str;
+                } else if (is_output_redirection(top->command_str)) {
+                    if (is_append_redirection(top->command_str)) {
+                        p_command->append = 1;
+                    } else {
+                        p_command->append = 0;
+                    }
+                    out_redirection = top->next->command_str;
+                }
                 top = top->next->next;
             } else {
                 top = NULL;
@@ -205,18 +223,91 @@ void find_the_executable_and_args(Command *top, int n_args) {
             /** This token doesn't belong to a redirection bruh */
             if (exec == NULL) {
                 exec = top->command_str;
-            } else {
-                args[start++] = top->command_str;
             }
+            p_command->args[start++] = top->command_str;
             top = top->next;
         }
     }
-    args[start] = NULL;
+    p_command->args[start] = NULL;
+    p_command->n_args = start;
 
-    puts(exec);
+    if (exec != NULL) {
+        p_command->exec_name = (char*) malloc(sizeof(char) * strlen(exec));
+        (void) strncpy(p_command->exec_name, exec, strlen(exec));
+    } else {
+        p_command->exec_name = NULL;
+    }
 
-    for (int i = 0; i < start; i++) {
-        puts(args[i]);
+    if (in_redirection != NULL) {
+        p_command->input_redirection = (char*) malloc(sizeof(char) * strlen(in_redirection));
+        (void) strncpy(p_command->input_redirection, in_redirection, strlen(in_redirection));
+    } else {
+        p_command->input_redirection = NULL;
+    }
+
+    if (out_redirection != NULL) {
+        p_command->output_redirection = (char*) malloc(sizeof(char) * strlen(out_redirection));
+        (void) strncpy(p_command->output_redirection, out_redirection, strlen(out_redirection));
+    } else {
+        p_command->output_redirection = NULL;
+    }
+}
+
+void execute_the_fucking_command(PCommand* p_command) {
+    // after fork, before execvp, dup shit
+    pid_t pid;
+    if ((pid = fork()) < 0) {
+        (void) fprintf(stderr, "SISH: Failed to execute %s: %s", p_command->exec_name, strerror(errno));
+        return;
+    } else if (pid > 0) {
+        /** Parent */
+        int status = -1;
+
+        if (waitpid(pid, &status, 0) < 0) {
+            // for now we will say child failed that's it
+            (void) fprintf(stdout, "Child Failed");
+        };
+    } else if (pid == 0) { /** Child */
+        /** We will dup the stdin to the file descriptor of the given file bruh */
+        if (p_command->input_redirection != NULL) {
+            int input_redirection_fd;
+
+            if ((input_redirection_fd = open(p_command->input_redirection, O_RDONLY)) == -1) {
+                (void) fprintf(stderr, "SISH: Cannot read file %s: %s", p_command->input_redirection,
+                               strerror(errno));
+                _exit(EXIT_FAILURE);
+            }
+
+            if (dup2(input_redirection_fd, STDIN_FILENO) != STDIN_FILENO) {
+                (void) fprintf(stderr, "SISH: Input redirection failed for %s: %s",
+                               p_command->input_redirection, strerror(errno));
+                _exit(EXIT_FAILURE);
+            }
+        }
+
+        /** We will dup the stdout to the file descriptor of the given file bruh */
+        if (p_command->output_redirection != NULL) {
+            int output_redirection_fd;
+            int oflag = O_WRONLY;
+
+            if (p_command->append) {
+                oflag = O_APPEND;
+            }
+
+            if ((output_redirection_fd = open(p_command->output_redirection, O_CREAT | oflag, S_IRUSR | S_IWUSR)) == -1) {
+                (void) fprintf(stderr, "SISH: Cannot write file %s: %s", p_command->output_redirection,
+                               strerror(errno));
+                _exit(EXIT_FAILURE);
+            }
+
+            if (dup2(output_redirection_fd, STDOUT_FILENO) != STDOUT_FILENO) {
+                (void) fprintf(stderr, "SISH: Output redirection failed for %s: %s",
+                               p_command->output_redirection, strerror(errno));
+                _exit(EXIT_FAILURE);
+            }
+        }
+
+        execvp(p_command->exec_name, p_command->args);
     }
 }
 
@@ -237,6 +328,20 @@ int main() {
     has_valid_redirection(redirection_head);
 
     Command *exec_head = head;
-    find_the_executable_and_args(exec_head, re);
+    parsed_command = (PCommand*) malloc(sizeof (PCommand));
+    find_the_executable_and_args(exec_head, re, parsed_command);
+
+    execute_the_fucking_command(parsed_command);
+
+    // TODO: Handle for pipe basically strtok by | and call all these functions man
+    /**
+     * Random thoughts
+     * For input redirection, just dup the stdin with the corresponding file's fd
+     * For output redirection, just dup the stdin with the corresponding file's fd
+     * But for the pipe dup the stdout to stdin of the new process.
+     * In the piping bruh, allow redirections in the first command and the last command
+     * but not in between as it wouldn't make any sense
+     * */
     free(current);
+    free(parsed_command);
 }
