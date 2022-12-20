@@ -266,7 +266,7 @@ void execute_the_fucking_command(PCommand* p_command) {
         if (waitpid(pid, &status, 0) < 0) {
             // for now we will say child failed that's it
             (void) fprintf(stdout, "Child Failed");
-        };
+        }
     } else if (pid == 0) { /** Child */
         /** We will dup the stdin to the file descriptor of the given file bruh */
         if (p_command->input_redirection != NULL) {
@@ -291,10 +291,11 @@ void execute_the_fucking_command(PCommand* p_command) {
             int oflag = O_WRONLY;
 
             if (p_command->append) {
-                oflag = O_APPEND;
+                oflag = oflag | O_APPEND;
+                puts("APPENDING THE FLAG");
             }
 
-            if ((output_redirection_fd = open(p_command->output_redirection, O_CREAT | oflag, S_IRUSR | S_IWUSR)) == -1) {
+            if ((output_redirection_fd = open(p_command->output_redirection, oflag | O_CREAT , S_IRUSR | S_IWUSR)) == -1) {
                 (void) fprintf(stderr, "SISH: Cannot write file %s: %s", p_command->output_redirection,
                                strerror(errno));
                 _exit(EXIT_FAILURE);
@@ -320,6 +321,7 @@ int main() {
     int re = parser(input);
     if (re == -1) {
         puts("Invalid command");
+        return EXIT_FAILURE;
     } else {
         printf("Number of tokens are %d\n", re);
     }
