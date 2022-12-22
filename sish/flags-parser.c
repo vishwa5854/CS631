@@ -2,13 +2,14 @@
 // Created by z on 12/17/22.
 //
 #include "flags-parser.h"
-#include "shell-builtins.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
 #include <unistd.h>
+
+#include "shell-builtins.h"
 
 void parse_flags(FLAGS *flags, int argc, char **argv) {
     bzero(flags->command, MAX_COMMAND_SIZE + 1);

@@ -206,10 +206,12 @@ void parse_and_exec(char *full_command, MasterCommand *current_mc, FLAGS *flags)
                     return;
                 }
             } else {
-                /** This is in between pipes where input or output redirection doesn't make sense. */
+                /** This is in between pipes where input or output redirection doesn't make sense.
+                 */
                 if ((current->input_redirection != NULL) || (current->output_redirection != NULL)) {
                     set_last_command_status(EXIT_FAILURE);
-                    (void)fprintf(stderr, "%s: Redirection in between pipes is not valid\n", PROGRAM_NAME);
+                    (void)fprintf(stderr, "%s: Redirection in between pipes is not valid\n",
+                                  PROGRAM_NAME);
                     return;
                 }
             }

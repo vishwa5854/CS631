@@ -1,12 +1,12 @@
 //
 // Created by z on 12/17/22.
 //
+#include <limits.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <limits.h>
-#include<sys/syslimits.h>
-#include <signal.h>
+#include <sys/syslimits.h>
 
 #include "command-parser.h"
 #include "data-structures.h"
@@ -32,10 +32,10 @@ int main(int argc, char **argv) {
 
     /** Execute only command given in -c */
     if (flags.c) {
-      current_mc = (MasterCommand *)malloc(sizeof(MasterCommand));
-      head_mc = current_mc;
-      parse_and_exec(flags.command, current_mc, &flags);
-      free(current_mc);
+        current_mc = (MasterCommand *)malloc(sizeof(MasterCommand));
+        head_mc = current_mc;
+        parse_and_exec(flags.command, current_mc, &flags);
+        free(current_mc);
     } else {
         char input[ARG_MAX];
 
@@ -52,11 +52,9 @@ int main(int argc, char **argv) {
                 break;
             }
 
-            if (
-                (strncmp(input, "\n", strlen("\n")) == 0) ||
-                (strncmp(input, "\r\n", strlen("\r\n")) == 0)
-            ) {
-                continue ;
+            if ((strncmp(input, "\n", strlen("\n")) == 0) ||
+                (strncmp(input, "\r\n", strlen("\r\n")) == 0)) {
+                continue;
             }
 
             parse_and_exec(input, current_mc, &flags);

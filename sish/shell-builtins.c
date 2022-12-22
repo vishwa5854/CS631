@@ -22,7 +22,7 @@ void cd(char *path) {
             last_command_status = errno;
 
             if (is_kid) {
-              _exit(last_command_status);
+                _exit(last_command_status);
             }
             return;
         }
@@ -53,7 +53,7 @@ void echo(char *word) {
     if (strncmp(word, "$?", strlen(word)) == 0) {
         (void)printf("%d\n", last_command_status);
     } else if (strncmp(word, "$$", strlen(word)) == 0) {
-        (void)printf("%d\n", getpid());
+        (void)printf("%d\n", getppid());
     } else {
         (void)printf("%s\n", word);
     }
@@ -78,7 +78,7 @@ void exec_built_in(PCommand *head, int is_child) {
             last_command_status = EXIT_FAILURE;
 
             if (is_kid) {
-              _exit(last_command_status);
+                _exit(last_command_status);
             }
             return;
         }
@@ -92,17 +92,17 @@ void exec_built_in(PCommand *head, int is_child) {
             (void)fprintf(stderr, "%s: Usage echo [word]\n", PROGRAM_NAME);
 
             if (is_kid) {
-              _exit(last_command_status);
+                _exit(last_command_status);
             }
             return;
         }
     }
 }
 
-void set_last_command_status(int status) {
-    last_command_status = status;
+void set_last_command_status(int status) { 
+    last_command_status = status; 
 }
 
-void exit_sish() {
-    exit(last_command_status);
+void exit_sish() { 
+    exit(last_command_status); 
 }
