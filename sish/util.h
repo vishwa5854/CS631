@@ -21,4 +21,8 @@ int is_append_redirection(char *token);
 
 int number_of_pipes(char *token);
 
+void set_env_shell();
+
+int is_built_in(char *command);
+
 #endif  // SISH_UTIL_H

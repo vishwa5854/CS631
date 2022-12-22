@@ -10,16 +10,15 @@
 #include <unistd.h>
 
 void parse_flags(FLAGS *flags, int argc, char **argv) {
-    /** First let's flush the flags->command with null characters so that we don't get weird chars
-     */
-    bzero(flags->command, sizeof(flags->command));
+    bzero(flags->command, MAX_COMMAND_SIZE + 1);
     int option;
 
     while ((option = getopt(argc, argv, "c:x")) != -1) {
         switch (option) {
             case 'c':
                 (void)strncpy(flags->command, optarg, strnlen(optarg, MAX_COMMAND_SIZE));
-                flags->command[strnlen(optarg, MAX_COMMAND_SIZE)] = '\0';
+                flags->command[strnlen(optarg, MAX_COMMAND_SIZE)] = '\t';
+                flags->command[strnlen(optarg, MAX_COMMAND_SIZE) + 1] = '\0';
                 flags->c = true;
                 break;
             case 'x':

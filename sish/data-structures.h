@@ -6,12 +6,11 @@
 #define SISH_DATA_STRUCTURES_H_
 
 #include <stdbool.h>
-// TODO: Uncomment this on NetBSD
-// #include<sys/syslimits.h>
+ #include<sys/syslimits.h>
 
-#ifndef LOGIN_NAME_MAX
-#define LOGIN_NAME_MAX 256
-#endif
+//#ifndef LOGIN_NAME_MAX
+//#define LOGIN_NAME_MAX 256
+//#endif
 
 #define MAX_COMMAND_SIZE 4096
 
@@ -19,7 +18,7 @@
 
 typedef struct FLAGS_STRUCT {
     bool c;
-    char command[MAX_COMMAND_SIZE];
+    char command[MAX_COMMAND_SIZE + 1];
     bool x;
 } FLAGS;
 
@@ -30,6 +29,7 @@ typedef struct command {
 
 typedef struct ParsedCommand {
     char *exec_name;
+    char *original_command;
     char **args;
     /** Note that we could only have one input or output redirections */
     char *input_redirection;

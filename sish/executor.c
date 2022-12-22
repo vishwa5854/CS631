@@ -3,6 +3,8 @@
 //
 
 #include "executor.h"
+#include "shell-builtins.h"
+#include "util.h"
 
 #include <errno.h>
 #include <fcntl.h>
@@ -13,25 +15,37 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-void executor(PCommand *head, int n_commands) {
+void executor(PCommand *head, int n_commands, FLAGS *flags) {
     int pipes[n_commands][2];
     pid_t p_ids[n_commands];
     int i;
     int waits[n_commands];
+    char *commands[n_commands];
 
     for (i = 0; i < n_commands; i++) {
         waits[i] = 0;
         if (pipe(pipes[i]) < 0) {
             (void) fprintf(stderr, "%s: Cannot create pipe.: %s\n", PROGRAM_NAME, strerror(errno));
+            set_last_command_status(errno);
             return;
         }
     }
 
     for (i = 0; i < n_commands; i++) {
+        if (flags->x) {
+            (void)fprintf(stderr, "+ %s\n", head->original_command);
+        }
+
+        if (is_built_in(head->exec_name) && (strncmp(head->exec_name, "cd", strlen("cd")) == 0)) {
+            exec_built_in(head, 0);
+            continue;
+            /** We will not fork a new child for this */
+        }
         p_ids[i] = fork();
 
         if (p_ids[i] == -1) {
             (void) fprintf(stderr, "%s: Error while forking: %s\n", PROGRAM_NAME, strerror(errno));
+            set_last_command_status(errno);
             return;
         } else if (p_ids[i] == 0) {
             /** Child */
@@ -91,8 +105,12 @@ void executor(PCommand *head, int n_commands) {
                 }
             }
 
-            if (execvp(head->exec_name, head->args) == -1) {
-                _exit(EXIT_FAILURE);
+            if (!is_built_in(head->exec_name)) {
+                if (execvp(head->exec_name, head->args) == -1) {
+                  _exit(127);
+                }
+            } else {
+                exec_built_in(head, 1);
             }
         } else if (p_ids[i] > 0) {
             char* exec_name = head->exec_name;
@@ -102,12 +120,14 @@ void executor(PCommand *head, int n_commands) {
 
             if (waitpid(p_ids[i], &status, WNOHANG) < 0) {
                 (void) fprintf(stderr, "%s: Failed to wait for command: %s\n", PROGRAM_NAME, exec_name);
+                set_last_command_status(errno);
                 break;
             }
 
             /** Child has called _exit() */
             if (WIFEXITED(status)) {
                 int exit_code = WEXITSTATUS(status);
+                set_last_command_status(exit_code);
 
                 /** Child exited with an error */
                 if (exit_code != 0) {
@@ -116,6 +136,9 @@ void executor(PCommand *head, int n_commands) {
                 }
             } else {
                 waits[i] = 1;
+//                commands[i] = (char *)malloc(sizeof(char) * strlen(head->exec_name));
+//                (void)strncpy(commands[i], head->exec_name, strlen(head->exec_name));
+                commands[i] = exec_name;
             }
         }
     }
@@ -128,6 +151,19 @@ void executor(PCommand *head, int n_commands) {
                 (void) fprintf(stderr, "%s: Failed to wait for command\n", PROGRAM_NAME);
                 break;
             }
+
+            /** Child has called _exit() */
+            if (WIFEXITED(status)) {
+                int exit_code = WEXITSTATUS(status);
+                set_last_command_status(exit_code);
+
+                /** Child exited with an error */
+                if (exit_code != 0) {
+                  (void) fprintf(stderr, "%s: Failed to execute command: %s\n", PROGRAM_NAME, commands[i]);
+                  break;
+                }
+            }
+            set_last_command_status(WEXITSTATUS(status));
         }
     }
 

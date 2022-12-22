@@ -150,7 +150,7 @@ void find_the_executable_and_args(TokenizedIndividualCommand *top, int n_args,
 PCommand *current;
 PCommand *head;
 
-void parse_and_exec(char *full_command, MasterCommand *current_mc) {
+void parse_and_exec(char *full_command, MasterCommand *current_mc, FLAGS *flags) {
     int n_pipes = number_of_pipes(full_command);
     char *token = strtok(full_command, "|");
     int n_commands = 0;
@@ -202,15 +202,14 @@ void parse_and_exec(char *full_command, MasterCommand *current_mc) {
                 }
             }
         }
-
-//        execute_the_fucking_command(current);
+        current->original_command = (char *)malloc(strlen(token));
+        (void)strncpy(current->original_command, token, strlen(token));
         current->next = (PCommand *)malloc(sizeof(PCommand));
         current = current->next;
         n_commands += 1;
         token = strtok(NULL, "|");
     }
 
-    // TODO: call exec heere
-    executor(head, n_commands);
+    executor(head, n_commands, flags);
     free(current);
 }

@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/param.h>
 #include <unistd.h>
 
 int is_redirection(char *token) {
@@ -78,4 +79,25 @@ int number_of_pipes(char *token) {
         }
     }
     return pipes;
+}
+
+void set_env_shell() {
+    char buff[MAXPATHLEN];
+
+    if (getcwd(buff, MAXPATHLEN) == NULL) {
+        (void)fprintf(stderr, "%s: Failed to set SHELL env: %s\n", PROGRAM_NAME, strerror(errno));
+        exit(EXIT_FAILURE);
+    }
+    (void)strncat(buff, "/sish", strlen("/sish"));
+
+    if (setenv("SHELL", buff, 1) == -1) {
+        (void)fprintf(stderr, "%s: Failed to set SHELL env: %s\n", PROGRAM_NAME, strerror(errno));
+        exit(EXIT_FAILURE);
+    }
+}
+
+int is_built_in(char *command) {
+    return (strncmp(command, "cd", strlen("cd")) == 0) ||
+           (strncmp(command, "exit", strlen("exit")) == 0) ||
+           (strncmp(command, "echo", strlen("echo")) == 0);
 }

@@ -7,8 +7,6 @@
 
 #include "data-structures.h"
 
-void execute_the_fucking_command(PCommand *p_command);
-
-void executor(PCommand *head, int n_commands);
+void executor(PCommand *head, int n_commands, FLAGS *flags);
 
 #endif  // SISH_EXECUTOR_H
