@@ -18,3 +18,11 @@ Testcases Tested:
 Things that were really hard
 1. Properly parsing strings is really hard
 2. Understanding piping across commands and properly duping
+
+Weird Bugs
+1. Once in a while whatever the args you pass get appended with the program name
+    ex: ls something -> changes to ls somethingls
+    Some weird pointer issue, I tried to replicate this again but I could only find it in rare cases
+    but one test case with a specific file name failed multiple times
+    i.e ls /tmp/out -- For some reason for this path ony /tmp/out it is consistently getting appended
+    I tried to debug but couldn't find the root cause.
