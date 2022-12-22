@@ -6,4 +6,4 @@ set(CMAKE_C_STANDARD 11)
 include_directories(.)
 
 add_executable(sish
-        sish.c data-structures.h flags-parser.c flags-parser.h shell-builtins.c shell-builtins.h command-parser.c command-parser.h)
+        sish.c data-structures.h flags-parser.c flags-parser.h shell-builtins.c shell-builtins.h command-parser.c command-parser.h util.h util.c executor.c executor.h)

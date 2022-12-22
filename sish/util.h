@@ -1,0 +1,24 @@
+//
+// Created by z on 12/21/22.
+//
+
+#ifndef SISH_UTIL_H
+#define SISH_UTIL_H
+
+#include "data-structures.h"
+
+int is_redirection(char *token);
+
+void check_permissions(char *redirection_token, char *file_path);
+
+void has_valid_redirection(TokenizedIndividualCommand *top);
+
+int is_input_redirection(char *token);
+
+int is_output_redirection(char *token);
+
+int is_append_redirection(char *token);
+
+int number_of_pipes(char *token);
+
+#endif  // SISH_UTIL_H

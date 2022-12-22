@@ -1,13 +1,14 @@
 //
 // Created by z on 12/17/22.
 //
-#include <stdio.h>
-#include <unistd.h>
+#include "shell-builtins.h"
+
 #include <errno.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
-#include "shell-builtins.h"
 #include "data-structures.h"
 
 void cd(char *path) {
@@ -23,17 +24,13 @@ void cd(char *path) {
     }
 }
 
-void exit_shell() {
-    exit(errno);
-}
+void exit_shell() { exit(errno); }
 
 void echo(char *word) {
     // TODO: Test whether strlen(word) works or not
     if (strncmp(word, "$?", strlen(word)) == 0) {
-
     } else if (strncmp(word, "$$", strlen(word)) == 0) {
-
     } else {
-        (void) printf("%s\n", word);
+        (void)printf("%s\n", word);
     }
 }

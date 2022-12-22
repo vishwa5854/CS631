@@ -7,4 +7,4 @@
 
 void cd(char *path);
 
-#endif //SISH_SHELL_BUILTINS_H
+#endif  // SISH_SHELL_BUILTINS_H

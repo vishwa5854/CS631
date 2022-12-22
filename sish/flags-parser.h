@@ -9,4 +9,4 @@
 
 void parse_flags(FLAGS *flags, int argc, char **argv);
 
-#endif //SISH_FLAGS_PARSER_H
+#endif  // SISH_FLAGS_PARSER_H

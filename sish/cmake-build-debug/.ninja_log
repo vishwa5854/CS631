@@ -1,9 +1,14 @@
 # ninja log v5
-1	20	1671261887405065377	CMakeFiles/sish.dir/sish.c.o	9420526b63c8fa69
-0	22	1671260942551095233	CMakeFiles/sish.dir/flags-parser.c.o	61b85877376c5c6
-20	35	1671261887418399299	sish	acf113d39c42aef7
-1	20	1671261887405065377	CMakeFiles/sish.dir/shell-builtins.c.o	d095c9e7ebb1f2aa
-1	64	1671433532723668451	CMakeFiles/sish.dir/command-parser.c.o	efdfabbed78ed8a
 1	64	1671433532723668451	CMakeFiles/sish.dir/sish.c.o	9420526b63c8fa69
 1	64	1671433532727001818	CMakeFiles/sish.dir/flags-parser.c.o	61b85877376c5c6
+20	35	1671261887418399299	sish	acf113d39c42aef7
+1	64	1671433532723668451	CMakeFiles/sish.dir/command-parser.c.o	efdfabbed78ed8a
 1	65	1671433532727001818	CMakeFiles/sish.dir/shell-builtins.c.o	d095c9e7ebb1f2aa
+1	68	1671682679149275234	CMakeFiles/sish.dir/shell-builtins.c.o	d095c9e7ebb1f2aa
+0	69	1671682679149275234	CMakeFiles/sish.dir/sish.c.o	9420526b63c8fa69
+0	69	1671682679149275234	CMakeFiles/sish.dir/flags-parser.c.o	61b85877376c5c6
+1	72	1671682679153275254	CMakeFiles/sish.dir/util.c.o	fe77ddc75d1a0567
+1	86	1671682679166275318	CMakeFiles/sish.dir/command-parser.c.o	efdfabbed78ed8a
+1	86	1671682679167275323	CMakeFiles/sish.dir/executor.c.o	9b501aaa8f6aead7
+0	38	1671682809348912879	CMakeFiles/sish.dir/command-parser.c.o	efdfabbed78ed8a
+0	28	1671682850343113646	CMakeFiles/sish.dir/sish.c.o	9420526b63c8fa69

@@ -2,12 +2,12 @@
 // Created by z on 12/17/22.
 //
 
-#ifndef SISH_DATA_STRUCTURES_H
-#define SISH_DATA_STRUCTURES_H
+#ifndef SISH_DATA_STRUCTURES_H_
+#define SISH_DATA_STRUCTURES_H_
 
 #include <stdbool.h>
 // TODO: Uncomment this on NetBSD
-//#include<sys/syslimits.h>
+// #include<sys/syslimits.h>
 
 #ifndef LOGIN_NAME_MAX
 #define LOGIN_NAME_MAX 256
@@ -17,10 +17,6 @@
 
 #define PROGRAM_NAME "SISH"
 
-int exit_status_of_last_command = 0;
-
-int current_process_id = 0;
-
 char current_user[LOGIN_NAME_MAX];
 
 typedef struct FLAGS_STRUCT {
@@ -29,4 +25,25 @@ typedef struct FLAGS_STRUCT {
     bool x;
 } FLAGS;
 
-#endif //SISH_DATA_STRUCTURES_H
+typedef struct command {
+    char *command_str;
+    struct command *next;
+} TokenizedIndividualCommand;
+
+typedef struct ParsedCommand {
+    char *exec_name;
+    char **args;
+    /** Note that we could only have one input or output redirections */
+    char *input_redirection;
+    char *output_redirection;
+    int append;
+    int n_args;
+} PCommand;
+
+typedef struct MasterCommand {
+    TokenizedIndividualCommand *head_command;
+    TokenizedIndividualCommand *current_command;
+    struct MasterCommand *next;
+} MasterCommand;
+
+#endif  // SISH_DATA_STRUCTURES_H

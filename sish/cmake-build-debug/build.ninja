@@ -77,6 +77,20 @@ build CMakeFiles/sish.dir/command-parser.c.o: C_COMPILER__sish_Debug /home/z/Des
   OBJECT_DIR = CMakeFiles/sish.dir
   OBJECT_FILE_DIR = CMakeFiles/sish.dir
 
+build CMakeFiles/sish.dir/util.c.o: C_COMPILER__sish_Debug /home/z/Desktop/CS631/sish/util.c || cmake_object_order_depends_target_sish
+  DEP_FILE = CMakeFiles/sish.dir/util.c.o.d
+  FLAGS = -g -fdiagnostics-color=always -std=gnu11
+  INCLUDES = -I/home/z/Desktop/CS631/sish/.
+  OBJECT_DIR = CMakeFiles/sish.dir
+  OBJECT_FILE_DIR = CMakeFiles/sish.dir
+
+build CMakeFiles/sish.dir/executor.c.o: C_COMPILER__sish_Debug /home/z/Desktop/CS631/sish/executor.c || cmake_object_order_depends_target_sish
+  DEP_FILE = CMakeFiles/sish.dir/executor.c.o.d
+  FLAGS = -g -fdiagnostics-color=always -std=gnu11
+  INCLUDES = -I/home/z/Desktop/CS631/sish/.
+  OBJECT_DIR = CMakeFiles/sish.dir
+  OBJECT_FILE_DIR = CMakeFiles/sish.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target sish
@@ -85,7 +99,7 @@ build CMakeFiles/sish.dir/command-parser.c.o: C_COMPILER__sish_Debug /home/z/Des
 #############################################
 # Link the executable sish
 
-build sish: C_EXECUTABLE_LINKER__sish_Debug CMakeFiles/sish.dir/sish.c.o CMakeFiles/sish.dir/flags-parser.c.o CMakeFiles/sish.dir/shell-builtins.c.o CMakeFiles/sish.dir/command-parser.c.o
+build sish: C_EXECUTABLE_LINKER__sish_Debug CMakeFiles/sish.dir/sish.c.o CMakeFiles/sish.dir/flags-parser.c.o CMakeFiles/sish.dir/shell-builtins.c.o CMakeFiles/sish.dir/command-parser.c.o CMakeFiles/sish.dir/util.c.o CMakeFiles/sish.dir/executor.c.o
   FLAGS = -g
   OBJECT_DIR = CMakeFiles/sish.dir
   POST_BUILD = :
@@ -98,7 +112,7 @@ build sish: C_EXECUTABLE_LINKER__sish_Debug CMakeFiles/sish.dir/sish.c.o CMakeFi
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/z/Desktop/CS631/sish/cmake-build-debug && /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  COMMAND = cd /home/z/Desktop/CS631/sish/cmake-build-debug && /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -109,7 +123,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/z/Desktop/CS631/sish/cmake-build-debug && /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/bin/cmake --regenerate-during-build -S/home/z/Desktop/CS631/sish -B/home/z/Desktop/CS631/sish/cmake-build-debug
+  COMMAND = cd /home/z/Desktop/CS631/sish/cmake-build-debug && /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/bin/cmake --regenerate-during-build -S/home/z/Desktop/CS631/sish -B/home/z/Desktop/CS631/sish/cmake-build-debug
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -136,14 +150,14 @@ build all: phony sish
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja: RERUN_CMAKE | /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/CMakeCInformation.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/CMakeCommonLanguageInclude.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/CMakeGenericSystem.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/Compiler/GNU-C.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/Compiler/GNU.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/Platform/Linux-GNU-C.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/Platform/Linux-GNU.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/Platform/Linux.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/Platform/UnixPaths.cmake /home/z/Desktop/CS631/sish/CMakeLists.txt CMakeCache.txt CMakeFiles/3.24.2/CMakeCCompiler.cmake CMakeFiles/3.24.2/CMakeSystem.cmake
+build build.ninja: RERUN_CMAKE | /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/CMakeCInformation.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/CMakeCommonLanguageInclude.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/CMakeGenericSystem.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/Compiler/GNU-C.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/Compiler/GNU.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/Platform/Linux-GNU-C.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/Platform/Linux-GNU.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/Platform/Linux.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/Platform/UnixPaths.cmake /home/z/Desktop/CS631/sish/CMakeLists.txt CMakeCache.txt CMakeFiles/3.24.2/CMakeCCompiler.cmake CMakeFiles/3.24.2/CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/CMakeCInformation.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/CMakeCommonLanguageInclude.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/CMakeGenericSystem.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/Compiler/GNU-C.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/Compiler/GNU.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/Platform/Linux-GNU-C.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/Platform/Linux-GNU.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/Platform/Linux.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.7571.171/bin/cmake/linux/share/cmake-3.24/Modules/Platform/UnixPaths.cmake /home/z/Desktop/CS631/sish/CMakeLists.txt CMakeCache.txt CMakeFiles/3.24.2/CMakeCCompiler.cmake CMakeFiles/3.24.2/CMakeSystem.cmake: phony
+build /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/CMakeCInformation.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/CMakeCommonLanguageInclude.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/CMakeGenericSystem.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/Compiler/GNU-C.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/Compiler/GNU.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/Platform/Linux-GNU-C.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/Platform/Linux-GNU.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/Platform/Linux.cmake /home/z/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/share/cmake-3.24/Modules/Platform/UnixPaths.cmake /home/z/Desktop/CS631/sish/CMakeLists.txt CMakeCache.txt CMakeFiles/3.24.2/CMakeCCompiler.cmake CMakeFiles/3.24.2/CMakeSystem.cmake: phony
 
 
 #############################################
