@@ -2,6 +2,7 @@
 // Created by z on 12/17/22.
 //
 #include "flags-parser.h"
+#include "shell-builtins.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,6 +34,7 @@ void parse_flags(FLAGS *flags, int argc, char **argv) {
 
     if (argc != 0) {
         (void)fprintf(stderr, "Usage: %s [ −x] [ −c command]", PROGRAM_NAME);
+        set_last_command_status(EXIT_FAILURE);
         exit(EXIT_FAILURE);
     }
 }

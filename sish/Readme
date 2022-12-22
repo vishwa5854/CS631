@@ -1,0 +1,16 @@
+I couldn't implement background processes due to lack of time :(
+
+Testcases Tested:
+1. ls -lah /dev | cat | wc
+2. ls -lR /
+3. ls -lR / | wc
+4. < /home/z/sish/scp.sh cat | more
+5. cat <in >out
+6. cd /
+7. echo $$
+8. echo $?
+9. exit
+10. something -al
+11. uname | cat | grep Net
+12. ls -al >something | cat <something | more
+13. ls -al >something >>something2

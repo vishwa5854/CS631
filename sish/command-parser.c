@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "executor.h"
+#include "shell-builtins.h"
 #include "util.h"
 
 /** TODO: Please add an empty space at the end of original_command to get all
@@ -45,8 +46,8 @@ int parse_one_command(char *original_command, TokenizedIndividualCommand *curren
                 if (in_redirection && (original_command[i] == '<')) {
                     return -1;
                 }
-                out_redirection = original_command[i] == '>';
-                in_redirection = original_command[i] == '<';
+                out_redirection = (original_command[i] == '>');
+                in_redirection = (original_command[i] == '<');
 
                 /** Append Condition */
                 if ((original_command[i] == '>') && ((i + 1) < n_original_command) &&
@@ -91,6 +92,9 @@ void find_the_executable_and_args(TokenizedIndividualCommand *top, int n_args,
     int start = 0;
     char *exec = NULL;
     char *in_redirection = NULL, *out_redirection = NULL;
+    size_t out_redirection_length = 0;
+    size_t in_redirection_length = 0;
+
     /** If the user gives just ls, then we need to take 2 args one is ls and
      * other is NULL */
     p_command->args = (char **)malloc(sizeof(char *) * (n_args + 1));
@@ -101,6 +105,7 @@ void find_the_executable_and_args(TokenizedIndividualCommand *top, int n_args,
             if (top->next != NULL) {
                 if (is_input_redirection(top->command_str)) {
                     in_redirection = top->next->command_str;
+                    in_redirection_length = strlen(top->next->command_str);
                 } else if (is_output_redirection(top->command_str)) {
                     if (is_append_redirection(top->command_str)) {
                         p_command->append = 1;
@@ -108,6 +113,8 @@ void find_the_executable_and_args(TokenizedIndividualCommand *top, int n_args,
                         p_command->append = 0;
                     }
                     out_redirection = top->next->command_str;
+                    /** Sometimes strings behave oddly, so keeping track of strlen */
+                    out_redirection_length = strlen(top->next->command_str);
                 }
                 top = top->next->next;
             } else {
@@ -133,15 +140,15 @@ void find_the_executable_and_args(TokenizedIndividualCommand *top, int n_args,
     }
 
     if (in_redirection != NULL) {
-        p_command->input_redirection = (char *)malloc(sizeof(char) * strlen(in_redirection));
-        (void)strncpy(p_command->input_redirection, in_redirection, strlen(in_redirection));
+        p_command->input_redirection = (char *)malloc(sizeof(char) * in_redirection_length);
+        (void)strncpy(p_command->input_redirection, in_redirection, in_redirection_length);
     } else {
         p_command->input_redirection = NULL;
     }
 
     if (out_redirection != NULL) {
-        p_command->output_redirection = (char *)malloc(sizeof(char) * strlen(out_redirection));
-        (void)strncpy(p_command->output_redirection, out_redirection, strlen(out_redirection));
+        p_command->output_redirection = (char *)malloc(sizeof(char) * out_redirection_length);
+        (void)strncpy(p_command->output_redirection, out_redirection, out_redirection_length);
     } else {
         p_command->output_redirection = NULL;
     }
@@ -165,12 +172,14 @@ void parse_and_exec(char *full_command, MasterCommand *current_mc, FLAGS *flags)
         int n_tokens = parse_one_command(token, current_mc->current_command);
 
         if (n_tokens == -1) {
+            set_last_command_status(EXIT_FAILURE);
             (void)fprintf(stderr, "%s: Invalid command: %s\n", PROGRAM_NAME, token);
             return;
         }
         TokenizedIndividualCommand *redirection_head = current_mc->head_command;
 
         if (has_valid_redirection(redirection_head) == EXIT_FAILURE) {
+            set_last_command_status(EXIT_FAILURE);
             return;
         }
 
@@ -186,17 +195,20 @@ void parse_and_exec(char *full_command, MasterCommand *current_mc, FLAGS *flags)
         if (n_pipes > 0) {
             if (n_commands == 0) {
                 if (current->output_redirection != NULL) {
+                    set_last_command_status(EXIT_FAILURE);
                     (void)fprintf(stderr, "%s: Invalid redirections and piping\n", PROGRAM_NAME);
                     return;
                 }
             } else if (n_commands == n_pipes) {
                 if (current->input_redirection != NULL) {
+                    set_last_command_status(EXIT_FAILURE);
                     (void)fprintf(stderr, "%s: Invalid redirections and piping\n", PROGRAM_NAME);
                     return;
                 }
             } else {
                 /** This is in between pipes where input or output redirection doesn't make sense. */
                 if ((current->input_redirection != NULL) || (current->output_redirection != NULL)) {
+                    set_last_command_status(EXIT_FAILURE);
                     (void)fprintf(stderr, "%s: Redirection in between pipes is not valid\n", PROGRAM_NAME);
                     return;
                 }

@@ -6,6 +6,7 @@
 #include <string.h>
 #include <limits.h>
 #include<sys/syslimits.h>
+#include <signal.h>
 
 #include "command-parser.h"
 #include "data-structures.h"
@@ -22,6 +23,10 @@ int exit_status_of_last_command = 0;
 int current_process_id = 0;
 
 int main(int argc, char **argv) {
+    (void)signal(SIGINT, SIG_IGN);
+    (void)signal(SIGQUIT, SIG_IGN);
+    (void)signal(SIGTSTP, SIG_IGN);
+
     set_env_shell();
     parse_flags(&flags, argc, argv);
 
@@ -30,6 +35,7 @@ int main(int argc, char **argv) {
       current_mc = (MasterCommand *)malloc(sizeof(MasterCommand));
       head_mc = current_mc;
       parse_and_exec(flags.command, current_mc, &flags);
+      free(current_mc);
     } else {
         char input[ARG_MAX];
 
