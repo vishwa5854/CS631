@@ -17,8 +17,6 @@
 
 #define PROGRAM_NAME "SISH"
 
-char current_user[LOGIN_NAME_MAX];
-
 typedef struct FLAGS_STRUCT {
     bool c;
     char command[MAX_COMMAND_SIZE];
@@ -38,6 +36,7 @@ typedef struct ParsedCommand {
     char *output_redirection;
     int append;
     int n_args;
+    struct ParsedCommand *next;
 } PCommand;
 
 typedef struct MasterCommand {

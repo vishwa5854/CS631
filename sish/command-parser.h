@@ -11,6 +11,6 @@ int parse_one_command(char *original_command, TokenizedIndividualCommand *curren
 
 void find_the_executable_and_args(TokenizedIndividualCommand *top, int n_args, PCommand *p_command);
 
-void parse_and_exec(char *full_command, MasterCommand *current_mc, PCommand *parsed_command);
+void parse_and_exec(char *full_command, MasterCommand *current_mc);
 
 #endif  // SISH_COMMAND_PARSER_H

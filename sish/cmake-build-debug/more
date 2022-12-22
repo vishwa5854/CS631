@@ -1,0 +1,18 @@
+build.ninja
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake
+more
+sish
+Testing
+666 Dec 21 22:24 CMakeCache.txt
+drwxr-xr-x 1 z z   276 Dec 21 23:13 CMakeFiles
+-rw-r--r-- 1 z z  1645 Dec 17 01:32 cmake_install.cmake
+-rw------- 1 z z   553 Dec 22 00:49 more
+-rwxr-xr-x 1 z z 45968 Dec 22 00:48 sish
+drwxr-xr-x 1 z z    18 Dec 17 01:32 Testing
+----- 1 z z   553 Dec 22 00:49 more
+-rw-r--r-- 1 z z 14956 Dec 22 00:48 .ninja_deps
+-rw-r--r-- 1 z z  2765 Dec 22 00:48 .ninja_log
+-rwxr-xr-x 1 z z 45968 Dec 22 00:48 sish
+drwxr-xr-x 1 z z    18 Dec 17 01:32 Testing

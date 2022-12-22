@@ -93,7 +93,7 @@ void find_the_executable_and_args(TokenizedIndividualCommand *top, int n_args,
     char *in_redirection = NULL, *out_redirection = NULL;
     /** If the user gives just ls, then we need to take 2 args one is ls and
      * other is NULL */
-    p_command->args = (char **)malloc(sizeof(char *) * ((n_args == 1) ? (n_args + 1) : n_args));
+    p_command->args = (char **)malloc(sizeof(char *) * (n_args + 1));
 
     /** The first string without any redirections is the exec name */
     while ((top != NULL) && (start < n_args) && (top->command_str != NULL)) {
@@ -147,10 +147,15 @@ void find_the_executable_and_args(TokenizedIndividualCommand *top, int n_args,
     }
 }
 
-void parse_and_exec(char *full_command, MasterCommand *current_mc, PCommand *parsed_command) {
+PCommand *current;
+PCommand *head;
+
+void parse_and_exec(char *full_command, MasterCommand *current_mc) {
     int n_pipes = number_of_pipes(full_command);
     char *token = strtok(full_command, "|");
     int n_commands = 0;
+    current = (PCommand *)malloc(sizeof(PCommand));
+    head = current;
 
     while (token != NULL) {
         current_mc->current_command =
@@ -160,16 +165,18 @@ void parse_and_exec(char *full_command, MasterCommand *current_mc, PCommand *par
         int n_tokens = parse_one_command(token, current_mc->current_command);
 
         if (n_tokens == -1) {
-            (void)puts("Invalid command");
-            exit(EXIT_FAILURE);
+            (void)fprintf(stderr, "%s: Invalid command: %s\n", PROGRAM_NAME, token);
+            return;
         }
         TokenizedIndividualCommand *redirection_head = current_mc->head_command;
-        has_valid_redirection(redirection_head);
+
+        if (has_valid_redirection(redirection_head) == EXIT_FAILURE) {
+            return;
+        }
 
         TokenizedIndividualCommand *exec_head = current_mc->head_command;
-        parsed_command = (PCommand *)malloc(sizeof(PCommand));
 
-        find_the_executable_and_args(exec_head, n_tokens, parsed_command);
+        find_the_executable_and_args(exec_head, n_tokens, current);
 
         /**
          * We are allowing input redirection in the first command and out put
@@ -177,31 +184,33 @@ void parse_and_exec(char *full_command, MasterCommand *current_mc, PCommand *par
          * sense to allow redirection since it will mess up piping.
          * */
         if (n_pipes > 0) {
-            /** First command before pipe */
             if (n_commands == 0) {
-                /** This means we have an output redirection in the first
-                 * command */
-                if (parsed_command->output_redirection != NULL) {
-                    (void)puts("Invalid redirections and piping");
+                if (current->output_redirection != NULL) {
+                    (void)fprintf(stderr, "%s: Invalid redirections and piping\n", PROGRAM_NAME);
                     return;
                 }
             } else if (n_commands == n_pipes) {
-                /** This means we have an input redirection in the last command
-                 */
-                if (parsed_command->input_redirection != NULL) {
-                    (void)puts("Invalid redirections and piping");
+                if (current->input_redirection != NULL) {
+                    (void)fprintf(stderr, "%s: Invalid redirections and piping\n", PROGRAM_NAME);
+                    return;
+                }
+            } else {
+                /** This is in between pipes where input or output redirection doesn't make sense. */
+                if ((current->input_redirection != NULL) || (current->output_redirection != NULL)) {
+                    (void)fprintf(stderr, "%s: Redirection in between pipes is not valid\n", PROGRAM_NAME);
                     return;
                 }
             }
         }
 
-        execute_the_fucking_command(parsed_command);
-
-        current_mc->next = (MasterCommand *)malloc(sizeof(MasterCommand));
-        current_mc = current_mc->next;
-
+//        execute_the_fucking_command(current);
+        current->next = (PCommand *)malloc(sizeof(PCommand));
+        current = current->next;
         n_commands += 1;
         token = strtok(NULL, "|");
-        free(parsed_command);
     }
+
+    // TODO: call exec heere
+    executor(head, n_commands);
+    free(current);
 }

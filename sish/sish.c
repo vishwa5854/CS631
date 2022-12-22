@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
 
     /** Execute only command given in -c */
     if (flags.c) {
-      parse_and_exec(flags.command, current_mc, parsed_command);
+      parse_and_exec(flags.command, current_mc);
     } else {
         char input[BUFSIZ];
 
@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
                 break;
             }
 
-            parse_and_exec(input, current_mc, parsed_command);
+            parse_and_exec(input, current_mc);
             free(current_mc);
         }
     }

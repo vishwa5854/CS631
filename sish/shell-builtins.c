@@ -11,6 +11,8 @@
 
 #include "data-structures.h"
 
+char current_user[LOGIN_NAME_MAX];
+
 void cd(char *path) {
     if (path == NULL) {
         if (getlogin_r(current_user, LOGIN_NAME_MAX) != 0) {

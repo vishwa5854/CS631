@@ -9,9 +9,9 @@
 
 int is_redirection(char *token);
 
-void check_permissions(char *redirection_token, char *file_path);
+int check_permissions(char *redirection_token, char *file_path);
 
-void has_valid_redirection(TokenizedIndividualCommand *top);
+int has_valid_redirection(TokenizedIndividualCommand *top);
 
 int is_input_redirection(char *token);
 

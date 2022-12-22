@@ -15,24 +15,26 @@ int is_redirection(char *token) {
            (strncmp(token, ">>", 2) == 0);
 }
 
-void check_permissions(char *redirection_token, char *file_path) {
+int check_permissions(char *redirection_token, char *file_path) {
     if ((strncmp(redirection_token, ">", 1) == 0) || (strncmp(redirection_token, ">>", 2) == 0)) {
         if (access(file_path, W_OK) == -1) {
             if (errno != ENOENT) {
-                (void)printf("SISH: %s: %s", file_path, strerror(errno));
-                exit(EXIT_FAILURE);
+                (void)fprintf(stderr, "SISH: %s: %s\n", file_path, strerror(errno));
+                return (EXIT_FAILURE);
             }
         }
     } else if (strncmp(redirection_token, "<", 1) == 0) {
         if (access(file_path, R_OK) == -1) {
-            (void)printf("SISH: %s: %s", file_path, strerror(errno));
-            exit(EXIT_FAILURE);
+            (void)fprintf(stderr, "SISH: %s: %s\n", file_path, strerror(errno));
+            return (EXIT_FAILURE);
         }
     }
+
+    return EXIT_SUCCESS;
 }
 
 /** All you gotta do is check for the existence of a file on the right */
-void has_valid_redirection(TokenizedIndividualCommand *top) {
+int has_valid_redirection(TokenizedIndividualCommand *top) {
     /** If the current token is a redirection, then the next token should be a
      * file name */
     while ((top != NULL) && (top->command_str != NULL)) {
@@ -40,13 +42,18 @@ void has_valid_redirection(TokenizedIndividualCommand *top) {
             /** Gotta check if we have a next token or not and also if we have a
              * token then let's check for file permissions as well */
             if ((top->next == NULL) || (top->next->command_str == NULL)) {
-                puts("Invalid Syntax of redirection");
-                exit(EXIT_FAILURE);
+                (void)fprintf(stderr, "%s: Invalid Syntax of redirection\n", PROGRAM_NAME);
+                return (EXIT_FAILURE);
             }
-            check_permissions(top->command_str, top->next->command_str);
+
+            if (check_permissions(top->command_str, top->next->command_str) == EXIT_FAILURE) {
+                return EXIT_FAILURE;
+            }
         }
         top = top->next;
     }
+
+    return EXIT_SUCCESS;
 }
 
 int is_input_redirection(char *token) { 
