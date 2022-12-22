@@ -26,3 +26,4 @@ Weird Bugs
     but one test case with a specific file name failed multiple times
     i.e ls /tmp/out -- For some reason for this path ony /tmp/out it is consistently getting appended
     I tried to debug but couldn't find the root cause.
+    I have tried alot of other paths like / /dev/ /home/z/sish/scp.sh etc
