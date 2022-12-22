@@ -14,3 +14,7 @@ Testcases Tested:
 11. uname | cat | grep Net
 12. ls -al >something | cat <something | more
 13. ls -al >something >>something2
+
+Things that were really hard
+1. Properly parsing strings is really hard
+2. Understanding piping across commands and properly duping

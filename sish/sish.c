@@ -23,9 +23,18 @@ int exit_status_of_last_command = 0;
 int current_process_id = 0;
 
 int main(int argc, char **argv) {
+    sigset_t mask;
     (void)signal(SIGINT, SIG_IGN);
     (void)signal(SIGQUIT, SIG_IGN);
     (void)signal(SIGTSTP, SIG_IGN);
+
+    if ((sigemptyset(&mask) == -1) || (sigaddset(&mask, SIGCHLD) == -1)) {
+        exit(EXIT_FAILURE);
+    }
+
+    if (sigprocmask(SIG_BLOCK, &mask, NULL) == -1) {
+        exit(EXIT_FAILURE);
+    }
 
     set_env_shell();
     parse_flags(&flags, argc, argv);
